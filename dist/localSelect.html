@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Game Settings</title>
+    <meta name="author" content="Luke Wisner, Chris Bender, Owen Zhang">
+    <meta name="description" content="Local Settings select screen"/>
+    <link rel="stylesheet" href="../styles/styles.css" />
+    <link rel="icon" href="../assets/favicon.png" type="image/x-icon">
+    <!--<script src="scripts/" defer></script>-->
+</head>
+
+<body>
+    <div id="title" class="centered">
+        <img src="../assets/reversiLogo.jpg" alt="reversi logo">
+        <h1>REVERSI</h1>
+    </div>
+    <div id="greeting" class="centered">
+        <h2>Select Local Game Settings:</h2>
+    </div>
+    <div id="boardSize" class="centered choose">
+        <h3>Board Size:</h3>
+        <button type="button" onclick="">8x8</button>
+        <button type="button">10x10</button>
+        <button type="button">12x12</button>
+    </div>
+    <div id="gameType" class="centered choose">
+        <h3>Game Type:</h3>
+        <button type="button">STANDARD</button>
+        <button type="button">FUNKY</button>
+    </div>
+    <div id="startingPlayer" class="centered choose">
+        <h3>Starting Player:</h3>
+        <button type="button">BLACK</button>
+        <button type="button">WHITE</button>
+    </div>
+    <div id="startGame" class="centered">
+        <hr>
+        <button type="button" onclick="location.href='localGame.html'">START GAME</button>
+    </div>
+    <div id="exit" class="centered">
+        <hr>
+        <button type="button" onclick="location.href='gamemode.html'">EXIT</button>
+    </div>
+</body>
+</html>
