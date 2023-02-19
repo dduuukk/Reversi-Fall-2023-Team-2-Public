@@ -37,7 +37,7 @@ class Board {
 
     static set_piece (current_board, x, y, value) {
         // Change the piece at a specified board location
-        if (current_board.board[x][y] != 0){
+        if (Board.get_piece(current_board, x, y) != 0){
             console.log("Piece already exists in this location!")
         }
         else {
