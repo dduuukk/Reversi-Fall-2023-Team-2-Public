@@ -26,18 +26,31 @@ class Board {
         boardarr[starting_row + 1][starting_col] = 2;
         boardarr[starting_row + 1][starting_col + 1] = 1;
 
+        // Define the board array
         this.boardarr = boardarr;
-
-        return boardarr;
     }
+
+    static get_piece (board, x, y) {
+        // Return the piece at a specified board location
+        return board.boardarr[x][y];
+    }
+
+    static set_piece (board, x, y, value) {
+        board.boardarr[x][y] = value;
+    }
+
+
+
 }
 
 
 // Class test code
 const size = 12;
-let board = new Board(size);
-console.log(board);
-
+let board1 = new Board(size);
+console.log(board1);
+console.log(Board.get_piece(board1, 2, 3));
+Board.set_piece(board1, 2, 1, 2);
+console.log(board1);
 
 
 // 
