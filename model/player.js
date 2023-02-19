@@ -15,7 +15,7 @@ console.log(Object.keys(Player));
 console.log(Player.enumerate.O);
 
 
-
+// Define a constant called active player. 
 
 // Python example for reference
 // from enum import IntEnum
