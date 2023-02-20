@@ -7,6 +7,11 @@ export class GameLogic {
         // }
     }
 
+    static build_board (size) {
+        let game_board = new Board(size);
+        return game_board;
+    }
+
     static is_valid_move (game_board, x, y) {
         // Check if the current move is valid
         if (Board.get_piece(game_board, x, y) == 0) {
@@ -60,15 +65,6 @@ export class GameLogic {
         return 0;   
     }
 }
-
-
-
-
-
-
-
-
-
 
 // Reference Python code
 // from abc import ABC, abstractmethod
