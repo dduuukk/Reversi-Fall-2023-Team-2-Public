@@ -1,10 +1,15 @@
-import { Board } from "./board.js";
+import { Board } from "./board";
 
 export class GameLogic {
     constructor() {
         // if (this.constructor == GameLogic) {
         //     throw new error
         // }
+    }   
+    // Build board for controller interaction
+    static build_board (size) {
+        let game_board = new Board(size);
+        return game_board;
     }
 
     static is_valid_move (game_board, x, y) {
@@ -21,6 +26,7 @@ export class GameLogic {
     static make_move (game_board, x, y, current_player) {
         if (this.is_valid_move(game_board, x, y)){
             Board.set_piece(game_board, x, y, current_player);
+            Board.flip_pieces(game_board, current_player, x, y);
         }
     }
 
@@ -59,7 +65,6 @@ export class GameLogic {
         return 0;   
     }
 }
-
 
 // Reference Python code
 // from abc import ABC, abstractmethod
