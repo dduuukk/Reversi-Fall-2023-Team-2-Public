@@ -9,7 +9,7 @@
     <meta name="description" content="Local Settings select screen"/>
     <link rel="stylesheet" href="../styles/styles.css" />
     <link rel="icon" href="../assets/favicon.png" type="image/x-icon">
-    <!--<script src="scripts/" defer></script>-->
+    <script type="module" src="../scripts/controller/gameController.js"></script>
 </head>
 
 <body>
@@ -23,9 +23,9 @@
     <div id="selection">
         <div id="boardSize" class="centered choose">
             <h3>Board Size:</h3>
-            <button class="sizeBtn selected" type="button" onclick="">8x8</button>
-            <button class="sizeBtn" type="button">10x10</button>
-            <button class="sizeBtn" type="button">12x12</button>
+            <button class="sizeBtn selected" type="button" onclick="changeSize(8)">8x8</button>
+            <button class="sizeBtn" type="button" onclick="changeSize(10)">10x10</button>
+            <button class="sizeBtn" type="button" onclick="changeSize(12)">12x12</button>
         </div>
         <div id="startingPlayer" class="centered choose">
             <h3>Starting Player:</h3>
@@ -39,15 +39,19 @@
         sizeButtons.forEach(sizeButton => {
             sizeButton.addEventListener('click', e => {
                 let button = e.currentTarget;
-                sizeButtons.forEach(btn => btn !== button && btn.classList.remove('selected'));
-                button.classList.toggle('selected');
+                if(!button.classList.contains("selected")){
+                    sizeButtons.forEach(btn => btn !== button && btn.classList.remove('selected'));
+                    button.classList.toggle('selected');
+                } 
             });
         });
         playerButtons.forEach(playerButton => {
             playerButton.addEventListener('click', e => {
                 let button = e.currentTarget;
-                playerButtons.forEach(btn => btn !== button && btn.classList.remove('selected'));
-                button.classList.toggle('selected');
+                if(!button.classList.contains("selected")){
+                    playerButtons.forEach(btn => btn !== button && btn.classList.remove('selected'));
+                    button.classList.toggle('selected');
+                } 
             });
         });
     </script>

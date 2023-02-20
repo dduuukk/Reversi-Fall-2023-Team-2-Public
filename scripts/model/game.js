@@ -3,7 +3,7 @@ import { LocalPlayer } from "./player";
 import { GameLogic } from "./game_logic";
 
 
-class Game extends GameLogic {
+export class Game extends GameLogic {
     constructor(size, starting_player,  mode) {
         // Instantiate size
         this.size = size;
