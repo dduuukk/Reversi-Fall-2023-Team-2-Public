@@ -47,7 +47,7 @@ class Board {
 }
 
 
-// Class test code
+// Class test code (ctrl + / to uncomment)
 // const size = 12;
 // let board1 = new Board(size);
 // console.log(board1);
