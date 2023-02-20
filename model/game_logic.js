@@ -21,6 +21,7 @@ export class GameLogic {
     static make_move (game_board, x, y, current_player) {
         if (this.is_valid_move(game_board, x, y)){
             Board.set_piece(game_board, x, y, current_player);
+            Board.flip_pieces(game_board, current_player, x, y);
         }
     }
 

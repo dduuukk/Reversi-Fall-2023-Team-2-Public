@@ -13,7 +13,9 @@ class Game extends GameLogic {
         this.player = new LocalPlayer(starting_player);
     }
 
-    
+    static switch_player (current_player) {
+        LocalPlayer.next_player(current_player);
+    }
 }
 
 
