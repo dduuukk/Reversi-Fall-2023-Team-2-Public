@@ -1,4 +1,4 @@
-class LocalPlayer {
+export class LocalPlayer {
     constructor(starting_player) {
         // Start with user selected first player
         if (starting_player != 1 || starting_player != 2) {
@@ -13,11 +13,15 @@ class LocalPlayer {
 
     static next_player (current_player) {
         // Change the current player when called
+        return 3 - current_player.player;
+    }
+
+    static return_player (current_player) {
         if (current_player.player == 1) {
-            current_player.player += 1;
+            return 1;
         }
         else {
-            current_player.player -= 1;
+            return 2;
         }
     }
 }
@@ -33,12 +37,3 @@ class LocalPlayer {
 // console.log(newplayer);
 // LocalPlayer.next_player(newplayer);
 // console.log(newplayer);
-
-// Define a constant called active player. 
-
-// Python example for reference
-// from enum import IntEnum
-
-// class Player(IntEnum):
-//     X = 1
-//     O = 2
