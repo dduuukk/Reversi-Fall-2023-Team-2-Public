@@ -1,25 +1,39 @@
-export class Player {
-    static X = new Player(1);
-    static O = new Player(2);
-
-    constructor(player_marker) {
-        this.player_marker = player_marker;
+export class LocalPlayer {
+    constructor(starting_player) {
+        // Start with user selected first player
+        if (starting_player != 1 || starting_player != 2) {
+            starting_player = 1;
+        }
+        // Otherwise default to Player 1 as starting player
+        else {
+            starting_player = starting_player;
+        }
+        this.player = starting_player;
     }
 
-    enumerate() {
-        return this.player_marker;
+    static next_player (current_player) {
+        // Change the current player when called
+        return 3 - current_player.player;
+    }
+
+    static return_player (current_player) {
+        if (current_player.player == 1) {
+            return 1;
+        }
+        else {
+            return 2;
+        }
     }
 }
 
-console.log(Object.keys(Player));
-console.log(Player.enumerate.O);
-
-
-// Define a constant called active player. 
-
-// Python example for reference
-// from enum import IntEnum
-
-// class Player(IntEnum):
-//     X = 1
-//     O = 2
+// Class test code (ctrl + / to uncomment)
+// let newplayer = new LocalPlayer();
+// console.log(newplayer);
+// LocalPlayer.next_player(newplayer);
+// console.log(newplayer);
+// LocalPlayer.next_player(newplayer);
+// console.log(newplayer);
+// LocalPlayer.next_player(newplayer);
+// console.log(newplayer);
+// LocalPlayer.next_player(newplayer);
+// console.log(newplayer);
