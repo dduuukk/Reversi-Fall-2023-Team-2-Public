@@ -1,4 +1,4 @@
-class Board {
+export class Board {
     constructor(size) {
         this.size = size;
 
@@ -27,7 +27,13 @@ class Board {
 
     static get_piece (game_board, x, y) {
         // Return the piece at a specified board location
-        return game_board.board[y][x];
+        if (x == -1 || y == -1) {
+            return -1;
+        }
+        else{
+            return game_board.board[y][x];
+        }
+        
     }
 
     static set_piece (current_board, x, y, value) {
@@ -42,51 +48,53 @@ class Board {
 
     static check_endpoints(current_board, current_player, start_x, start_y, x, y){
         
-        if (Board.get_piece(current_board, x, y) == current_player && Math.abs(x - start_x) != 1 && Math.abs(y - start_y) != 1) {
-            Board.flip_pieces(current_board, current_player, start_x, start_y, x, y);
+        if (Board.get_piece(current_board, x, y) == current_player) {
+            console.log("Startpoint: x: ", start_x, "y: ", start_y);
+            console.log("Endpoint: x: ", x, "y: ", y);
+            Board.flip(current_board, current_player, start_x, start_y, x, y);
             return -1;
         }
         else if (Board.get_piece(current_board, x, y) == 0) {
             return -1;
         }
-        else if (x == size - 1 || y == size - 1) {
-            return -1;
-        }
-        else if (x == 0 || y == 0) {
-            return -1;
-        }
+        return 1;
     }
 
-    static loop_endpoints (current_board, current_player, x, y) {
+    static flip_pieces (current_board, current_player, x, y) {
         let size = current_board.size;
         var originalX = x;
         var originalY = y;
         console.log(current_board);
         
+        
         // Check left
         x = originalX;
         y = originalY;
-        while (x > 0) {
+        while (Board.get_piece(current_board, x, y) > 0) {
             x--;
             if(Board.check_endpoints(current_board, current_player, originalX, originalY, x, y) == -1) {
                 break;
             }
         }
+
         // Check right
         x = originalX;
         y = originalY;
-        while (x > 0) {
+        while (Board.get_piece(current_board, x, y) > 0) {
+            if (x == size -  1) {
+                break;
+            }
             x++;
             if(Board.check_endpoints(current_board, current_player, originalX, originalY, x, y) == -1) {
                 break;
             }
         }
-
+        
         // Check up
         x = originalX;
         y = originalY;
-        while (x > 0) {
-            y++;
+        while (Board.get_piece(current_board, x, y) > 0) {
+            y--;
             if(Board.check_endpoints(current_board, current_player, originalX, originalY, x, y) == -1) {
                 break;
             }
@@ -95,8 +103,8 @@ class Board {
         // Check down
         x = originalX;
         y = originalY;
-        while (x > 0) {
-            y--;
+        while (Board.get_piece(current_board, x, y) > 0) {
+            y++;
             if(Board.check_endpoints(current_board, current_player, originalX, originalY, x, y) == -1) {
                 break;
             }
@@ -105,9 +113,9 @@ class Board {
         // Check right -> up
         x = originalX;
         y = originalY;
-        while (x > 0) {
+        while (Board.get_piece(current_board, x, y) > 0) {
             x++;
-            y++;
+            y--;
             if(Board.check_endpoints(current_board, current_player, originalX, originalY, x, y) == -1) {
                 break;
             }
@@ -116,9 +124,9 @@ class Board {
         // Check left -> up
         x = originalX;
         y = originalY;
-        while (x > 0) {
+        while (Board.get_piece(current_board, x, y) > 0) {
             x--;
-            y++;
+            y--;
             if(Board.check_endpoints(current_board, current_player, originalX, originalY, x, y) == -1) {
                 break;
             }
@@ -127,9 +135,9 @@ class Board {
         // Check right -> down
         x = originalX;
         y = originalY;
-        while (x > 0) {
+        while (Board.get_piece(current_board, x, y) > 0) {
             x++;
-            y--;
+            y++;
             if(Board.check_endpoints(current_board, current_player, originalX, originalY, x, y) == -1) {
                 break;
             }
@@ -138,23 +146,28 @@ class Board {
         // Check left -> down
         x = originalX;
         y = originalY;
-        while (x > 0) {
+        while (Board.get_piece(current_board, x, y) > 0) {
             x--;
-            y--;
+            y++;
             if(Board.check_endpoints(current_board, current_player, originalX, originalY, x, y) == -1) {
                 break;
             }
         }
     }
 
-    static flip_pieces (current_board, current_player, start_x, start_y, end_x, end_y) {
+    static flip (current_board, current_player, start_x, start_y, end_x, end_y) {
+        
         if (start_x > end_x) {
             end_x = [start_x, start_x = end_x][0];
-        }
-
-        if (start_y > end_y) {
             end_y = [start_y, start_y = end_y][0];
         }
+        else if (start_y > end_y) {
+            end_x = [start_x, start_x = end_x][0];
+            end_y = [start_y, start_y = end_y][0];
+        }
+
+        console.log("Startpoint: start_x: ", start_x, "start_y: ", start_y);
+        console.log("Endpoint: end_x: ", end_x, "end_y: ", end_y);
         
         if (start_x - end_x == 0) {
             for (var j = start_y; j <= end_y; j++){
@@ -162,16 +175,26 @@ class Board {
             }
         }
         else if (start_y - end_y == 0) {
-            for (var i = start_y; i <= end_y; i++){
+            for (var i = start_x; i <= end_x; i++){
                 Board.set_piece(current_board, i, start_y, current_player);
             }
         }
-        else if (Math.abs(start_y - end_y) > 0 && Math.abs(start_x - end_x) > 0) {
+        else if ((start_x - end_x) < 0 && (start_y - end_y) < 0) {
             var i = start_x;
             var j = start_y;
-            while (i != end_x && j != end_y) {
+            while (i != end_x) {
                 i++;
                 j++;
+                Board.set_piece(current_board, i, j, current_player);
+            }
+        }
+        else if ((start_x - end_x) < 0 && (start_y - end_y) > 0) {
+            var i = start_x;
+            var j = start_y;
+            console.log("i: ", i, "j: ", j);
+            while (i != end_x) {
+                i++;
+                j--;
                 Board.set_piece(current_board, i, j, current_player);
             }
         }
@@ -200,10 +223,9 @@ class Board {
 // Board.set_piece(board1, 4, 4, 2);
 // Board.set_piece(board1, 1, 1, 2);
 // Board.set_piece(board1, 3, 0, 1);
-// Board.set_piece(board1, 4, 0, 1);
-// Board.loop_endpoints(board1, 2, 4, 0);
+// Board.set_piece(board1, 4, 0, 2);
+// Board.flip_pieces(board1, 2, 4, 0);
 // console.log(board1); 
 
-// still broken. need checks in the loop_endpoints function that make sure we are not on an edge, rather than checking
-// in check endpoints, as we will automatically exit the board if on an edge.
+
 // there has to be a better way to do this, loop_endpoints is so ugly :)
