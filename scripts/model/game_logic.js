@@ -1,10 +1,16 @@
 import { Board } from "./board";
+import { Board } from "./board";
 
 export class GameLogic {
     constructor() {
         // if (this.constructor == GameLogic) {
         //     throw new error
         // }
+    }   
+    // Build board for controller interaction
+    static build_board (size) {
+        let game_board = new Board(size);
+        return game_board;
     }
 
     static is_valid_move (game_board, x, y) {
