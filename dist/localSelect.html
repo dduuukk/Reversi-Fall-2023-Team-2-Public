@@ -20,22 +20,37 @@
     <div id="greeting" class="centered">
         <h2>Select Local Game Settings:</h2>
     </div>
-    <div id="boardSize" class="centered choose">
-        <h3>Board Size:</h3>
-        <button type="button" onclick="">8x8</button>
-        <button type="button">10x10</button>
-        <button type="button">12x12</button>
+    <div id="selection">
+        <div id="boardSize" class="centered choose">
+            <h3>Board Size:</h3>
+            <button class="sizeBtn selected" type="button" onclick="">8x8</button>
+            <button class="sizeBtn" type="button">10x10</button>
+            <button class="sizeBtn" type="button">12x12</button>
+        </div>
+        <div id="startingPlayer" class="centered choose">
+            <h3>Starting Player:</h3>
+            <button class="playerBtn selected" type="button">BLACK</button>
+            <button class="playerBtn" type="button">WHITE</button>
+        </div>
     </div>
-    <div id="gameType" class="centered choose">
-        <h3>Game Type:</h3>
-        <button type="button">STANDARD</button>
-        <button type="button">FUNKY</button>
-    </div>
-    <div id="startingPlayer" class="centered choose">
-        <h3>Starting Player:</h3>
-        <button type="button">BLACK</button>
-        <button type="button">WHITE</button>
-    </div>
+    <script>
+        let sizeButtons = document.querySelectorAll('button.sizeBtn');
+        let playerButtons = document.querySelectorAll('button.playerBtn');
+        sizeButtons.forEach(sizeButton => {
+            sizeButton.addEventListener('click', e => {
+                let button = e.currentTarget;
+                sizeButtons.forEach(btn => btn !== button && btn.classList.remove('selected'));
+                button.classList.toggle('selected');
+            });
+        });
+        playerButtons.forEach(playerButton => {
+            playerButton.addEventListener('click', e => {
+                let button = e.currentTarget;
+                playerButtons.forEach(btn => btn !== button && btn.classList.remove('selected'));
+                button.classList.toggle('selected');
+            });
+        });
+    </script>
     <div id="startGame" class="centered">
         <hr>
         <button type="button" onclick="location.href='localGame.html'">START GAME</button>

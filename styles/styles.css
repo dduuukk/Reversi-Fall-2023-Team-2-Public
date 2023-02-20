@@ -116,21 +116,45 @@ hr {
     text-shadow: -1px 1px 0 black;
 }
 
-.choose {
+#selection {
     display: flex;
+    width: 500px;
+    margin: auto;
+    text-align: left;
+    align-items: flex-start;
+}
+
+#selection h3 {
+    display: block;
+    margin: auto;
+    color: green;
+    font-family:'Segoe UI', sans-serif;
+    font-size: 30px;
+    text-align: top;
+}
+
+#boardSize {
+    display: block;
+    width: 1000px;
+    margin: auto;
+    text-align: left;
+    margin-right: 30px;
+}
+
+#startingPlayer {
+    display: block;
     width: 1000px;
     margin: auto;
     text-align: left;
 }
 
-.choose h3 {
-    display: inline-block;
-    margin: auto;
-    color: green;
-    font-family:'Segoe UI', sans-serif;
-    font-size: 30px;
-}
-
 .choose button {
     display: inline-block;
+}
+
+#selection .selected {
+    background-color: green;
+    border: 3px solid green;
+    color: white;
+    box-shadow: none;
 }
