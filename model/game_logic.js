@@ -5,8 +5,8 @@ export class GameLogic {
         // if (this.constructor == GameLogic) {
         //     throw new error
         // }
-    }
-
+    }   
+    // Build board for controller interaction
     static build_board (size) {
         let game_board = new Board(size);
         return game_board;
