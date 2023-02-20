@@ -8,8 +8,7 @@
     <meta name="author" content="Luke Wisner, Chris Bender, Owen Zhang">
     <meta name="description" content="Local Settings select screen"/>
     <link rel="stylesheet" href="../styles/styles.css" />
-    <link rel="icon" href="../assets/favicon.png" type="image/x-icon">
-    <script type="module" src="../scripts/controller/gameController.js"></script>
+    <link rel="icon" href="../assets/favicon.png" type="image/x-icon">  
 </head>
 
 <body>
@@ -21,12 +20,27 @@
         <h2>Select Local Game Settings:</h2>
     </div>
     <div id="selection">
+        <!-- This didn't work
+            <script type="importmap">
+            {
+                "imports": {
+                    "controller": "../scripts/controller/gameController.js"
+                }
+            }
+        </script>
+        <script type="module">
+            import {controller} from "../scripts/controller/gameController.js";
+        </script>-->
+
         <div id="boardSize" class="centered choose">
             <h3>Board Size:</h3>
-            <button class="sizeBtn selected" type="button" onclick="changeSize(8)">8x8</button>
-            <button class="sizeBtn" type="button" onclick="changeSize(10)">10x10</button>
-            <button class="sizeBtn" type="button" onclick="changeSize(12)">12x12</button>
+            <button class="sizeBtn selected" type="button" onclick="controller.changeSize(8)">8x8</button>
+            <button class="sizeBtn" type="button" onclick="controller.changeSize(10)">10x10</button>
+            <button class="sizeBtn" type="button" onclick="controller.changeSize(12)">12x12</button>
         </div>
+        <script type = "module">
+            import {controller} from "../scripts/controller/gameController.js";
+        </script>
         <div id="startingPlayer" class="centered choose">
             <h3>Starting Player:</h3>
             <button class="playerBtn selected" type="button">BLACK</button>

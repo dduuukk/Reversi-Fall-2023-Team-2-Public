@@ -1,6 +1,6 @@
-import { Board } from "../model/board";
-import { LocalPlayer } from "../model/player";
-import { GameLogic } from "../model/game_logic";
+import { Board } from "../model/board.js";
+import { LocalPlayer } from "../model/player.js";
+import { GameLogic } from "../model/game_logic.js";
 
 export class gameController {
     constructor() {

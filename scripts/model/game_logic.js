@@ -1,4 +1,4 @@
-import { Board } from "./board";
+import { Board } from "./board.js";
 
 export class GameLogic {
     constructor() {
@@ -59,14 +59,6 @@ export class GameLogic {
         return 0;   
     }
 }
-
-
-
-
-
-
-
-
 
 
 // Reference Python code

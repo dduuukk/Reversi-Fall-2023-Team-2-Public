@@ -1,6 +1,6 @@
-import { Board } from "./board";
-import { LocalPlayer } from "./player";
-import { GameLogic } from "./game_logic";
+import { Board } from "./board.js";
+import { LocalPlayer } from "./player.js";
+import { GameLogic } from "./game_logic.js";
 
 
 export class Game extends GameLogic {
