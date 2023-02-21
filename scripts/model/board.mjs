@@ -1,4 +1,4 @@
-export class Board {
+class Board {
     constructor(size) {
         this.size = size;
 
@@ -200,6 +200,8 @@ export class Board {
         }
     }
 }
+
+export{Board};
 
 // Class test code (ctrl + / to uncomment)
 // const size = 12;

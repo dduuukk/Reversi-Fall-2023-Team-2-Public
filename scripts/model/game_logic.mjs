@@ -1,7 +1,6 @@
-import { Board } from "./board";
-import { Board } from "./board";
+import { Board } from "./board.mjs";
 
-export class GameLogic {
+class GameLogic {
     constructor() {
         // if (this.constructor == GameLogic) {
         //     throw new error
@@ -27,6 +26,7 @@ export class GameLogic {
     static make_move (game_board, x, y, current_player) {
         if (this.is_valid_move(game_board, x, y)){
             Board.set_piece(game_board, x, y, current_player);
+            Board.flip_pieces(game_board, current_player, x, y);
         }
     }
 
@@ -66,14 +66,7 @@ export class GameLogic {
     }
 }
 
-
-
-
-
-
-
-
-
+export {GameLogic};
 
 // Reference Python code
 // from abc import ABC, abstractmethod
