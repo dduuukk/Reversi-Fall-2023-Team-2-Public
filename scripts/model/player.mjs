@@ -1,4 +1,4 @@
-export class LocalPlayer {
+class LocalPlayer {
     constructor(starting_player) {
         // Start with user selected first player
         if (starting_player != 1 || starting_player != 2) {
@@ -25,6 +25,8 @@ export class LocalPlayer {
         }
     }
 }
+
+export {LocalPlayer};
 
 // Class test code (ctrl + / to uncomment)
 // let newplayer = new LocalPlayer();

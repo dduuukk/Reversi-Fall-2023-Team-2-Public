@@ -1,6 +1,6 @@
-import { Board } from "./board";
+import { Board } from "./board.mjs";
 
-export class GameLogic {
+class GameLogic {
     constructor() {
         // if (this.constructor == GameLogic) {
         //     throw new error
@@ -65,6 +65,8 @@ export class GameLogic {
         return 0;   
     }
 }
+
+export {GameLogic};
 
 // Reference Python code
 // from abc import ABC, abstractmethod

@@ -1,10 +1,11 @@
-import { Board } from "./board.js";
-import { LocalPlayer } from "./player.js";
-import { GameLogic } from "./game_logic.js";
+import { Board } from "./board.mjs";
+import { LocalPlayer } from "./player.mjs";
+import { GameLogic } from "./game_logic.mjs";
 
 
 export class Game extends GameLogic {
     constructor(size, starting_player,  mode) {
+        super();
         // Instantiate size
         this.size = size;
         // Instantiate new board
