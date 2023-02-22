@@ -32,6 +32,7 @@ class Board {
         this.board = board;
     }
 
+    // Return piece at given x and y value
     static get_piece (game_board, x, y) {
         // Return the piece at a specified board location
             return game_board.board[y][x];
@@ -39,71 +40,72 @@ class Board {
         
     }
 
+    // Set x and y value to player
     static set_piece (current_board, x, y, value) {
         // Change the piece at a specified board location
         current_board.board[y][x] = value;
         
     }
 
+    // Check if found endpoints should resut in a flip
     static check_endpoints(current_board, current_player, start_x, start_y, x, y){
         // Check if in the found endpoint is the same as the current player
-        // console.log(current_board.board);
-        // console.log("start_x: ", start_x);
-        // console.log("start_y: ", start_y);
-        // console.log("x: " + x);
-        // console.log("y: " + y);
         if (Board.get_piece(current_board, x, y) == current_player) {
-            // Deubgging log
-            // console.log("Startpoint: x: ", start_x, "y: ", start_y);
-            // console.log("Endpoint: x: ", x, "y: ", y);
-            
             // If same, flip all pieces between piece and endpoint
             Board.flip(current_board, current_player, start_x, start_y, x, y);
             // Break loop
             return -1;
         }
-        // If spcae is a 0, no pieces to flip
+
+        // If space is a 0, endpoint is not a piece, no pieces to flip
         else if (Board.get_piece(current_board, x, y) == 0) {
             return -1;
         }
-        
+
         return 1;
     }
 
+    // Check in all directions for places where flipping might need to occur
     static flip_pieces (current_board, current_player, x, y) {
+        // Set constants to input values for easier reading
         var size = current_board.size;
         const originalX = x;
         const originalY = y;
-        // Debugging log
-        // console.log(current_board);
         
-        
-        // Check left
+        // Check LEFT
         x = originalX;
         y = originalY;
+        // Check that x is not at left border
         if (x != 0) {
-            console.log("LEFT");
+        console.log("LEFT");
         while (Board.get_piece(current_board, x, y) > 0) {
                 x--;
+                // Check if current point is an endpoint
                 if(Board.check_endpoints(current_board, current_player, originalX, originalY, x, y) == -1) {
                     break;
                 }
+
+                // Check if current point is at border
                 if (x == 0) {
                     break;
                 }
             }
         }
 
-        // Check right
+        // Check RIGHT
         x = originalX;
         y = originalY;
+        // Check that x is not at right border
         if (x != size -  1) {
             console.log("RIGHT");
             while (Board.get_piece(current_board, x, y) > 0) {
                 x++;
+                // Check if current point is an endpoint
                 if(Board.check_endpoints(current_board, current_player, originalX, originalY, x, y) == -1) {
                     break;
                 }
+
+                // Check if current point is at border
                 if (x == size - 1) {
                     break;
                 }
@@ -111,102 +113,126 @@ class Board {
         }
         
         
-        // Check up
+        // Check UP
         x = originalX;
         y = originalY;
+        // Check that y is not at top border
         if (y != 0) {
             console.log("UP");
             while (Board.get_piece(current_board, x, y) > 0) {
                 y--;
+                // Check if current point is an endpoint
                 if(Board.check_endpoints(current_board, current_player, originalX, originalY, x, y) == -1) {
                     break;
                 }
+
+                //Check if current point is at border
                 if(y == 0) {
                     break;
                 }
             }
         }
 
-        // Check down
+        // Check DOWN
         x = originalX;
         y = originalY;
+        // Check that y is not at bottom border
         if (y != size - 1) {
             console.log("DOWN");
             while (Board.get_piece(current_board, x, y) > 0) {
                 y++;
+                // Check if current point is an endpoint
                 if(Board.check_endpoints(current_board, current_player, originalX, originalY, x, y) == -1) {
                     break;
                 }
+
+                //Check if current point is at border
                 if (y == size - 1) {
                     break;
                 }
             }
         }
 
-        // Check right -> up
+        // Check RIGHT -> UP
         x = originalX;
         y = originalY;
+        // Check that x is not at right border, y is not at top border
         if(x != size - 1 && y != 0) {
-            
-        while (Board.get_piece(current_board, x, y) > 0) {
             console.log("RIGHT -> UP");
-            x++;
-            y--;
-            if(Board.check_endpoints(current_board, current_player, originalX, originalY, x, y) == -1) {
-                break;
-            }
-            if(x == size - 1 || y == 0) {
-                break;
-            }
-            }
+            while (Board.get_piece(current_board, x, y) > 0) {
+                console.log("RIGHT -> UP");
+                x++;
+                y--;
+                // Check if current point is an endpoint
+                if(Board.check_endpoints(current_board, current_player, originalX, originalY, x, y) == -1) {
+                    break;
+                }
+
+                //Check if current point is at border
+                if(x == size - 1 || y == 0) {
+                    break;
+                }
+                }
         }
 
-        // Check left -> up
+        // Check LEFT -> UP
         x = originalX;
         y = originalY;
+        // Check that x is not at left border, y is not at top border
         if (x != 0 && y != 0) {
             console.log("LEFT -> UP");
             while (Board.get_piece(current_board, x, y) > 0) {
                 x--;
                 y--;
+                // Check if current point is an endpoint
                 if(Board.check_endpoints(current_board, current_player, originalX, originalY, x, y) == -1) {
                     break;
                 }
+
+                //Check if current point is at border
                 if(x == 0 || y == 0) {
                     break;
                 }
             }
         }
 
-        // Check right -> down
+        // Check RIGHT -> DOWN
         x = originalX;
         y = originalY;
+        // Check that x is not at right border, y is not at bottom border
         if (x != size - 1 && y != size - 1) {
             console.log("RIGHT -> DOWN");
             while (Board.get_piece(current_board, x, y) > 0) {
                 
                 x++;
                 y++;
+                // Check if current point is an endpoint
                 if(Board.check_endpoints(current_board, current_player, originalX, originalY, x, y) == -1) {
                     break;
                 }
+
+                //Check if current point is at border
                 if(x == size - 1|| y == size - 1) {
                     break;
                 }
             }
         }
 
-        // Check left -> down
+        // Check LEFT -> DOWN
         x = originalX;
         y = originalY;
+        // Check that x is not at left border, y is not at bottom borders
         if (x != 0 && y != size - 1) {
             console.log("LEFT -> DOWN");
             while (Board.get_piece(current_board, x, y) > 0) {
                 x--;
                 y++;
+                // Check if current point is an endpoint
                 if(Board.check_endpoints(current_board, current_player, originalX, originalY, x, y) == -1) {
                     break;
                 }
+
+                //Check if current point is at border
                 if(x == 0 || y == size - 1) {
                     break;
                 }
@@ -215,43 +241,53 @@ class Board {
         
     }
 
+    // Flip the pieces in directions identified by check endpoints
     static flip (current_board, current_player, start_x, start_y, end_x, end_y) {
-        
+        // If starting x > ending x, swith the two points
         if (start_x > end_x) {
             end_x = [start_x, start_x = end_x][0];
             end_y = [start_y, start_y = end_y][0];
         }
 
-        console.log("Startpoint: start_x: ", start_x, "start_y: ", start_y);
-        console.log("Endpoint: end_x: ", end_x, "end_y: ", end_y);
+        // Debugging logs
+        // console.log("Startpoint: start_x: ", start_x, "start_y: ", start_y);
+        // console.log("Endpoint: end_x: ", end_x, "end_y: ", end_y);
         
+        // If the points are related vertically
         if (start_x - end_x == 0) {
+            // If starting y > ending y, switch the two y values
             if (start_y > end_y) {
                 end_y = [start_y, start_y = end_y][0];
             }
             
+            // Fill the vertical line with currrent player
             for (var j = start_y; j <= end_y; j++){
                 Board.set_piece(current_board, start_x, j, current_player);
             }
         }
+        // If the points are horizontally related
         else if (start_y - end_y == 0) {
+            // Fill the horizontal line with current player
             for (var i = start_x; i <= end_x; i++){
                 Board.set_piece(current_board, i, start_y, current_player);
             }
         }
+        // If the points are diagonally related & starting y < ending y
         else if ((start_x - end_x) < 0 && (start_y - end_y) < 0) {
             var i = start_x;
             var j = start_y;
+            // Fill the downwards horizontal line with current player
             while (i != end_x) {
                 i++;
                 j++;
                 Board.set_piece(current_board, i, j, current_player);
             }
         }
+        // If the points are diagonally related & starting y > ending y
         else if ((start_x - end_x) < 0 && (start_y - end_y) > 0) {
             var i = start_x;
             var j = start_y;
-            console.log("i: ", i, "j: ", j);
+            // Fille the upwards horizontal line with currrent player
             while (i != end_x) {
                 i++;
                 j--;
@@ -260,6 +296,7 @@ class Board {
         }
     }
 
+    // Return the current board array for display purposes
     static return_array (current_board) {
         return current_board.board;
     }
@@ -343,32 +380,3 @@ class Board {
 }
 
 export{Board};
-
-// Class test code (ctrl + / to uncomment)
-// const size = 12;
-// let board1 = new Board(size);
-// console.log(board1);
-// console.log(Board.get_piece(board1, 2, 3));
-// Board.set_piece(board1, 2, 1, 2);
-// console.log(board1);
-// Board.set_piece(board1, 2, 1, 1);
-// console.log(board1);
-
-
-// Extra test code for flipping pieces
-// const size = 6;
-// let board1 = new Board(size);
-// Board.set_piece(board1, 2, 1, 1);
-// Board.set_piece(board1, 3, 1, 1);
-// Board.set_piece(board1, 2, 0, 2);
-// Board.set_piece(board1, 1, 2, 1);
-// Board.set_piece(board1, 1, 3, 2);
-// Board.set_piece(board1, 4, 4, 2);
-// Board.set_piece(board1, 1, 1, 2);
-// Board.set_piece(board1, 3, 0, 1);
-// Board.set_piece(board1, 4, 0, 2);
-// Board.flip_pieces(board1, 2, 4, 0);
-// console.log(board1); 
-
-
-// there has to be a better way to do this, loop_endpoints is so ugly :)

@@ -10,9 +10,11 @@ export class Game extends GameLogic {
         this.size = size;
         // Instantiate new board
         this.board = new Board(this.size);
+        // Instatiate new player
         this.player = new LocalPlayer(starting_player);
     }
 
+    // Return the board array for display purposes
     static return_board_array (current_game) {
         return Board.return_array(current_game.board);
     }
@@ -21,45 +23,30 @@ export class Game extends GameLogic {
         return this.board;
     }
     
+    // Takes click from view -> controller and inputs move into model
     static make_move (current_game, x, y) {
+        // Check if the selected move is valid
         if (Game.is_valid_move(current_game.board, x, y, current_game.player.player)){ // changed this
-            console.log("current_player: ", current_game.player);
+            
+            // Debugging log
+            // console.log("current_player: ", current_game.player);
+
+            // Set the selected piece to current player
             Board.set_piece(current_game.board, x, y, current_game.player.player);
+            // Flip all pieces resulting from the current move
             Board.flip_pieces(current_game.board, current_game.player.player, x, y);
+            // Switch player
             LocalPlayer.next_player(current_game.player);
-            console.log(current_game.player.player);
         }
     }
 
+    // Return player scores
     static get_scores(current_game){
         return GameLogic.get_scores(current_game.board.board);
     }
 
+    // Check forr winner
     static get_winner(current_game){
         return GameLogic.check_winner(current_game.board.board);
     }
 }
-
-
-// Reference Code
-// from model.board import Board 
-// from model.player import Player
-// from model.classical_mode import ClassicalMode
-
-// class Game:
-//     def __init__(self, game_logic = ClassicalMode(), size = 3) -> None:
-//         # recommended to start from empty methods so that work can be divided between team members
-//         self.board = Board()
-//         self.curr_player = Player.X
-//         self.game_logic = game_logic
-//         pass
-//     def is_valid_move(self, move):
-//         return self.game_logic.is_valid_move(move)
-//     def make_move(self, move):
-//         pass
-//     def switch_player(self):
-//         self.curr_player = 3 - self.curr_player
-//         pass
-//     def get_winner(self):
-//         pass
-    
