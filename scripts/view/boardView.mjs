@@ -3,6 +3,7 @@ class BoardView {
 
     }
 
+    //makes the green cells in the dimensions provided
     static makeBoard(size) {
         for (var i = 0; i < size; ++i) {
             var row = document.createElement('div'); // create column

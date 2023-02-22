@@ -5,6 +5,7 @@ class GameView {
 
     }
 
+    //places a single tile
     static placePiece(x, y, current_player){
         var cell = document.getElementById('cell-' + y + '-' + x);
             var piece = document.createElement('div');
@@ -18,6 +19,7 @@ class GameView {
             cell.appendChild(piece);
     }
 
+    //places all pieces in the array
     static placePieces(boardArray){
         //remove all pieces before replacing them
         var existingPieces = document.getElementsByClassName('piece');
@@ -34,6 +36,7 @@ class GameView {
         }
     }
 
+    //changes score element to reflect scores
     static displayScores(blackScore, whiteScore){
         var blackPoints = document.querySelector('#blackScore h3');
         blackPoints.textContent = blackScore;
@@ -41,6 +44,7 @@ class GameView {
         whitePoints.textContent = whiteScore;
     }
 
+    //remove board and display winner
     static gameEndMessage(winning_player){
         var board = document.getElementById('boardContainer');
         board.parentNode.removeChild(board);

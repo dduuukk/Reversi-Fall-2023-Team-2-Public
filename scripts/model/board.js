@@ -249,10 +249,6 @@ class Board {
             end_x = [start_x, start_x = end_x][0];
             end_y = [start_y, start_y = end_y][0];
         }
-
-        // Debugging logs
-        // console.log("Startpoint: start_x: ", start_x, "start_y: ", start_y);
-        // console.log("Endpoint: end_x: ", end_x, "end_y: ", end_y);
         
         // If the points are related vertically
         if (start_x - end_x == 0) {
@@ -306,7 +302,7 @@ class Board {
         // Check if in the found endpoint is the same as the current player
         console.log("MADE IT HERE!!!!");
         var isValid = 0;
-        if (Board.get_piece(current_board, x, y) == current_player && (Math.abs(start_x - x != 1)) && (Math.abs(start_y - y != 0))) {
+        if (Board.get_piece(current_board, x, y) == current_player && (Math.abs(start_x - x == 1)) && (Math.abs(start_y - y == 1))) {
             // If same, flip all pieces between piece and endpoint
             Board.flip(current_board, current_player, start_x, start_y, x, y);
             // Break loop
@@ -574,7 +570,7 @@ class Board {
         var ne = false;
         var sw = false;
         var se = false;
-        // var n, nw, ne, e, w, s, sw, se = false;
+        // checks all 8 surrounding positions for adjacency
 
         console.log("opposite_color: ", oppositeColor);
         if (x > 0){
