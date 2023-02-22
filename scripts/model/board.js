@@ -30,6 +30,7 @@ class Board {
 
         // Define the board array
         this.board = board;
+        console.log(this.board);
     }
 
     // Return piece at given x and y value
@@ -43,7 +44,7 @@ class Board {
     // Set x and y value to player
     static set_piece (current_board, x, y, value) {
         // Change the piece at a specified board location
-        current_board.board[y][x] = value;
+        current_board.board[y][x] = parseInt(value);
         
     }
 
@@ -69,8 +70,8 @@ class Board {
     static flip_pieces (current_board, current_player, x, y) {
         // Set constants to input values for easier reading
         var size = current_board.size;
-        const originalX = x;
-        const originalY = y;
+        var originalX = x;
+        var originalY = y;
         
         // Check LEFT
         x = originalX;
@@ -300,10 +301,270 @@ class Board {
     static return_array (current_board) {
         return current_board.board;
     }
+    
+    static flip_true(current_board, current_player, start_x, start_y, x, y){
+        // Check if in the found endpoint is the same as the current player
+        console.log("MADE IT HERE!!!!");
+        var isValid = 0;
+        if (Board.get_piece(current_board, x, y) == current_player && (Math.abs(start_x - x != 1)) && (Math.abs(start_y - y != 0))) {
+            // If same, flip all pieces between piece and endpoint
+            Board.flip(current_board, current_player, start_x, start_y, x, y);
+            // Break loop
+            isValid = 1;
+        }
+
+        // If space is a 0, endpoint is not a piece, no pieces to flip
+        else if (Board.get_piece(current_board, x, y) == 0) {
+            isValid = 0;
+        }
+
+        return isValid;
+    }
+    
+
+    static check_flip (current_board, current_player, x, y) {
+        // Set constants to input values for easier reading
+        var size = current_board.size;
+        var originalX = x;
+        var originalY = y;
+        var OK = 0;
+        
+        // Check LEFT
+        x = originalX;
+        y = originalY;
+        // Check that x is not at left border
+        if (x != 0) {
+        console.log("LEFT");
+        while (Board.get_piece(current_board, x, y) >= 0) {
+                x--;
+                // Check if current point is an endpoint
+                if(Board.flip_true(current_board, current_player, originalX, originalY, x, y) == 1) {
+                    OK = 1;
+                    break;
+                }
+
+                // Check if current point is at border
+                if (x == 0) {
+                    break;
+                }
+            }
+        }
+
+        // Check RIGHT
+        x = originalX;
+        y = originalY;
+        // Check that x is not at right border
+        if (x != size -  1) {
+            console.log("RIGHT");
+            while (Board.get_piece(current_board, x, y) >= 0) {
+                x++;
+                // Check if current point is an endpoint
+                if(Board.flip_true(current_board, current_player, originalX, originalY, x, y) == 1) {
+                    OK = 1;
+                    break;
+                }
+
+                // Check if current point is at border
+                if (x == size - 1) {
+                    break;
+                }
+            }
+        }
+        
+        
+        // Check UP
+        x = originalX;
+        y = originalY;
+        // Check that y is not at top border
+        if (y != 0) {
+            console.log("UP");
+            while (Board.get_piece(current_board, x, y) >= 0) {
+                y--;
+                // Check if current point is an endpoint
+                if(Board.flip_true(current_board, current_player, originalX, originalY, x, y) == 1) {
+                    OK = 1;
+                    break;
+                }
+
+                //Check if current point is at border
+                if(y == 0) {
+                    break;
+                }
+            }
+        }
+
+        // Check DOWN
+        x = originalX;
+        y = originalY;
+        // Check that y is not at bottom border
+        if (y != size - 1) {
+            console.log("DOWN");
+            while (Board.get_piece(current_board, x, y) >= 0) {
+                y++;
+                // Check if current point is an endpoint
+                if(Board.flip_true(current_board, current_player, originalX, originalY, x, y) == 1) {
+                    OK = 1;
+                    break;
+                }
+
+                //Check if current point is at border
+                if (y == size - 1) {
+                    break;
+                }
+            }
+        }
+
+        // Check RIGHT -> UP
+        x = originalX;
+        y = originalY;
+        // Check that x is not at right border, y is not at top border
+        if(x != size - 1 && y != 0) {
+            console.log("RIGHT -> UP");
+            while (Board.get_piece(current_board, x, y) >= 0) {
+                console.log("RIGHT -> UP");
+                x++;
+                y--;
+                // Check if current point is an endpoint
+                if(Board.flip_true(current_board, current_player, originalX, originalY, x, y) == 1) {
+                    OK = 1;
+                    break;
+                }
+
+                //Check if current point is at border
+                if(x == size - 1 || y == 0) {
+                    break;
+                }
+                }
+        }
+
+        // Check LEFT -> UP
+        x = originalX;
+        y = originalY;
+        // Check that x is not at left border, y is not at top border
+        if (x != 0 && y != 0) {
+            console.log("LEFT -> UP");
+            while (Board.get_piece(current_board, x, y) >= 0) {
+                x--;
+                y--;
+                // Check if current point is an endpoint
+                if(Board.flip_true(current_board, current_player, originalX, originalY, x, y) == 1) {
+                    OK = 1;
+                    break;
+                }
+
+                //Check if current point is at border
+                if(x == 0 || y == 0) {
+                    break;
+                }
+            }
+        }
+
+        // Check RIGHT -> DOWN
+        x = originalX;
+        y = originalY;
+        // Check that x is not at right border, y is not at bottom border
+        if (x != size - 1 && y != size - 1) {
+            console.log("RIGHT -> DOWN");
+            while (Board.get_piece(current_board, x, y) >= 0) {
+                
+                x++;
+                y++;
+                // Check if current point is an endpoint
+                if(Board.flip_true(current_board, current_player, originalX, originalY, x, y) == 1) {
+                    OK = 1
+                    break;
+                }
+
+                //Check if current point is at border
+                if(x == size - 1|| y == size - 1) {
+                    break;
+                }
+            }
+        }
+
+        // Check LEFT -> DOWN
+        x = originalX;
+        y = originalY;
+        // Check that x is not at left border, y is not at bottom borders
+        if (x != 0 && y != size - 1) {
+            console.log("LEFT -> DOWN");
+            while (Board.get_piece(current_board, x, y) >= 0) {
+                x--;
+                y++;
+                // Check if current point is an endpoint
+                if(Board.flip_true(current_board, current_player, originalX, originalY, x, y) == 1) {
+                    OK = 1;
+                    break;
+                }
+
+                //Check if current point is at border
+                if(x == 0 || y == size - 1) {
+                    break;
+                }
+            }
+        }
+        return OK;
+        
+    }
+
+    // Flip the pieces in directions identified by check endpoints
+    static flip (current_board, current_player, start_x, start_y, end_x, end_y) {
+        // If starting x > ending x, swith the two points
+        if (start_x > end_x) {
+            end_x = [start_x, start_x = end_x][0];
+            end_y = [start_y, start_y = end_y][0];
+        }
+
+        // Debugging logs
+        // console.log("Startpoint: start_x: ", start_x, "start_y: ", start_y);
+        // console.log("Endpoint: end_x: ", end_x, "end_y: ", end_y);
+        
+        // If the points are related vertically
+        if (start_x - end_x == 0) {
+            // If starting y > ending y, switch the two y values
+            if (start_y > end_y) {
+                end_y = [start_y, start_y = end_y][0];
+            }
+            
+            // Fill the vertical line with currrent player
+            for (var j = start_y; j <= end_y; j++){
+                Board.set_piece(current_board, start_x, j, current_player);
+            }
+        }
+        // If the points are horizontally related
+        else if (start_y - end_y == 0) {
+            // Fill the horizontal line with current player
+            for (var i = start_x; i <= end_x; i++){
+                Board.set_piece(current_board, i, start_y, current_player);
+            }
+        }
+        // If the points are diagonally related & starting y < ending y
+        else if ((start_x - end_x) < 0 && (start_y - end_y) < 0) {
+            var i = start_x;
+            var j = start_y;
+            // Fill the downwards horizontal line with current player
+            while (i != end_x) {
+                i++;
+                j++;
+                Board.set_piece(current_board, i, j, current_player);
+            }
+        }
+        // If the points are diagonally related & starting y > ending y
+        else if ((start_x - end_x) < 0 && (start_y - end_y) > 0) {
+            var i = start_x;
+            var j = start_y;
+            // Fille the upwards horizontal line with currrent player
+            while (i != end_x) {
+                i++;
+                j--;
+                Board.set_piece(current_board, i, j, current_player);
+            }
+        }
+    }
 
     static checkAdjacent (current_board, x, y, current_player) {
-        const tempx = x;
-        const tempy = y;
+        const tempx = parseInt(x);
+        const tempy = parseInt(y);
         var oppositeColor = 3 - current_player;
         var w = false;
         var e = false;
@@ -314,9 +575,10 @@ class Board {
         var sw = false;
         var se = false;
         // var n, nw, ne, e, w, s, sw, se = false;
+
+        console.log("opposite_color: ", oppositeColor);
         if (x > 0){
-            console.log("Value at x =", tempx, "y = ", tempy, ": ", Board.get_piece(current_board, tempx - 1, y));
-            if (Board.get_piece(current_board, tempx-1, y) == oppositeColor){
+            if (Board.get_piece(current_board, tempx-1, tempy) == oppositeColor){
                 w = true;
                 console.log('this evaluated');
             }
@@ -324,57 +586,33 @@ class Board {
         }
 
         if (x < current_board.size - 1){
-            console.log("Value at x =", tempx, "y = ", tempy, ": ", Board.get_piece(current_board, tempx +1, y));
-            if (Board.get_piece(current_board, tempx+1, y) == 1){
+            if (Board.get_piece(current_board, tempx+1, tempy) == oppositeColor){
                 e = true;
                 console.log('this evaluated');
             }
         }   
 
-        //console.log(current_board.board);
-        // if (y > 0){
-        //     n = (Board.get_piece(current_board, x, y-1) == oppositeColor);
-        // }
-        // if (y < current_board.size - 1){
-        //     s = (Board.get_piece(current_board, x, y+1) == oppositeColor);
-        // }
-        // if (x > 0 && y > 0){
-        //     nw = (Board.get_piece(current_board, x-1, y-1) == oppositeColor);
-        // }
-        // if (x > 0 && y < current_board.size - 1){
-        //     sw = (Board.get_piece(current_board, x-1, y+1) == oppositeColor);
-        // }
-        // if (x < current_board.size - 1 && y > 0){
-        //     ne = (Board.get_piece(current_board, x+1, y-1) == oppositeColor);
-        // }
-        // if (x < current_board.size - 1 && y < current_board.size - 1){
-        //     se = (Board.get_piece(current_board, x+1, y+1) == oppositeColor);
-        // }
-        // if (x > 0){
-        //     //can go left
-        //     w = (current_board.board[x-1][y] == oppositeColor);
-        //     if (y > 0) {
-        //         n = (current_board.board[x][y-1] == oppositeColor);
-        //         nw = (current_board.board[x-1][y-1] == oppositeColor);
-        //     }
-        //     if (y < current_board.size - 1) {
-        //         s = (current_board.board[x][y+1] == oppositeColor);
-        //         sw = (current_board.board[x-1][y+1] == oppositeColor);
-        //     }
-        // }
-        // if (x < current_board.size - 1){
-        //     //can go right
-        //     e = current_board.board[x+1][y] == oppositeColor;
-        //     if (y > 0) {
-        //         n = current_board.board[x][y-1] == oppositeColor;
-        //         ne = current_board.board[x+1][y-1] == oppositeColor;
-        //     }
-        //     if (y < current_board.size - 1) {
-        //         s = current_board.board[x][y+1] == oppositeColor;
-        //         se = current_board.board[x+1][y+1] == oppositeColor;
-        //     }   
-        console.log(w);
-        console.log(e);
+        console.log(current_board.board);
+        if (y > 0){
+            n = (Board.get_piece(current_board, tempx, tempy-1) == oppositeColor);
+        }
+        if (y < current_board.size - 1){
+            s = (Board.get_piece(current_board, tempx, tempy+1) == oppositeColor);
+        }
+        if (x > 0 && y > 0){
+            nw = (Board.get_piece(current_board, tempx-1, tempy-1) == oppositeColor);
+        }
+        if (x > 0 && y < current_board.size - 1){
+            sw = (Board.get_piece(current_board, tempx-1, tempy+1) == oppositeColor);
+        }
+        if (x < current_board.size - 1 && y > 0){
+            ne = (Board.get_piece(current_board, tempx+1, tempy-1) == oppositeColor);
+        }
+        if (x < current_board.size - 1 && y < current_board.size - 1){
+            se = (Board.get_piece(current_board, tempx+1, tempy+1) == oppositeColor);
+        } 
+        // console.log(w);
+        // console.log(e);
         return n || nw || ne || e || w || s || sw || se;
     }
 }

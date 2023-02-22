@@ -11,18 +11,6 @@ class GameLogic {
         return game_board;
     }
 
-    // Check if selected move is valid
-    static is_valid_move (game_board, x, y, current_player) {
-        // Check if the current move is does not have a piece on it
-        if (Board.get_piece(game_board, x, y) == 0) {
-            return true; //Board.checkAdjacent(game_board, x, y, current_player);
-        }
-        else {
-            console.log("That space already has a piece on it!")
-            return false;
-        }
-    }
-
     // Return the current game score
     static get_scores (game_board) {
         let size = game_board.length;
