@@ -1,5 +1,5 @@
 #boardContainer {
-    padding-top: 50px;
+    padding-top: 30px;
     position: relative;
     display: block;
     margin: auto;
@@ -19,4 +19,74 @@
     background-color: green;
     margin-right: -4px;
     display: inline-block;
+}
+
+.piece {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    border: solid;
+    margin-left: 2px;
+    margin-top: 2px;
+    border-color: black;
+}
+
+.specialPiece {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    border: solid;
+    margin-left: 2px;
+    margin-top: 2px;
+    border-color: black;
+}
+
+.blackPiece {
+    background-color: black;
+}
+
+.whitePiece {
+    background-color: white;
+}
+
+#scoresContainer {
+    display: flex;
+    text-align: center;
+    margin: auto;
+    width: 600px;
+}
+
+#scoresContainer div {
+    text-align: center;
+    margin: auto;
+}
+
+#scoresContainer h3 {
+    margin: auto;
+    color: green;
+    font-family:'Segoe UI', sans-serif;
+    font-size: 40px;
+    margin-bottom: 10px;
+    text-shadow: -1px 1px 0 black;
+}
+
+#blackScore {
+    display: inline-block;
+    flex: 1;
+    margin: auto;
+}
+
+#whiteScore {
+    display: inline-block;
+    flex: 1;
+}
+
+.winMessage {
+    text-align: center;
+    margin: auto;
+    color: green;
+    font-family:'Segoe UI', sans-serif;
+    font-size: 40px;
+    margin-bottom: 10px;
+    text-shadow: -2px 2px 0 black;
 }

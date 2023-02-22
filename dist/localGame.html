@@ -8,10 +8,10 @@
     <meta name="author" content="Luke Wisner, Chris Bender, Owen Zhang">
     <meta name="description" content="Local Game of Reversi"/>
     <link rel="stylesheet" href="../styles/styles.css" />
+    <link rel="stylesheet" href="../styles/boardStyles.css" />
     <link rel="icon" href="../assets/favicon.png" type="image/x-icon">
-    <!--<script src="scripts/" defer></script>-->
+    <script type="module" src="../scripts/main.mjs"></script>  
 </head>
-
 <body>
     <div id="title" class="centered ingame">
         <img src="../assets/reversiLogo.jpg" alt="reversi logo">
@@ -20,5 +20,118 @@
     <div id="exit" class="centered ingame">
         <button type="button" onclick="location.href='localSelect.html'">EXIT</button>
     </div>
+    <div id="game">
+        <div id="boardContainer"></div>
+        <div id="scoresContainer">
+            <div id="blackScore">
+                <div class="specialPiece blackPiece"></div>
+                <h3>2</h3>
+            </div>
+            <div id="whiteScore">
+                <div class="specialPiece whitePiece"></div>
+                <h3>2</h3>
+            </div>
+        </div>
+    </div>
+    <!--<script>
+        let size = 8;
+        for (var i = 0; i < size; i++) {
+            var row = document.createElement('div'); // create column
+            row.className = 'row';
+            row.id = 'row-' + i;
+            for (var j = 0; j < size; j++) {
+                var cell = document.createElement('div'); // create row
+                cell.className = 'cell';
+                cell.id = 'cell-'+ i +'-'+ j;
+                row.appendChild(cell); // append row in column
+            }
+            boardContainer.appendChild(row); // append column inside grid
+        }
+        document.body.appendChild(boardContainer);
+    </script>
+    <script>
+        function placePiece(x, y, current_player){
+            var cell = document.getElementById('cell-' + y + '-' + x);
+            var piece = document.createElement('div');
+            piece.className = 'piece';
+            if (current_player == 1){
+                piece.classList.add('blackPiece');
+            }
+            else {
+                piece.classList.add('whitePiece');
+            }
+            cell.appendChild(piece);
+        }
+        //placePiece(0, 2, 2);
+        function placePieces(boardArray){
+            //remove all pieces before replacing them
+            var existingPieces = document.getElementsByClassName('piece');
+            while(existingPieces[0]){
+                existingPieces[0].parentNode.removeChild(existingPieces[0]);
+            }
+            //place pieces down from array
+            for (var i = 0; i < boardArray.length; i++){
+                for (var j = 0; j < boardArray.length; j++){
+                    if (!boardArray[j][i] == 0){
+                        placePiece(i, j, boardArray[j][i]);
+                    }
+                }
+            }
+        }
+        let array = [[0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 1, 2, 0, 0, 0],
+                    [0, 0, 0, 2, 1, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0],
+                    [0, 0, 0, 0, 0, 0, 0, 0],];
+        placePieces(array);
+
+        function displayScores(blackScore, whiteScore){
+            var blackPoints = document.querySelector('#blackScore h3');
+            blackPoints.textContent = blackScore;
+            var whitePoints = document.querySelector('#whiteScore h3');
+            whitePoints.textContent = whiteScore;
+        }
+        displayScores(5,6);
+
+        //put these all into a constantly running function
+        function handleMove(boardArray, x, y, current_player){
+            array[x][y] = current_player;
+        }
+
+        current_player = 1;
+        //handle clicks to return element
+        window.onclick = e => {
+            if(e.target.classList.contains('piece')){
+                console.log("Already a piece there!");
+            }
+            console.log(e.target.id);
+            let x = e.target.id.charAt(5);
+            let y = e.target.id.charAt(7);
+            console.log(x, y);
+            handleMove(x, y, current_player);
+            placePieces(array);
+        } 
+
+        function gameEndMessage(winning_player){
+            var board = document.getElementById('boardContainer');
+            board.parentNode.removeChild(board);
+            var message = document.createElement('h2');
+            message.className = 'winMessage';
+            if(winning_player == 1){
+                message.textContent = "Black Wins!";
+            }
+            else if (winning_player == 2){
+                message.textContent = "White Wins!";
+            }
+            else {
+                message.textContent = "Tie!";
+            }
+            document.body.appendChild(message);
+        }
+        //gameEndMessage(1);
+    </script>-->
 </body>
 </html>

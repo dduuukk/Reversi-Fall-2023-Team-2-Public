@@ -1,4 +1,4 @@
-import { Board } from "./board.mjs";
+import { Board } from "./board.js";
 
 class GameLogic {
     constructor() {
@@ -12,21 +12,14 @@ class GameLogic {
         return game_board;
     }
 
-    static is_valid_move (game_board, x, y) {
+    static is_valid_move (game_board, x, y, current_player) {
         // Check if the current move is valid
         if (Board.get_piece(game_board, x, y) == 0) {
-            return true;
+            return true; //Board.checkAdjacent(game_board, x, y, current_player);
         }
         else {
             console.log("That space already has a piece on it!")
             return false;
-        }
-    }
-
-    static make_move (game_board, x, y, current_player) {
-        if (this.is_valid_move(game_board, x, y)){
-            Board.set_piece(game_board, x, y, current_player);
-            Board.flip_pieces(game_board, current_player, x, y);
         }
     }
 
@@ -37,13 +30,11 @@ class GameLogic {
         // count up number of tiles for each player
         for(let i = 0; i < size; i++){
             for(let j = 0; j < size; j++){
-                switch(game_board[i][j]) {
-                    case 1:
-                        blackScore++;
-                        break;
-                    case 2:
-                        whiteScore++;
-                        break;
+                if(game_board[i][j] === 1) {
+                    blackScore++;
+                }
+                else if (game_board[i][j] === 2) {
+                    whiteScore++;
                 }
             }
         }
@@ -52,7 +43,8 @@ class GameLogic {
 
     static check_winner(game_board) {
         let size = game_board.length;
-        let {blackScore, whiteScore} = get_scores();
+        let [blackScore, whiteScore] = GameLogic.get_scores(game_board);
+        console.log("blackScore: " + blackScore + " whiteScore: " + whiteScore);
         // checks if the total scores are filling the board and if so return winner
         if (blackScore + whiteScore >= Math.pow(size, 2)){
             if (blackScore > whiteScore){

@@ -1,19 +1,11 @@
 class LocalPlayer {
     constructor(starting_player) {
-        // Start with user selected first player
-        if (starting_player != 1 || starting_player != 2) {
-            starting_player = 1;
-        }
-        // Otherwise default to Player 1 as starting player
-        else {
-            starting_player = starting_player;
-        }
         this.player = starting_player;
     }
 
     static next_player (current_player) {
         // Change the current player when called
-        return 3 - current_player.player;
+        current_player.player = 3 - current_player.player;
     }
 
     static return_player (current_player) {

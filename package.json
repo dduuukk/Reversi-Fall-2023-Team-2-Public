@@ -1,0 +1,8 @@
+{
+    "name": "my-package",
+    "scripts": {
+      "start": "node ./main.js"
+    },
+    "type": "module",
+    "version": "0.0.0"
+  }
