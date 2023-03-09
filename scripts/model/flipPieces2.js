@@ -5,7 +5,7 @@ class flipPieces extends Board {
         super(board, size)
     }
 
-    flip_pieces (current_player, x, y) {
+    flip_pieces (x, y, player) {
         // Set constants to input values for easier reading
         var size = this.size;
         var originalX = x;
@@ -14,13 +14,19 @@ class flipPieces extends Board {
         // Check LEFT
         x = originalX;
         y = originalY;
-        // Check that x is not at left border
+
+        
+
+
+
+
+        //Check that x is not at left border
         if (x != 0) {
         console.log("LEFT");
-        while (Board.get_piece(current_board, x, y) > 0) {
+        while (Board.get_piece(x, y) > 0) {
                 x--;
                 // Check if current point is an endpoint
-                if(Board.check_endpoints(current_board, current_player, originalX, originalY, x, y) == -1) {
+                if(Board.check_endpoints(originalX, originalY, x, y) == -1) {
                     break;
                 }
 
@@ -37,10 +43,10 @@ class flipPieces extends Board {
         // Check that x is not at right border
         if (x != size -  1) {
             console.log("RIGHT");
-            while (Board.get_piece(current_board, x, y) > 0) {
+            while (Board.get_piece(x, y) > 0) {
                 x++;
                 // Check if current point is an endpoint
-                if(Board.check_endpoints(current_board, current_player, originalX, originalY, x, y) == -1) {
+                if(Board.check_endpoints(originalX, originalY, x, y) == -1) {
                     break;
                 }
 
@@ -58,10 +64,10 @@ class flipPieces extends Board {
         // Check that y is not at top border
         if (y != 0) {
             console.log("UP");
-            while (Board.get_piece(current_board, x, y) > 0) {
+            while (Board.get_piece(x, y) > 0) {
                 y--;
                 // Check if current point is an endpoint
-                if(Board.check_endpoints(current_board, current_player, originalX, originalY, x, y) == -1) {
+                if(Board.check_endpoints(originalX, originalY, x, y) == -1) {
                     break;
                 }
 
@@ -78,10 +84,10 @@ class flipPieces extends Board {
         // Check that y is not at bottom border
         if (y != size - 1) {
             console.log("DOWN");
-            while (Board.get_piece(current_board, x, y) > 0) {
+            while (Board.get_piece(x, y) > 0) {
                 y++;
                 // Check if current point is an endpoint
-                if(Board.check_endpoints(current_board, current_player, originalX, originalY, x, y) == -1) {
+                if(Board.check_endpoints(originalX, originalY, x, y) == -1) {
                     break;
                 }
 
@@ -98,12 +104,12 @@ class flipPieces extends Board {
         // Check that x is not at right border, y is not at top border
         if(x != size - 1 && y != 0) {
             console.log("RIGHT -> UP");
-            while (Board.get_piece(current_board, x, y) > 0) {
+            while (Board.get_piece(x, y) > 0) {
                 console.log("RIGHT -> UP");
                 x++;
                 y--;
                 // Check if current point is an endpoint
-                if(Board.check_endpoints(current_board, current_player, originalX, originalY, x, y) == -1) {
+                if(Board.check_endpoints(originalX, originalY, x, y) == -1) {
                     break;
                 }
 
@@ -120,11 +126,11 @@ class flipPieces extends Board {
         // Check that x is not at left border, y is not at top border
         if (x != 0 && y != 0) {
             console.log("LEFT -> UP");
-            while (Board.get_piece(current_board, x, y) > 0) {
+            while (Board.get_piece(x, y) > 0) {
                 x--;
                 y--;
                 // Check if current point is an endpoint
-                if(Board.check_endpoints(current_board, current_player, originalX, originalY, x, y) == -1) {
+                if(Board.check_endpoints(originalX, originalY, x, y) == -1) {
                     break;
                 }
 
@@ -141,12 +147,12 @@ class flipPieces extends Board {
         // Check that x is not at right border, y is not at bottom border
         if (x != size - 1 && y != size - 1) {
             console.log("RIGHT -> DOWN");
-            while (Board.get_piece(current_board, x, y) > 0) {
+            while (Board.get_piece(x, y) > 0) {
                 
                 x++;
                 y++;
                 // Check if current point is an endpoint
-                if(Board.check_endpoints(current_board, current_player, originalX, originalY, x, y) == -1) {
+                if(Board.check_endpoints(originalX, originalY, x, y) == -1) {
                     break;
                 }
 
@@ -163,11 +169,11 @@ class flipPieces extends Board {
         // Check that x is not at left border, y is not at bottom borders
         if (x != 0 && y != size - 1) {
             console.log("LEFT -> DOWN");
-            while (Board.get_piece(current_board, x, y) > 0) {
+            while (Board.get_piece(x, y) > 0) {
                 x--;
                 y++;
                 // Check if current point is an endpoint
-                if(Board.check_endpoints(current_board, current_player, originalX, originalY, x, y) == -1) {
+                if(Board.check_endpoints(originalX, originalY, x, y) == -1) {
                     break;
                 }
 
@@ -181,7 +187,7 @@ class flipPieces extends Board {
     }
 
     // Flip the pieces in directions identified by check endpoints
-    static flip (current_board, current_player, start_x, start_y, end_x, end_y) {
+    flip (start_x, start_y, end_x, end_y) {
         // If starting x > ending x, swith the two points
         if (start_x > end_x) {
             end_x = [start_x, start_x = end_x][0];
@@ -197,14 +203,14 @@ class flipPieces extends Board {
             
             // Fill the vertical line with currrent player
             for (var j = start_y; j <= end_y; j++){
-                Board.set_piece(current_board, start_x, j, current_player);
+                Board.set_piece(start_x, j);
             }
         }
         // If the points are horizontally related
         else if (start_y - end_y == 0) {
             // Fill the horizontal line with current player
             for (var i = start_x; i <= end_x; i++){
-                Board.set_piece(current_board, i, start_y, current_player);
+                Board.set_piece(i, start_y);
             }
         }
         // If the points are diagonally related & starting y < ending y
@@ -215,7 +221,7 @@ class flipPieces extends Board {
             while (i != end_x) {
                 i++;
                 j++;
-                Board.set_piece(current_board, i, j, current_player);
+                Board.set_piece(i, j);
             }
         }
         // If the points are diagonally related & starting y > ending y
@@ -226,8 +232,9 @@ class flipPieces extends Board {
             while (i != end_x) {
                 i++;
                 j--;
-                Board.set_piece(current_board, i, j, current_player);
+                Board.set_piece(i, j);
             }
         }
     }
+
 }
