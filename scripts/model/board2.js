@@ -126,9 +126,21 @@ class Board {
             end_x = vector_arr[0]
             end_y = vector_arr[1]
 
-            unit_x = (end_x - temp_x) / Math.abs(end_x - temp_x)
-            unit_y = (end_y - temp_y) / Math.abs(end_y - temp_y)
+            // Change this to make sure we are not dividing by 0!
+            if(Math.abs(end_x - temp_x) == 0) {
+                unit_x = 0
+            }
+            else {
+                unit_x = (end_x - temp_x) / Math.abs(end_x - temp_x)
+            }
 
+            if(Math.abs(end_y - temp_y)) {
+                unit_y = 0
+            }
+            else {
+                unit_y = (end_y - temp_y) / Math.abs(end_y - temp_y)
+            }
+            
             while(this.get_piece(temp_x, temp_y) != -1) {
                 temp_x = temp_x + unit_x
                 temp_y = temp_y + unit_y
@@ -143,7 +155,6 @@ class Board {
     }
 
     
-
     get_valid_moves(player){
         //iterate through cells
         var adjacentList = [];
