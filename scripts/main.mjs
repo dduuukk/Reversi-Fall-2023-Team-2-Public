@@ -7,8 +7,8 @@ if(window.location.href.indexOf('localGame.html') != -1){
     var chosenStart = localStorage.getItem('startingPlayer');
     var newGameController = new GameController(chosenSize, chosenStart);
     //show board and pieces
-    GameController.show_board(newGameController);
-    GameController.display_pieces(newGameController);
+    newGameController.show_board();
+    newGameController.display_pieces();
     //when a cell is clicked a piece is placed
     window.onclick = e => {
         if(e.target.classList.contains('piece')){
@@ -19,13 +19,13 @@ if(window.location.href.indexOf('localGame.html') != -1){
             let y = e.target.id.charAt(5);
             console.log(x, y);
             //update board array if move is valid
-            GameController.handle_move(newGameController, x, y);
+            newGameController.handle_move(x, y);
             //shows piece layout on board after flip
-            GameController.display_pieces(newGameController);
+            newGameController.display_pieces();
             //show new scores
-            GameController.displayScores(newGameController);
+            newGameController.displayScores();
             //checks if a player has won
-            let winner = GameController.checkWinner(newGameController);
+            let winner = newGameController.checkWinner();
             if(winner != 0){
                 if(winner == 1){
                     GameController.endGame(1);

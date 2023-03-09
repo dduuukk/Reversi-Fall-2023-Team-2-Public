@@ -12,39 +12,39 @@ export class GameController {
     }
 
     //returns if game is over
-    static check_win (currentGame) {
-        return Game.check_winner(currentGame.board);
+    check_win () {
+        return Game.check_winner(this.currentGame.board);
     }
 
     //calls the game view function to display pieces
-    static display_pieces (currentGameController) {  
-        let temp = Game.return_board_array(currentGameController.currentGame);
+    display_pieces () {  
+        let temp = Game.return_board_array(this.currentGame);
         GameView.placePieces(temp);
     }
 
     //calls the game view function to display board
-    static show_board (current_game) {
-        BoardView.makeBoard(current_game.board_size);
+    show_board () {
+        BoardView.makeBoard(this.board_size);
     }
 
     //calls the game function to handle new move
-    static handle_move (currentController, x, y) {
-        Game.make_move(currentController.currentGame, x, y);
+    handle_move (x, y) {
+        Game.make_move(this.currentGame, x, y);
         // Board.flip_pieces(current_game.board, current_game.player.player, x, y);
         // LocalPlayer.next_player(current_game.player);
     }
 
     //calls the game view function to display scores
-    static displayScores(currentController) {
+    displayScores() {
         var blackScore;
         var whiteScore;
-        [blackScore, whiteScore] = Game.get_scores(currentController.currentGame);
+        [blackScore, whiteScore] = Game.get_scores(this.currentGame);
         GameView.displayScores(blackScore, whiteScore);
     }
 
     //checks who the winner is
-    static checkWinner(currentController) {
-        return Game.get_winner(currentController.currentGame);
+    checkWinner() {
+        return Game.get_winner(this.currentGame);
     }
 
     //calls the game view function to display end game message

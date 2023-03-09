@@ -15,8 +15,8 @@ export class Game extends GameLogic {
     }
 
     // Return the board array for display purposes
-    static return_board_array (current_game) {
-        return Board.return_array(current_game.board);
+    return_board_array () {
+        return Board.return_array(this.board);
     }
 
     get return_board () {
