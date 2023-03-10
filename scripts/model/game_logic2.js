@@ -1,19 +1,16 @@
 import {Board} from "./board2.js"
+import {LocalPlayer} from "./player2.js"
 
 class GameLogic {
-    constructor() {
-        // Abstract class, nothing to construct
-    }   
-
-    // Build board for controller interaction
-    static build_board (size) {
-        let game_board = new Board(size);
-        return game_board;
+    constructor(size, starting_player) {
+        this.game_board = new Board(size);
+        this.size = this.game_board.return_size();
+        this.player = new LocalPlayer(starting_player);
     }
 
     // Return the current game score
-    static get_scores (game_board) {
-        let size = game_board.length;
+    get_scores () {
+        let size = this.game_board.length;
         let blackScore = 0;
         let whiteScore = 0;
         // Sum the number of tiles for each player
@@ -31,9 +28,9 @@ class GameLogic {
     }
 
     // Check if a player has won the game
-    static check_winner(game_board) {
-        let size = game_board.length;
-        let [blackScore, whiteScore] = GameLogic.get_scores(game_board);
+    check_winner() {
+        let size = this.game_board.length;
+        let [blackScore, whiteScore] = this.get_scores();
         console.log("blackScore: " + blackScore + " whiteScore: " + whiteScore);
         // Check if the total scores are filling the board and if so return winner
         if (blackScore + whiteScore >= Math.pow(size, 2)){
@@ -47,5 +44,4 @@ class GameLogic {
         return 0;   
     }
 }
-
 export {GameLogic};
