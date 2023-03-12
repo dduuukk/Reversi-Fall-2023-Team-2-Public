@@ -21,6 +21,7 @@ class GameController {
     }
 
     display_moves() {
+        console.log("\n\nNEW MOVE!!!!\n");
         console.log("Valid moves array:", this.current_game.get_valid_moves());
         this.game_view.place_moves(this.current_game.get_valid_moves());
     }

@@ -19,7 +19,7 @@ export class Game extends GameLogic {
     #is_valid_move(x, y, player) {
         // Check if the current move is does not have a piece on it
         if (this.game_board.get_piece(x, y) == 0) {
-            if((this.game_board.get_valid_moves(player)).length != 0) {
+            if((this.game_board.get_endpoints(x, y, player)).length != 0) {
                 return true;
             }
         }
@@ -35,7 +35,7 @@ export class Game extends GameLogic {
         if (this.#is_valid_move(x, y, this.player.player)) {
             // Set the selected piece to current player
             this.game_board.set_piece(x, y, this.player.player);
-            
+            this.game_board.flip_pieces(x, y, this.player.player);
             // Switch player
             this.player.next_player();
         }

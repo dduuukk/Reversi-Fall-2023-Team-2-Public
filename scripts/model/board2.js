@@ -88,12 +88,10 @@ class Board {
 
     set_piece(x, y, player) {
         this.board[y][x] = parseInt(player);
-        this.#flip_pieces(x, y, player);
     }
 
-    #get_endpoints(x, y, player) {
+    get_endpoints(x, y, player) {
         var endpoint_array = [];
-        console.log("x", x, "y:", y);
         for(var i = 0; i < this.directions.length; i++) {
             var temp_x = parseInt(x);
             var temp_y = parseInt(y);
@@ -106,57 +104,65 @@ class Board {
                 var temp_x = temp_x + vector_x;
                 var temp_y = temp_y + vector_y;
                 if(this.get_piece(temp_x, temp_y) == player) {
-                    if(Math.abs(temp_x - x) != 1 && Math.abs(temp_y - y) != 1)
+                    if(Math.abs(temp_x - x) != 1 && Math.abs(temp_y - y) != 1) {
                         endpoint_array.push([temp_x, temp_y]);
+                    }
+                    else {
+                        break;
+                    }
                 }
                 else if(this.get_piece(temp_x, temp_y) == 0) {
                     break;
                 }
             }
         }
-        console.log("endpoint array:", endpoint_array);
+        // console.log("endpoint array:", endpoint_array);
         return endpoint_array;
     }
 
-    #flip_pieces(x, y, player) {
-        var endpoints = this.#get_endpoints(x, y, player);
+    flip_pieces(x, y, player) {
+        var endpoints = this.get_endpoints(x, y, player);
         // console.log("endpoints:", endpoints);
         var int_x = parseInt(x);
         var int_y = parseInt(y);
+        console.log("int_x:", int_x, "int_y:", int_y);
         for(var i = 0; i < endpoints.length; i++) {
             var point = endpoints[i];
-            var temp_x = point[0];
-            var temp_y = point[1];
+            var end_x = point[0];
+            var end_y = point[1];
+            
+            console.log("end_x:", end_x, "end_y:", end_y);
 
             // Change this to make sure we are not dividing by 0!
-            if(Math.abs(temp_x - int_x) == 0) {
+            if(Math.abs(end_x - int_x) == 0) {
                 var unit_x = 0;
             }
             else {
-                var unit_x = (temp_x - int_x) / Math.abs(int_x - temp_x);
+                var unit_x = (end_x - int_x) / Math.abs(int_x - end_x);
             }
 
-            if(Math.abs(temp_y - int_y) == 0) {
+            if(Math.abs(end_y - int_y) == 0) {
                 var unit_y = 0;
             }
             else {
-                var unit_y = (temp_y - int_y) / Math.abs(int_y - temp_y);
+                var unit_y = (end_y - int_y) / Math.abs(int_y - end_y);
             }
 
             console.log("unit_x:", unit_x, "unit_y:", unit_y);
 
-            var end_x = int_x;
-            var end_y = int_y;
+            var temp_x = int_x;
+            var temp_y = int_y;
 
             while(this.get_piece(end_x, end_y) != -1) {
-                end_x = end_x + unit_x;
-                end_y = end_y + unit_y;
-                console.log("end_x:", end_x, "end_y:", end_y);
+                temp_x = temp_x + unit_x;
+                temp_y = temp_y + unit_y;
+                console.log("temp_x:", temp_x, "temp_y:", temp_y);
                 if(end_x == temp_x && end_y == temp_y) {
+                    console.log("Made it here!");
                     break;
                 }
                 else {
-                    this.set_piece(end_x, end_y, player);
+                    this.set_piece(temp_x, temp_y, player);
                 }
             }
         }
@@ -165,35 +171,36 @@ class Board {
     
     get_valid_moves(player){
         //iterate through cells
-        var adjacentList = [];
+        var adjacent_list = [];
         var moves = [];
-        if (player == 1){
-            var other = 2;
-        }
-        else {
-            var other = 1;
-        }
+        var other = 3 - player;
+        // if (player == 1){
+        //     var other = 2;
+        // }
+        // else {
+        //     var other = 1;
+        // }
         //check for all possible adjacent spaces
-        for(var i = 0; i < this.size; i++){
-            for(var j = 0; j < this.size; j++){
-                if(this.get_piece(j, i) == 0){
+        for(var col = 0; col < this.size; col++){
+            for(var row = 0; row < this.size; row++){
+                if(this.get_piece(col, row) == 0){
                     for(var w = 0; w < this.directions.length; w++) {
                         var vector = this.directions[w];
-                        var tempx = j + vector[0];
-                        var tempy = i + vector[1];
+                        var tempx = col + vector[0];
+                        var tempy = row + vector[1];
                         if (this.get_piece(tempx, tempy) == other){
-                            adjacentList.push([i, j]);
+                            adjacent_list.push([col, row]);
                         }
                     }
                 }
             }
         }
-        console.log("adjacent_list:", adjacentList);
+        adjacent_list = adjacent_list.map(JSON.stringify).filter((e,i,a) => i === a.indexOf(e)).map(JSON.parse)
+
         //check endpoints on all adjacent spots
-        for(var z = 0; z < adjacentList.length; z++){
-            var point = adjacentList[z];
-            
-            if((this.#get_endpoints(point[0], point[1], player)).length != 0){
+        for(var z = 0; z < adjacent_list.length; z++){
+            var point = adjacent_list[z];
+            if((this.get_endpoints(point[0], point[1], player)).length != 0){
                 moves.push(point);
             }
         }
