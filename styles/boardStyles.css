@@ -49,6 +49,21 @@
     background-color: white;
 }
 
+.movePiece {
+    background-color: none;
+    pointer-events: none;
+}
+
+.move {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    border: solid;
+    margin-left: 2px;
+    margin-top: 2px;
+    border-color: lightgray;
+}
+
 #scoresContainer {
     display: flex;
     text-align: center;
