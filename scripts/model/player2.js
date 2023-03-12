@@ -7,3 +7,4 @@ class LocalPlayer {
         this.player = 3 - this.player;
     }
 }
+export{LocalPlayer}

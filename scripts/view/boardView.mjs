@@ -1,15 +1,14 @@
 class BoardView {
     constructor() {
-
     }
 
     //makes the green cells in the dimensions provided
-    static makeBoard(size) {
-        for (var i = 0; i < size; ++i) {
+    make_board(size) {
+        for (var i = 2; i < size -2; ++i) {
             var row = document.createElement('div'); // create column
             row.className = 'row';
             row.id = 'row-' + i;
-            for (var j = 0; j < size; ++j) {
+            for (var j = 2; j < size -2; ++j) {
                 var cell = document.createElement('div'); // create row
                 cell.className = 'cell';
                 cell.id = 'cell-'+ i +'-'+ j;
