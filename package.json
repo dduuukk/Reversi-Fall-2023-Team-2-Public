@@ -1,8 +1,11 @@
 {
     "name": "my-package",
     "scripts": {
-      "start": "node ./main.js"
+        "start": "node ./main.js"
     },
     "type": "module",
-    "version": "0.0.0"
-  }
+    "version": "0.0.0",
+    "dependencies": {
+        "mysql2": "^3.2.0"
+    }
+}
