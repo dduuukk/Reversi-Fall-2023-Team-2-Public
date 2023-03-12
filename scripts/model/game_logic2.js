@@ -9,32 +9,30 @@ class GameLogic {
     }
 
     // Return the current game score
-    get_scores () {
-        let size = this.game_board.length;
-        let blackScore = 0;
-        let whiteScore = 0;
+    get_scores() {
+        let black_score = 0;
+        let white_score = 0;
         // Sum the number of tiles for each player
-        for(let i = 0; i < size; i++){
-            for(let j = 0; j < size; j++){
-                if(game_board[i][j] === 1) {
-                    blackScore++;
+        for(let i = 0; i < this.size; i++){
+            for(let j = 0; j < this.size; j++){
+                if(this.game_board.board[i][j] === 1) {
+                    black_score++;
                 }
-                else if (game_board[i][j] === 2) {
-                    whiteScore++;
+                else if (this.game_board.board[i][j] === 2) {
+                    white_score++;
                 }
             }
         }
-        return [blackScore, whiteScore];
+        return [black_score, white_score];
     }
 
     // Check if a player has won the game
     check_winner() {
-        let size = this.game_board.length;
-        let [blackScore, whiteScore] = this.get_scores();
-        console.log("blackScore: " + blackScore + " whiteScore: " + whiteScore);
+        var [black_score, white_score] = this.get_scores();
+        console.log("blackScore: " + black_score + " whiteScore: " + white_score);
         // Check if the total scores are filling the board and if so return winner
-        if (blackScore + whiteScore >= Math.pow(size, 2)){
-            if (blackScore > whiteScore){
+        if (black_score + white_score >= Math.pow(this.size, 2)){
+            if (black_score > white_score){
                 return 1;
             }
             else {

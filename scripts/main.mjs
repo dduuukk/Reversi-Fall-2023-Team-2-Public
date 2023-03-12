@@ -26,18 +26,9 @@ if(window.location.href.indexOf('localGame.html') != -1){
             //shows new valid moves
             newGameController.display_moves();
             //show new scores
-            // newGameController.displayScores();
-            // //checks if a player has won
-            // let winner = newGameController.checkWinner();
-            // if(winner != 0){
-            //     if(winner == 1){
-            //         GameController.endGame(1);
-            //     }
-            //     else {
-            //         GameController.endGame(2);
-            //     }
-                
-            // }
+            newGameController.display_scores();
+            //checks if a player has won
+            newGameController.check_win();
         } 
     } 
 }
