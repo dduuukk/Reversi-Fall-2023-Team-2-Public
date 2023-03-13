@@ -1,6 +1,5 @@
 import { GameLogic } from "./game_logic2.js";
-import { Board } from "./board2.js"
-
+import { Board } from "./board2.js";
 
 export class Game extends GameLogic {
     constructor(size, player) {
@@ -38,6 +37,21 @@ export class Game extends GameLogic {
             this.game_board.flip_pieces(x, y, this.player.player);
             // Switch player
             this.player.next_player();
+        }
+        else {
+            console.log("Invalid Move.")
+        }
+    }
+
+    // Takes click from view -> controller and inputs move into model for ai
+    make_ai_move(x, y) {
+        // Check if the selected move is valid
+        if (this.#is_valid_move(x, y, this.player.player)) {
+            // Set the selected piece to current player
+            this.game_board.set_piece(x, y, this.player.player);
+            this.game_board.flip_pieces(x, y, this.player.player);
+            // AI player goes
+            AI.make_ai_move();
         }
         else {
             console.log("Invalid Move.")

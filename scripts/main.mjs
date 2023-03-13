@@ -1,4 +1,5 @@
 import { GameController } from './controller/game_controller2.js';
+import { AI } from './model/ai.js';
 
 //running the local game if we are on game page
 if(window.location.href.indexOf('localGame.html') != -1){
@@ -33,15 +34,17 @@ if(window.location.href.indexOf('localGame.html') != -1){
     } 
 }
 
-//running the local game if we are on game page
+//running the ai game if we are on game page
 if(window.location.href.indexOf('aiGame.html') != -1){
     //get stored values from settings select page
     var chosenSize = localStorage.getItem('boardSize');
-    var chosenStart = localStorage.getItem('startingPlayer');
-    var newGameController = new GameController(chosenSize, chosenStart);
+    var chosenDiff = localStorage.getItem('boardDiff');
+    var newGameController = new GameController(chosenSize, 1);
+    var ai = new AI(chosenDiff, chosenSize, )
     //show board and pieces
     newGameController.show_board();
     newGameController.display_pieces();
+    newGameController.display_moves();
     //when a cell is clicked a piece is placed
     window.onclick = e => {
         if(e.target.classList.contains('piece')){
@@ -55,22 +58,17 @@ if(window.location.href.indexOf('aiGame.html') != -1){
             newGameController.handle_move(x, y);
             //shows piece layout on board after flip
             newGameController.display_pieces();
+            //shows new valid moves
+            newGameController.display_moves();
             //show new scores
-            newGameController.displayScores();
+            newGameController.display_scores();
             //checks if a player has won
-            let winner = newGameController.checkWinner();
-            if(winner != 0){
-                if(winner == 1){
-                    GameController.endGame(1);
-                }
-                else {
-                    GameController.endGame(2);
-                }
-                
-            }
+            newGameController.check_win();
         } 
     } 
 }
+
+
 
 //handle settings getting clicked
 if(window.location.href.indexOf('localSelect.html') != -1){

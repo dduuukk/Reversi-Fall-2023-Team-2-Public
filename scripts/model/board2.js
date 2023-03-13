@@ -4,7 +4,6 @@ class Board {
     // Construct board with starting pieces based on size
     constructor(size) {
         this.size = size;
-        console.log("Board size:", this.size);
 
         // Create starting board array
         this.board = this.#build_board();
@@ -125,13 +124,13 @@ class Board {
         // console.log("endpoints:", endpoints);
         var int_x = parseInt(x);
         var int_y = parseInt(y);
-        console.log("int_x:", int_x, "int_y:", int_y);
+        //console.log("int_x:", int_x, "int_y:", int_y);
         for(var i = 0; i < endpoints.length; i++) {
             var point = endpoints[i];
             var end_x = point[0];
             var end_y = point[1];
             
-            console.log("end_x:", end_x, "end_y:", end_y);
+            //console.log("end_x:", end_x, "end_y:", end_y);
 
             // Change this to make sure we are not dividing by 0!
             if(Math.abs(end_x - int_x) == 0) {
@@ -148,7 +147,7 @@ class Board {
                 var unit_y = (end_y - int_y) / Math.abs(int_y - end_y);
             }
 
-            console.log("unit_x:", unit_x, "unit_y:", unit_y);
+            //console.log("unit_x:", unit_x, "unit_y:", unit_y);
 
             var temp_x = int_x;
             var temp_y = int_y;
@@ -156,9 +155,9 @@ class Board {
             while(this.get_piece(end_x, end_y) != -1) {
                 temp_x = temp_x + unit_x;
                 temp_y = temp_y + unit_y;
-                console.log("temp_x:", temp_x, "temp_y:", temp_y);
+                //console.log("temp_x:", temp_x, "temp_y:", temp_y);
                 if(end_x == temp_x && end_y == temp_y) {
-                    console.log("Made it here!");
+                    //console.log("Made it here!");
                     break;
                 }
                 else {
@@ -174,12 +173,6 @@ class Board {
         var adjacent_list = [];
         var moves = [];
         var other = 3 - player;
-        // if (player == 1){
-        //     var other = 2;
-        // }
-        // else {
-        //     var other = 1;
-        // }
         //check for all possible adjacent spaces
         for(var col = 0; col < this.size; col++){
             for(var row = 0; row < this.size; row++){
@@ -204,7 +197,6 @@ class Board {
                 moves.push(point);
             }
         }
-        console.log("moves: " , moves);
         return moves;
     }
 

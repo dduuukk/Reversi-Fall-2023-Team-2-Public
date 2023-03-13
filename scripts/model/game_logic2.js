@@ -28,10 +28,9 @@ class GameLogic {
 
     // Check if a player has won the game
     check_winner() {
-        var [black_score, white_score] = this.get_scores();
-        console.log("blackScore: " + black_score + " whiteScore: " + white_score);
-        // Check if the total scores are filling the board and if so return winner
-        if (black_score + white_score >= Math.pow(this.size, 2)){
+        var moves = this.game_board.get_valid_moves(this.player.player);
+        if(moves.length < 1){
+            var [black_score, white_score] = this.get_scores();
             if (black_score > white_score){
                 return 1;
             }
