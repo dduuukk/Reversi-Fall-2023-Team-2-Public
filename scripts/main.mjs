@@ -19,7 +19,6 @@ if(window.location.href.indexOf('localGame.html') != -1){
         else{
             var x = e.target.id.charAt(7);
             var y = e.target.id.charAt(5);
-            console.log(x, y);
             //update board array if move is valid
             newGameController.handle_move(x, y);
             //shows piece layout on board after flip
@@ -40,7 +39,7 @@ if(window.location.href.indexOf('aiGame.html') != -1){
     var chosenSize = localStorage.getItem('boardSize');
     var chosenDiff = localStorage.getItem('boardDiff');
     var newGameController = new GameController(chosenSize, 1);
-    var ai = new AI(chosenDiff, chosenSize, )
+    var ai = new AI(chosenDiff, chosenSize, 1);
     //show board and pieces
     newGameController.show_board();
     newGameController.display_pieces();
@@ -53,9 +52,8 @@ if(window.location.href.indexOf('aiGame.html') != -1){
         else{
             var x = e.target.id.charAt(7);
             var y = e.target.id.charAt(5);
-            console.log(x, y);
             //update board array if move is valid
-            newGameController.handle_move(x, y);
+            ai.handle_ai_move(x, y);
             //shows piece layout on board after flip
             newGameController.display_pieces();
             //shows new valid moves

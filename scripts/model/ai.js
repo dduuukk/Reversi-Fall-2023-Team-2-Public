@@ -16,6 +16,7 @@ class AI extends Game {
         //initialize default best move
         this.best_move = [2, 2];
         this.moves = [];
+        this.temp_board = new Board(this.size);
     }
 
     //gets possible moves that can be chosen from
@@ -24,10 +25,10 @@ class AI extends Game {
     }
 
     //makes a move in our passed-in temporary board
-    make_temp_move(x, y, board, turn) {
-        board.set_piece(x, y, turn);
-        board.flip_pieces(x, y, turn);
-        // Switch player
+    make_temp_move(x, y, turn) {
+        //figure out how to use these functions on  
+        this.temp_board.set_piece(x, y, turn);
+        this.temp_board.flip_pieces(x, y, turn);
     }
 
     //find our min or max value through recursion
@@ -41,17 +42,19 @@ class AI extends Game {
         }
         //check all valid moves
         for(var i = 0; i < this.moves.length; i++){
-            var temp_board = board;
             var point = this.moves[i];
             var x = point[0];
             var y = point[1];
+            //get a new temp board
+            this.temp_board.board = board;
+            console.log('temp board', this.temp_board.board);
             if(max){
-                this.make_temp_move(x, y, temp_board, this.turn);
+                this.make_temp_move(x, y, this.turn);
             }
             else{
-                this.make_temp_move(x, y, temp_board, this.player)
+                this.make_temp_move(x, y, this.player)
             }
-            var val = this.minimax(temp_board, !max, depth - 1);
+            var val = this.minimax(this.temp_board.board, !max, depth - 1);
             if(max){
                 if(val > v){
                     this.best_move[0] = x;
@@ -74,16 +77,15 @@ class AI extends Game {
     minimax(board, max, depth) {
         var v;
         //return state's utility if at terminal state
-        if (depth < 1 || Game.get_ai_valid_moves == []) {
+        if (depth < 1 || this.get_ai_valid_moves(this.tem) == []) {
             return this.get_state(board);
         }
         if (max){
-            v = this.max_value(board, max, depth);
+            v = this.min_or_max_value(board, max, depth);
         }
         else {
-            v = this.min_value(board, max, depth);
+            v = this.min_or_max_value(board, max, depth);
         }
-
         return v;
     }
 
@@ -109,9 +111,7 @@ class AI extends Game {
 
     //calculate total board state position score
     get_state(board){
-        var whiteScore = 2;
-        var blackScore = 2;
-        [blackScore, whiteScore] = Game.get_scores(board);
+        var [blackScore, whiteScore] = this.get_scores(board);
         blackScore += this.#corner_bonus(board, 1);
         whiteScore += this.#corner_bonus(board, 2);
         return whiteScore - blackScore;
@@ -119,14 +119,33 @@ class AI extends Game {
 
     //high-level make ai move function
     make_ai_move() {
-        //check for best move then place piece there
+        //find all possible moves
         this.get_ai_valid_moves();
-        minimax(this.game_board.board, true, this.difficulty);
+        console.log('moves: ', this.moves);
+        //gets us our saved best move
+        this.minimax(this.game_board.board, false, this.difficulty);
+
         var bestx = this.best_move[0];
         var besty = this.best_move[1];
         //evaluate placed move
+        console.log('best x, y: ', bestx, besty);
         this.game_board.set_piece(bestx, besty, this.turn);
         this.game_board.flip_pieces(bestx, besty, this.turn);
+    }
+
+    // Takes click from view -> controller and inputs move into model for ai
+    handle_ai_move(x, y) {
+        // Check if the selected move is valid
+        if (this.is_valid_move(x, y, this.player.player)) {
+            // Set the selected piece to current player
+            this.game_board.set_piece(x, y, this.player.player);
+            this.game_board.flip_pieces(x, y, this.player.player);
+            // AI player goes
+            //this.make_ai_move();
+        }
+        else {
+            console.log("Invalid Move.")
+        }
     }
 }
 
