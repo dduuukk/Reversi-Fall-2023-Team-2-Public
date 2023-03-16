@@ -153,7 +153,6 @@ if(window.location.href.indexOf('aiSelect.html') != -1){
                     button.classList.toggle('selected');
                     if (button.textContent == "EASY"){
                         localStorage.setItem('boardDiff', 1);
-                        console.log('here!');
                     }
                     else if (button.textContent == "MEDIUM"){
                         localStorage.setItem('boardDiff', 6);

@@ -20,6 +20,7 @@ class AI {
 
     //gets possible moves that can be chosen from
     get_ai_valid_moves(board) {
+        console.log("this cant be wrong", board.board);
         this.moves = board.get_valid_moves(this.turn);
     }
 
@@ -84,7 +85,7 @@ class AI {
 
     //minimax alogorithm to find best point
     minimax(board, max, depth) {
-        console.log(max);
+        //console.log(max);
         console.log(depth);
         var v;
         //return state's utility if at terminal state
@@ -128,23 +129,6 @@ class AI {
         return whiteScore - blackScore;
     }
 
-    //high-level make ai move function
-    make_ai_move(board) {
-        //find all possible moves
-        this.get_ai_valid_moves(board);
-        console.log('moves: ', this.moves);
-        //gets us our saved best move
-        this.minimax(board, true, this.difficulty);
-
-        var bestx = this.best_move[0];
-        var besty = this.best_move[1];
-        //evaluate placed move
-        console.log('best x, y: ', bestx, besty);
-        board.set_piece(bestx, besty, this.turn);
-        board.flip_pieces(bestx, besty, this.turn);
-        return board;
-    }
-
     get_ai_scores(board) {
         console.log(board.board);
         var black_score = 0;
@@ -161,6 +145,24 @@ class AI {
             }
         }
         return [black_score, white_score];
+    }
+
+    //high-level make ai move function
+    make_ai_move(board) {
+        //find all possible moves
+        this.get_ai_valid_moves(board);
+        console.log('board after first move', board.board);
+        console.log('moves: ', this.moves);
+        //gets us our saved best move
+        this.minimax(board, true, this.difficulty);
+
+        var bestx = this.best_move[0];
+        var besty = this.best_move[1];
+        //evaluate placed move
+        console.log('best x, y: ', bestx, besty);
+        // board.set_piece(bestx, besty, this.turn);
+        // board.flip_pieces(bestx, besty, this.turn);
+        return [bestx, besty];
     }
 }
 

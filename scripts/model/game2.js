@@ -6,6 +6,12 @@ export class Game extends GameLogic {
         super(size, player);
         var chosenDiff = localStorage.getItem('boardDiff');
         this.ai = new AI(chosenDiff, size, player);
+        if (player == 1){
+            this.turn = 2;
+        }
+        else {
+            this.turn = 1;
+        }
     }
 
     return_board() {
@@ -51,7 +57,9 @@ export class Game extends GameLogic {
             this.game_board.set_piece(x, y, this.player.player);
             this.game_board.flip_pieces(x, y, this.player.player);
             // AI player goes
-            this.game_board = this.ai.make_ai_move(this.game_board);
+            var bestMove = this.ai.make_ai_move(this.game_board);
+            this.game_board.set_piece(bestMove[0], bestMove[1], this.turn);
+            this.game_board.flip_pieces(bestMove[0], bestMove[1], this.turn);
         }
         else {
             console.log("Invalid Move.")

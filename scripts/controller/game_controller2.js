@@ -9,8 +9,7 @@ class GameController {
     }
 
     show_board() {
-        this.current_game.return_board();
-        console.log(this.current_game.game_board.board);
+        //this.current_game.return_board();
         this.game_view.show_board();
     }
 
