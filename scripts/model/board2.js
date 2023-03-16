@@ -87,7 +87,6 @@ class Board {
 
     set_piece(x, y, player) {
         this.board[y][x] = parseInt(player);
-        console.log('board from ', x, ' and ', y, this.board);
     }
 
     get_endpoints(x, y, player) {

@@ -2,12 +2,10 @@ import { Game } from "./game2.js";
 import { Board } from "./board2.js"
 
 
-class AI extends Game {
+class AI {
     constructor(difficulty, size, player) {
-        super(size, player);
         this.difficulty = difficulty;
-        this.size = size;
-        if (this.player == 1){
+        if (player == 1){
             this.turn = 2;
         }
         else {
@@ -16,19 +14,28 @@ class AI extends Game {
         //initialize default best move
         this.best_move = [2, 2];
         this.moves = [];
-        this.temp_board = new Board(this.size);
+        this.temp_board = new Board(size);
+        this.size = size + 4;
     }
 
     //gets possible moves that can be chosen from
-    get_ai_valid_moves() {
-        this.moves = this.game_board.get_valid_moves(this.turn);
+    get_ai_valid_moves(board) {
+        this.moves = board.get_valid_moves(this.turn);
+    }
+
+    return_ai_valid_moves(board) {
+        var temp_moves = board.get_valid_moves(this.turn);
+        return temp_moves;
     }
 
     //makes a move in our passed-in temporary board
     make_temp_move(x, y, turn) {
-        //figure out how to use these functions on  
+        //figure out how to use these functions on 
+        console.log("x,y", x, y);
+        console.log("funky board ", this.temp_board.board);
         this.temp_board.set_piece(x, y, turn);
         this.temp_board.flip_pieces(x, y, turn);
+        console.log("new funky board ", this.temp_board.board);
     }
 
     //find our min or max value through recursion
@@ -43,18 +50,20 @@ class AI extends Game {
         //check all valid moves
         for(var i = 0; i < this.moves.length; i++){
             var point = this.moves[i];
+            console.log("Moves inside of min/max", this.moves);
             var x = point[0];
             var y = point[1];
             //get a new temp board
-            this.temp_board.board = board;
-            console.log('temp board', this.temp_board.board);
+            console.log("MOVE x,y", x, y);
+            console.log("first  board", board.board);
+            this.temp_board.board = board.board;
             if(max){
                 this.make_temp_move(x, y, this.turn);
             }
             else{
                 this.make_temp_move(x, y, this.player)
             }
-            var val = this.minimax(this.temp_board.board, !max, depth - 1);
+            var val = this.minimax(this.temp_board, !max, depth - 1);
             if(max){
                 if(val > v){
                     this.best_move[0] = x;
@@ -75,10 +84,12 @@ class AI extends Game {
 
     //minimax alogorithm to find best point
     minimax(board, max, depth) {
+        console.log(max);
+        console.log(depth);
         var v;
         //return state's utility if at terminal state
-        if (depth < 1 || this.get_ai_valid_moves(this.tem) == []) {
-            return this.get_state(board);
+        if (depth < 1 || this.return_ai_valid_moves(this.temp_board) == []) {
+            return this.get_state(this.temp_board);
         }
         if (max){
             v = this.min_or_max_value(board, max, depth);
@@ -111,41 +122,45 @@ class AI extends Game {
 
     //calculate total board state position score
     get_state(board){
-        var [blackScore, whiteScore] = this.get_scores(board);
+        var [blackScore, whiteScore] = this.get_ai_scores(board);
         blackScore += this.#corner_bonus(board, 1);
         whiteScore += this.#corner_bonus(board, 2);
         return whiteScore - blackScore;
     }
 
     //high-level make ai move function
-    make_ai_move() {
+    make_ai_move(board) {
         //find all possible moves
-        this.get_ai_valid_moves();
+        this.get_ai_valid_moves(board);
         console.log('moves: ', this.moves);
         //gets us our saved best move
-        this.minimax(this.game_board.board, false, this.difficulty);
+        this.minimax(board, true, this.difficulty);
 
         var bestx = this.best_move[0];
         var besty = this.best_move[1];
         //evaluate placed move
         console.log('best x, y: ', bestx, besty);
-        this.game_board.set_piece(bestx, besty, this.turn);
-        this.game_board.flip_pieces(bestx, besty, this.turn);
+        board.set_piece(bestx, besty, this.turn);
+        board.flip_pieces(bestx, besty, this.turn);
+        return board;
     }
 
-    // Takes click from view -> controller and inputs move into model for ai
-    handle_ai_move(x, y) {
-        // Check if the selected move is valid
-        if (this.is_valid_move(x, y, this.player.player)) {
-            // Set the selected piece to current player
-            this.game_board.set_piece(x, y, this.player.player);
-            this.game_board.flip_pieces(x, y, this.player.player);
-            // AI player goes
-            //this.make_ai_move();
+    get_ai_scores(board) {
+        console.log(board.board);
+        var black_score = 0;
+        var white_score = 0;
+        // Sum the number of tiles for each player
+        for(var i = 0; i < this.size; i++){
+            for(var j = 0; j < this.size; j++){
+                if(board.get_piece(j,i) === 1) {
+                    black_score++;
+                }
+                else if (board.get_piece(j,i) === 2) {
+                    white_score++;
+                }
+            }
         }
-        else {
-            console.log("Invalid Move.")
-        }
+        return [black_score, white_score];
     }
 }
 

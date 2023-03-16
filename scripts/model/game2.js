@@ -1,9 +1,11 @@
 import { GameLogic } from "./game_logic2.js";
-import { Board } from "./board2.js";
+import { AI } from "./ai.js";
 
 export class Game extends GameLogic {
     constructor(size, player) {
         super(size, player);
+        var chosenDiff = localStorage.getItem('boardDiff');
+        this.ai = new AI(chosenDiff, size, player);
     }
 
     return_board() {
@@ -37,6 +39,19 @@ export class Game extends GameLogic {
             this.game_board.flip_pieces(x, y, this.player.player);
             // Switch player
             this.player.next_player();
+        }
+        else {
+            console.log("Invalid Move.")
+        }
+    }
+
+    make_ai_move(x,y) {
+        if (this.is_valid_move(x, y, this.player.player)) {
+            // Set the selected piece to current player
+            this.game_board.set_piece(x, y, this.player.player);
+            this.game_board.flip_pieces(x, y, this.player.player);
+            // AI player goes
+            this.game_board = this.ai.make_ai_move(this.game_board);
         }
         else {
             console.log("Invalid Move.")

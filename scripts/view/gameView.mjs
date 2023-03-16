@@ -27,6 +27,7 @@ class GameView {
     //places all pieces in the array
     place_pieces(boardArray){
         //remove all pieces before replacing them
+        console.log('piece board: ', boardArray);
         var existingPieces = document.getElementsByClassName('piece');
         while(existingPieces[0]){
             existingPieces[0].parentNode.removeChild(existingPieces[0]);
