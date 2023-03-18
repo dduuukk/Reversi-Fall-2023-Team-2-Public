@@ -20,7 +20,6 @@ class AI {
 
     //gets possible moves that can be chosen from
     get_ai_valid_moves(board) {
-        console.log("this cant be wrong", board.board);
         this.moves = board.get_valid_moves(this.turn);
     }
 

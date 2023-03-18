@@ -39,7 +39,8 @@ class GameController {
     }
 
     handle_ai_move(x, y){
-        this.current_game.make_ai_move(x,y);
+        this.current_game.make_player_move(x,y);
+        this.current_game.make_ai_move();
     }
 
     end_game(winning_player) {

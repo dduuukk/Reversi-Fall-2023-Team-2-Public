@@ -51,18 +51,23 @@ export class Game extends GameLogic {
         }
     }
 
-    make_ai_move(x,y) {
+    make_player_move(x,y) {
+        // Check if the selected move is valid
         if (this.is_valid_move(x, y, this.player.player)) {
             // Set the selected piece to current player
             this.game_board.set_piece(x, y, this.player.player);
             this.game_board.flip_pieces(x, y, this.player.player);
-            // AI player goes
-            var bestMove = this.ai.make_ai_move(this.game_board);
-            this.game_board.set_piece(bestMove[0], bestMove[1], this.turn);
-            this.game_board.flip_pieces(bestMove[0], bestMove[1], this.turn);
         }
         else {
             console.log("Invalid Move.")
         }
+    }
+
+    make_ai_move() {
+        // AI player goes
+        console.log(this.game_board.board);
+        var bestMove = this.ai.make_ai_move(this.game_board);
+        this.game_board.set_piece(bestMove[0], bestMove[1], this.turn);
+        this.game_board.flip_pieces(bestMove[0], bestMove[1], this.turn);
     }
 }
