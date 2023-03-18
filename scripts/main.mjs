@@ -72,6 +72,53 @@ if(window.location.href.indexOf('aiGame.html') != -1){
     } 
 }
 
+//Handle Login
+if(window.location.href.indexOf('index.html') != -1){
+    //if the buttons are clicked then save the settings
+    localStorage.setItem('Name', 'Guest');
+    var loginButton = Document.getElementById('loginButton');
+    var usernameBox = Document.getElementById('usernameBox');
+    var passwordBox = Document.getElementById('passwordBox');
+    loginButton.addEventListener('click', e => {
+            var button = e.currentTarget;
+            var username = usernameBox.textContent;
+            var password = passwordBox.textContent;
+
+            /* Reference for this type of communication
+            https://www.geeksforgeeks.org/how-to-connect-sql-server-database-from-javascript-in-the-browser/
+            */
+    });
+
+    /*if(valid_response){
+        localStorage.setItem('Name', Document.getElementById('usernameBox'));
+        window.location.href = './dist/gamemode.html';
+    }
+    */
+}
+
+if(window.location.href.indexOf('gamemode.html') != -1){
+    var welcomeMessage = Document.getElementById('welcomeMessage');
+    var username = localStorage.getItem('Name');
+    welcomeMessage.textContent = 'Welcome ' + username + '!';
+}
+
+if(window.location.href.indexOf('registerNew.html') != -1){
+    var newAccountButton = Document.getElementById('newAccountBtn');
+    var usernameBox = Document.getElementById('usernameBox');
+    var passwordBox = Document.getElementById('passwordBox');
+    newAccountButton.addEventListener('click', e => {
+        //var button = e.currentTarget;
+        //send json response to database and pass in
+        //usernameBox.textContent
+        //passwordBox.textContent
+
+        /* Reference for this type of communication
+        https://www.geeksforgeeks.org/how-to-connect-sql-server-database-from-javascript-in-the-browser/
+        */
+    });
+}
+
+
 //handle settings getting clicked
 if(window.location.href.indexOf('localSelect.html') != -1){
     //sets default values for settings

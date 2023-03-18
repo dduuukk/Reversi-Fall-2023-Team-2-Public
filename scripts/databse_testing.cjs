@@ -4,23 +4,26 @@ var db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "password",
-  database: "luketest"
+  database: "reversi"
 });
 
 db.connect((err) => {
   if(err) {
     throw err;
   }
-  console.log('MySQL Connected!')
+  console.log('MySQL Connected!');
 });
 
-var sql = "INSERT INTO users (id, first_name, last_name) VALUES ('00001', 'Chris', 'Bender')";
-db.query(sql, (err, res) =>{
-  return console.log(res)
-});
 
-db.query(`SELECT * FROM test_db.users`, (err, res) =>{
-  return console.log(res)
+
+// var sql = "INSERT INTO player (idplayer, username, password, elo, chipcolor, num_games_won, num_games_lost) VALUES (00001, 'testplayer', 'password', 500, 'black', 0, 0)";
+// db.query(sql, (err, res) =>{
+//   console.log("queried");
+//   return console.log(res);
+// });
+
+db.query(`SELECT * FROM reversi.player`, (err, res) =>{
+  return console.log(res);
 });
 
 
