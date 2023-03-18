@@ -5,17 +5,13 @@ import { Board } from "./board2.js"
 class AI {
     constructor(difficulty, size, player) {
         this.difficulty = difficulty;
-        if (player == 1){
-            this.turn = 2;
-        }
-        else {
-            this.turn = 1;
-        }
+        this.turn = 2;
         //initialize default best move
         this.best_move = [2, 2];
         this.moves = [];
-        this.temp_board = new Board(size);
-        this.size = size + 4;
+        this.original_board = new Board(size - 4);
+        this.temp_board = new Board(size - 4);
+        this.size = size;
     }
 
     //gets possible moves that can be chosen from
@@ -41,27 +37,29 @@ class AI {
     //find our min or max value through recursion
     min_or_max_value(board, max, depth) {
         //Set v max or min value
+        
+        console.log("avliable moves:", this.moves);
         if(max){
             var v = Number.NEGATIVE_INFINITY;
         }
         else {
-            var v = Number.INFINITY;
+            var v = Number.POSITIVE_INFINITY
         }
         //check all valid moves
         for(var i = 0; i < this.moves.length; i++){
+            this.temp_board = this.original_board;
             var point = this.moves[i];
             console.log("Moves inside of min/max", this.moves);
             var x = point[0];
             var y = point[1];
             //get a new temp board
             console.log("MOVE x,y", x, y);
-            console.log("first  board", board.board);
-            this.temp_board.board = board.board;
+            console.log("first  board", this.temp_board.board);
             if(max){
                 this.make_temp_move(x, y, this.turn);
             }
             else{
-                this.make_temp_move(x, y, this.player)
+                this.make_temp_move(x, y, 3 - this.turn)
             }
             var val = this.minimax(this.temp_board, !max, depth - 1);
             if(max){
@@ -105,16 +103,16 @@ class AI {
         //set default bonus value for having a corner
         var bonus_value = 2;
         var bonus_total = 0;
-        if(board[2][2] == player){
+        if(board.get_piece(2, 2) == player){
             bonus_total += bonus_value;
         }
-        if(board[this.size-3][2] == player){
+        if(board.get_piece(this.size-3, 2) == player){
             bonus_total += bonus_value;
         }
-        if(board[2][this.size-3] == player){
+        if(board.get_piece(2, this.size-3) == player){
             bonus_total += bonus_value;
         }
-        if(board[this.size-3][this.size-3] == player){
+        if(board.get_piece(this.size-3, this.size-3) == player){
             bonus_total += bonus_value;
         }
         return bonus_total;
@@ -125,6 +123,7 @@ class AI {
         var [blackScore, whiteScore] = this.get_ai_scores(board);
         blackScore += this.#corner_bonus(board, 1);
         whiteScore += this.#corner_bonus(board, 2);
+        console.log("whitescore, blackscore, whitescore - blackscore:", whiteScore, blackScore, whiteScore - blackScore);
         return whiteScore - blackScore;
     }
 
@@ -133,8 +132,10 @@ class AI {
         var black_score = 0;
         var white_score = 0;
         // Sum the number of tiles for each player
-        for(var i = 0; i < this.size; i++){
-            for(var j = 0; j < this.size; j++){
+        for(var i = 2; i < this.size - 2; i++){
+            for(var j = 2; j < this.size - 2; j++){
+                console.log("this.size:", this.size);
+                console.log("i, j:", i, j);
                 if(board.get_piece(j,i) === 1) {
                     black_score++;
                 }
@@ -149,9 +150,13 @@ class AI {
     //high-level make ai move function
     make_ai_move(board) {
         //find all possible moves
-        this.get_ai_valid_moves(board);
-        console.log('board after first move', board.board);
-        console.log('moves: ', this.moves);
+        var original_moves = this.return_ai_valid_moves(board);
+        
+        this.original_board = board;
+        this.temp_board = board;
+        console.log(this.temp_board);
+        this.get_ai_valid_moves(this.temp_board);
+        console.log("original moves", this.moves);
         //gets us our saved best move
         this.minimax(board, true, this.difficulty);
 

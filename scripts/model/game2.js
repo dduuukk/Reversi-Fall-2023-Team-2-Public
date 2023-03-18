@@ -5,13 +5,7 @@ export class Game extends GameLogic {
     constructor(size, player) {
         super(size, player);
         var chosenDiff = localStorage.getItem('boardDiff');
-        this.ai = new AI(chosenDiff, size, player);
-        if (player == 1){
-            this.turn = 2;
-        }
-        else {
-            this.turn = 1;
-        }
+        this.ai = new AI(chosenDiff, this.size, this.player.player);
     }
 
     return_board() {
@@ -43,6 +37,7 @@ export class Game extends GameLogic {
             // Set the selected piece to current player
             this.game_board.set_piece(x, y, this.player.player);
             this.game_board.flip_pieces(x, y, this.player.player);
+            console.log("game_board:", this.game_board.board);
             // Switch player
             this.player.next_player();
         }
@@ -65,9 +60,9 @@ export class Game extends GameLogic {
 
     make_ai_move() {
         // AI player goes
-        console.log(this.game_board.board);
         var bestMove = this.ai.make_ai_move(this.game_board);
-        this.game_board.set_piece(bestMove[0], bestMove[1], this.turn);
-        this.game_board.flip_pieces(bestMove[0], bestMove[1], this.turn);
+
+        this.game_board.set_piece(bestMove[0], bestMove[1], 2);
+        this.game_board.flip_pieces(bestMove[0], bestMove[1], 2);
     }
 }

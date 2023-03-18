@@ -123,7 +123,7 @@ if(window.location.href.indexOf('localSelect.html') != -1){
 if(window.location.href.indexOf('aiSelect.html') != -1){
     //sets default values for settings
     localStorage.setItem('boardSize', 8);
-    localStorage.setItem('boardDiff', 3);
+    localStorage.setItem('boardDiff', 1);
     var sizeButtons = document.querySelectorAll('button.sizeBtn');
     var diffButtons = document.querySelectorAll('button.diffBtn');
     //if the buttons are clicked then save the settings
