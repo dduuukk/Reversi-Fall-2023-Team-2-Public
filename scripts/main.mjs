@@ -27,9 +27,9 @@ if(window.location.href.indexOf('aiGame.html') != -1){
 if(window.location.href.indexOf('index.html') != -1){
     //if the buttons are clicked then save the settings
     localStorage.setItem('Name', 'Guest');
-    var loginButton = Document.getElementById('loginButton');
-    var usernameBox = Document.getElementById('usernameBox');
-    var passwordBox = Document.getElementById('passwordBox');
+    var loginButton = document.getElementById('loginButton');
+    var usernameBox = document.getElementById('usernameBox');
+    var passwordBox = document.getElementById('passwordBox');
     loginButton.addEventListener('click', e => {
             //var button = e.currentTarget;
             //send json response to database and pass in
@@ -49,15 +49,42 @@ if(window.location.href.indexOf('index.html') != -1){
 }
 
 if(window.location.href.indexOf('gamemode.html') != -1){
-    var welcomeMessage = Document.getElementById('welcomeMessage');
+    var welcomeMessage = document.getElementById('welcomeMessage');
     var username = localStorage.getItem('Name');
     welcomeMessage.textContent = 'Welcome ' + username + '!';
+    var existingGame = true;
+    //function call to deteremine if existing game
+    console.log(existingGame);
+    if(existingGame){
+        var modal = document.getElementById("gameModal");
+        var resumeBtn = document.getElementById("resumeGame");
+        var removeBtn = document.getElementById("removeGame");
+        modal.style.display = "block";
+    }
+    resumeBtn.onclick = function() {
+        //start old game
+        modal.style.visibility = "hidden";
+        //take board size (and maybe ai difficulty) from database and store locally
+        //get if ai or local or online game
+        var gamemode = "local";
+        if(gamemode == "local"){
+            window.location.href = "../dist/localGame.html"
+        }
+        else if(gamemode == "ai"){
+            window.location.href = "../dist/aiGame.html"
+        }
+
+    }
+    removeBtn.onclick = function() {
+        modal.style.visibility = "hidden";
+        //drop board from database
+    }
 }
 
 if(window.location.href.indexOf('registerNew.html') != -1){
-    var newAccountButton = Document.getElementById('newAccountBtn');
-    var usernameBox = Document.getElementById('usernameBox');
-    var passwordBox = Document.getElementById('passwordBox');
+    var newAccountButton = document.getElementById('newAccountBtn');
+    var usernameBox = document.getElementById('usernameBox');
+    var passwordBox = document.getElementById('passwordBox');
     newAccountButton.addEventListener('click', e => {
         //var button = e.currentTarget;
         //send json response to database and pass in

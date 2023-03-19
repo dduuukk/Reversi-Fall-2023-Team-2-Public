@@ -9,7 +9,7 @@
     <meta name="description" content="Gamemode Select Page"/>
     <link rel="stylesheet" href="../styles/styles.css" />
     <link rel="icon" href="../assets/favicon.png" type="image/x-icon">
-    <!--<script src="scripts/" defer></script>-->
+    <script type="module" src="../scripts/main.mjs"></script>  
 </head>
 
 <body>
@@ -29,6 +29,17 @@
     <div id="exit" class="centered">
         <hr>
         <button type="button" onclick="location.href='../index.html'">EXIT</button>
+    </div>
+    <!-- The Modal -->
+    <div id="gameModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+        <h2>Would you like to resume your previous game?</h2><br>
+        <div class="modalBtn">
+            <button type="button" id="resumeGame">YES</button>
+            <button type="button" id="removeGame">NO</button>
+        </div>
+        </div>
     </div>
 </body>
 </html>
