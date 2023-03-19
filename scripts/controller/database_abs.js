@@ -15,7 +15,6 @@ class Database {
     var sql_arr = sql[1];
     var [rows] = await this.pool.query(sql_str, sql_arr);
     if (typeof rows[0] == 'undefined') {
-      console.log('Undefined!');
       return -1;
     }
     else {
