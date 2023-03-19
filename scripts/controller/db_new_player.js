@@ -6,10 +6,17 @@ class DBNewPlayer {
         this.db = new Database();
     }
 
-    async check_username(username) {
-        var sql = (`SELECT * FROM player WHERE username = ?`, [username]);
+    async #check_username(username) {
+        var sql = [[`SELECT * FROM player WHERE username = ?`], [username]];
         var rows = await this.db.query(sql);
-        return rows[0];
+        console.log(rows);
+        if (rows == -1) {
+            return -1;
+        }
+        else {
+            return rows[0];
+        }
+        
     }
 
     async insert_new_player(username, password) {
@@ -17,3 +24,8 @@ class DBNewPlayer {
         var rows = await this.db.query(sql);
     }
 }
+
+var newplayer = new DBNewPlayer();
+var ret = await newplayer.check_username(`testplayer`);
+console.log(ret);
+
