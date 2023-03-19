@@ -76,9 +76,9 @@ if(window.location.href.indexOf('aiGame.html') != -1){
 if(window.location.href.indexOf('index.html') != -1){
     //if the buttons are clicked then save the settings
     localStorage.setItem('Name', 'Guest');
-    var loginButton = Document.getElementById('loginButton');
-    var usernameBox = Document.getElementById('usernameBox');
-    var passwordBox = Document.getElementById('passwordBox');
+    var loginButton = document.getElementById('loginButton');
+    var usernameBox = document.getElementById('usernameBox');
+    var passwordBox = document.getElementById('passwordBox');
     loginButton.addEventListener('click', e => {
             var button = e.currentTarget;
             var username = usernameBox.textContent;
@@ -97,15 +97,15 @@ if(window.location.href.indexOf('index.html') != -1){
 }
 
 if(window.location.href.indexOf('gamemode.html') != -1){
-    var welcomeMessage = Document.getElementById('welcomeMessage');
+    var welcomeMessage = document.getElementById('welcomeMessage');
     var username = localStorage.getItem('Name');
     welcomeMessage.textContent = 'Welcome ' + username + '!';
 }
 
 if(window.location.href.indexOf('registerNew.html') != -1){
-    var newAccountButton = Document.getElementById('newAccountBtn');
-    var usernameBox = Document.getElementById('usernameBox');
-    var passwordBox = Document.getElementById('passwordBox');
+    var newAccountButton = document.getElementById('newAccountBtn');
+    var usernameBox = document.getElementById('usernameBox');
+    var passwordBox = document.getElementById('passwordBox');
     newAccountButton.addEventListener('click', e => {
         //var button = e.currentTarget;
         //send json response to database and pass in
