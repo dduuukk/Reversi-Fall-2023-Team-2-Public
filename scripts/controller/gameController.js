@@ -1,6 +1,7 @@
 import { Game } from "../model/game.js";
 import { GameView } from "../view/gameView.mjs";
 import { BoardView } from "../view/boardView.mjs";
+import { Database } from "./database_abs.js";
 import { Board } from "../model/board.js";
 import { LocalPlayer } from "../model/player.js";
 
