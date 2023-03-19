@@ -20,12 +20,18 @@ class DBNewPlayer {
     }
 
     async insert_new_player(username, password) {
-        var sql = (`INSERT INTO player (username, password) VALUES = ?`, [username, password]);
-        var rows = await this.db.query(sql);
+        
+        if (await this.#check_username(username) == -1) {
+            var sql = [[`INSERT INTO player (username, password) VALUES (?, ?)`], [username, password]];
+            console.log(sql);
+            await this.db.query(sql);
+        }
+        else {
+            return `${username} already taken!`
+        }
     }
 }
 
 var newplayer = new DBNewPlayer();
-var ret = await newplayer.check_username(`testplayer`);
-console.log(ret);
+console.log(await newplayer.insert_new_player('testplayer', 'password'));
 
