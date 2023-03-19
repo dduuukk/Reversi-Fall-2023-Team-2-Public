@@ -27,18 +27,38 @@ class AI {
     //makes a move in our passed-in temporary board
     make_temp_move(x, y, turn) {
         //figure out how to use these functions on 
-        console.log("x,y", x, y);
-        console.log("funky board ", this.temp_board.board);
+        //console.log("x,y", x, y);
+        //console.log("funky board ", this.temp_board.board);
         this.temp_board.set_piece(x, y, turn);
         this.temp_board.flip_pieces(x, y, turn);
-        console.log("new funky board ", this.temp_board.board);
+        //console.log("new funky board ", this.temp_board.board);
+    }
+
+    deepCopy(row){
+        var copy = [];
+        row.forEach(elem => {
+            if (Array.isArray(elem)){
+                copy.push(deepCopy(elem));
+            }
+            else {
+                copy.push(elem);
+            }  
+        })
+        return copy;
+    }
+
+    deepCopyObject(board){
+        var copy = [];
+        for(let [key, value] of Object.entries(board)){
+            copy[key] = this.deepCopy(value);
+        }
+        return copy;
     }
 
     //find our min or max value through recursion
     min_or_max_value(board, max, depth) {
         //Set v max or min value
-        
-        console.log("avliable moves:", this.moves);
+        //console.log("avliable moves:", this.moves);
         if(max){
             var v = Number.NEGATIVE_INFINITY;
         }
@@ -47,14 +67,15 @@ class AI {
         }
         //check all valid moves
         for(var i = 0; i < this.moves.length; i++){
-            this.temp_board = this.original_board;
+            this.temp_board.board = this.deepCopyObject(board.board);
+
             var point = this.moves[i];
-            console.log("Moves inside of min/max", this.moves);
+            //console.log("Moves inside of min/max", this.moves);
             var x = point[0];
             var y = point[1];
             //get a new temp board
-            console.log("MOVE x,y", x, y);
-            console.log("first  board", this.temp_board.board);
+            //console.log("MOVE x,y", x, y);
+            //console.log("first  board", this.original_board.board);
             if(max){
                 this.make_temp_move(x, y, this.turn);
             }
@@ -62,6 +83,7 @@ class AI {
                 this.make_temp_move(x, y, 3 - this.turn)
             }
             var val = this.minimax(this.temp_board, !max, depth - 1);
+           // console.log("value:", val);
             if(max){
                 if(val > v){
                     this.best_move[0] = x;
@@ -123,7 +145,7 @@ class AI {
         var [blackScore, whiteScore] = this.get_ai_scores(board);
         blackScore += this.#corner_bonus(board, 1);
         whiteScore += this.#corner_bonus(board, 2);
-        console.log("whitescore, blackscore, whitescore - blackscore:", whiteScore, blackScore, whiteScore - blackScore);
+        //console.log("whitescore, blackscore, whitescore - blackscore:", whiteScore, blackScore, whiteScore - blackScore);
         return whiteScore - blackScore;
     }
 
@@ -134,8 +156,8 @@ class AI {
         // Sum the number of tiles for each player
         for(var i = 2; i < this.size - 2; i++){
             for(var j = 2; j < this.size - 2; j++){
-                console.log("this.size:", this.size);
-                console.log("i, j:", i, j);
+                //console.log("this.size:", this.size);
+                //console.log("i, j:", i, j);
                 if(board.get_piece(j,i) === 1) {
                     black_score++;
                 }
@@ -152,11 +174,10 @@ class AI {
         //find all possible moves
         var original_moves = this.return_ai_valid_moves(board);
         
-        this.original_board = board;
-        this.temp_board = board;
-        console.log(this.temp_board);
+        this.original_board.board = this.deepCopyObject(board.board);
+        this.temp_board.board = this.deepCopyObject(board.board);
         this.get_ai_valid_moves(this.temp_board);
-        console.log("original moves", this.moves);
+        //console.log("original moves", this.moves);
         //gets us our saved best move
         this.minimax(board, true, this.difficulty);
 

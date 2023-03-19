@@ -155,10 +155,10 @@ if(window.location.href.indexOf('aiSelect.html') != -1){
                         localStorage.setItem('boardDiff', 1);
                     }
                     else if (button.textContent == "MEDIUM"){
-                        localStorage.setItem('boardDiff', 6);
+                        localStorage.setItem('boardDiff', 3);
                     }
                     else if (button.textContent == "HARD"){
-                        localStorage.setItem('boardDiff', 9);
+                        localStorage.setItem('boardDiff', 5);
                     }
                     
                 } 
