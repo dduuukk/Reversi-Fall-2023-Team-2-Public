@@ -1,5 +1,7 @@
 import { GameController } from './controller/game_controller2.js';
 
+//Running Game Calls ---------------------------------------------------
+
 //running the local game if we are on game page
 if(window.location.href.indexOf('localGame.html') != -1){
     //get stored values from settings select page
@@ -7,70 +9,18 @@ if(window.location.href.indexOf('localGame.html') != -1){
     var chosenStart = localStorage.getItem('startingPlayer');
     var newGameController = new GameController(chosenSize, chosenStart);
     //show board and pieces
-    newGameController.show_board();
-    newGameController.display_pieces();
-    newGameController.display_moves();
-    //when a cell is clicked a piece is placed
-    window.onclick = e => {
-        if(e.target.classList.contains('piece')){
-            console.log("Already a piece there!");
-        }
-        else{
-            var x = e.target.id.charAt(7);
-            var y = e.target.id.charAt(5);
-            console.log(x, y);
-            //update board array if move is valid
-            newGameController.handle_move(x, y);
-            //shows piece layout on board after flip
-            newGameController.display_pieces();
-            //shows new valid moves
-            newGameController.display_moves();
-            //show new scores
-            newGameController.display_scores();
-            //checks if a player has won
-            newGameController.check_win();
-        } 
-    } 
+    newGameController.startLocalGame();
 }
 
-//running the local game if we are on game page
+//running the ai game if we are on game page
 if(window.location.href.indexOf('aiGame.html') != -1){
     //get stored values from settings select page
     var chosenSize = localStorage.getItem('boardSize');
-    var chosenStart = localStorage.getItem('startingPlayer');
-    var newGameController = new GameController(chosenSize, chosenStart);
+    var newGameController = new GameController(chosenSize, 1);
     //show board and pieces
-    newGameController.show_board();
-    newGameController.display_pieces();
-    //when a cell is clicked a piece is placed
-    window.onclick = e => {
-        if(e.target.classList.contains('piece')){
-            console.log("Already a piece there!");
-        }
-        else{
-            var x = e.target.id.charAt(7);
-            var y = e.target.id.charAt(5);
-            console.log(x, y);
-            //update board array if move is valid
-            newGameController.handle_move(x, y);
-            //shows piece layout on board after flip
-            newGameController.display_pieces();
-            //show new scores
-            newGameController.displayScores();
-            //checks if a player has won
-            let winner = newGameController.checkWinner();
-            if(winner != 0){
-                if(winner == 1){
-                    GameController.endGame(1);
-                }
-                else {
-                    GameController.endGame(2);
-                }
-                
-            }
-        } 
-    } 
+    newGameController.startAIGame();
 }
+
 
 //Handle Login
 if(window.location.href.indexOf('index.html') != -1){
@@ -79,57 +29,88 @@ if(window.location.href.indexOf('index.html') != -1){
     var loginButton = document.getElementById('loginButton');
     var usernameBox = document.getElementById('usernameBox');
     var passwordBox = document.getElementById('passwordBox');
+    var newGameController = new GameController(8, 1);
     loginButton.addEventListener('click', e => {
-            var button = e.currentTarget;
-            var username = usernameBox.textContent;
-            var password = passwordBox.textContent;
-
-            /* Reference for this type of communication
-            https://www.geeksforgeeks.org/how-to-connect-sql-server-database-from-javascript-in-the-browser/
-            */
+            var usernameInput = usernameBox.textContent;
+            var passwordInput = passwordBox.textContent;
+            var isValid = newGameController.verify_login(usernameInput, passwordInput);
+            if(isValid){
+                localStorage.setItem('Name', usernameInput);
+                console.log("correct login!");
+                //window.location.href = '../dist/gamemode.html';
+            }
+            else {
+                console.log("incorrect login!");
+                //window.location.href = '../index.html';
+            }
     });
 
-    /*if(valid_response){
-        localStorage.setItem('Name', Document.getElementById('usernameBox'));
-        window.location.href = './dist/gamemode.html';
-    }
-    */
-}
-
-if(window.location.href.indexOf('gamemode.html') != -1){
-    var welcomeMessage = document.getElementById('welcomeMessage');
-    var username = localStorage.getItem('Name');
-    welcomeMessage.textContent = 'Welcome ' + username + '!';
 }
 
 if(window.location.href.indexOf('registerNew.html') != -1){
     var newAccountButton = document.getElementById('newAccountBtn');
     var usernameBox = document.getElementById('usernameBox');
     var passwordBox = document.getElementById('passwordBox');
+    var newGameController = new GameController(8, 1);
     newAccountButton.addEventListener('click', e => {
-        //var button = e.currentTarget;
-        //send json response to database and pass in
-        //usernameBox.textContent
-        //passwordBox.textContent
-
-        /* Reference for this type of communication
-        https://www.geeksforgeeks.org/how-to-connect-sql-server-database-from-javascript-in-the-browser/
-        */
+        var usernameInput = usernameBox.textContent;
+        var passwordInput = passwordBox.textContent;
+        newGameController.create_new_account(usernameInput, passwordInput);
+        localStorage.setItem('Name', usernameInput);
+        window.location.href = "../dist/gamemode.html"
     });
 }
 
+if(window.location.href.indexOf('gamemode.html') != -1){
+    var welcomeMessage = document.getElementById('welcomeMessage');
+    var username = localStorage.getItem('Name');
+    welcomeMessage.textContent = 'Welcome ' + username + '!';
+    var existingGame = true;
+    //function call to deteremine if existing game
+    console.log(existingGame);
+    if(existingGame){
+        var modal = document.getElementById("gameModal");
+        var resumeBtn = document.getElementById("resumeGame");
+        var removeBtn = document.getElementById("removeGame");
+        modal.style.display = "block";
+    }
+    resumeBtn.onclick = function() {
+        //start old game
+        modal.style.visibility = "hidden";
+        //take board size (and maybe ai difficulty) from database and store locally
+        //get if ai or local or online game
+        var gamemode = "local";
+        if(gamemode == "local"){
+            window.location.href = "../dist/localGame.html"
+        }
+        else if(gamemode == "ai"){
+            window.location.href = "../dist/aiGame.html"
+        }
+
+    }
+    removeBtn.onclick = function() {
+        modal.style.visibility = "hidden";
+        //drop board from database
+    }
+}
+
+
+
+
+
+//Handle Settings Clicked ---------------------------------------------------
 
 //handle settings getting clicked
 if(window.location.href.indexOf('localSelect.html') != -1){
     //sets default values for settings
     localStorage.setItem('boardSize', 8);
     localStorage.setItem('startingPlayer', 1);
-    let sizeButtons = document.querySelectorAll('button.sizeBtn');
-    let playerButtons = document.querySelectorAll('button.playerBtn');
+    var sizeButtons = document.querySelectorAll('button.sizeBtn');
+    var playerButtons = document.querySelectorAll('button.playerBtn');
     //if the buttons are clicked then save the settings
         sizeButtons.forEach(sizeButton => {
             sizeButton.addEventListener('click', e => {
-                let button = e.currentTarget;
+                var button = e.currentTarget;
                 if(!button.classList.contains("selected")){
                     sizeButtons.forEach(btn => btn !== button && btn.classList.remove('selected'));
                     button.classList.toggle('selected');
@@ -147,7 +128,7 @@ if(window.location.href.indexOf('localSelect.html') != -1){
         });
         playerButtons.forEach(playerButton => {
             playerButton.addEventListener('click', e => {
-                let button = e.currentTarget;
+                var button = e.currentTarget;
                 if(!button.classList.contains("selected")){
                     playerButtons.forEach(btn => btn !== button && btn.classList.remove('selected'));
                     button.classList.toggle('selected');
@@ -166,13 +147,13 @@ if(window.location.href.indexOf('localSelect.html') != -1){
 if(window.location.href.indexOf('aiSelect.html') != -1){
     //sets default values for settings
     localStorage.setItem('boardSize', 8);
-    localStorage.setItem('boardDiff', 3);
-    let sizeButtons = document.querySelectorAll('button.sizeBtn');
-    let diffButtons = document.querySelectorAll('button.diffBtn');
+    localStorage.setItem('boardDiff', 1);
+    var sizeButtons = document.querySelectorAll('button.sizeBtn');
+    var diffButtons = document.querySelectorAll('button.diffBtn');
     //if the buttons are clicked then save the settings
         sizeButtons.forEach(sizeButton => {
             sizeButton.addEventListener('click', e => {
-                let button = e.currentTarget;
+                var button = e.currentTarget;
                 if(!button.classList.contains("selected")){
                     sizeButtons.forEach(btn => btn !== button && btn.classList.remove('selected'));
                     button.classList.toggle('selected');
@@ -190,18 +171,18 @@ if(window.location.href.indexOf('aiSelect.html') != -1){
         });
         diffButtons.forEach(diffButton => {
             diffButton.addEventListener('click', e => {
-                let button = e.currentTarget;
+                var button = e.currentTarget;
                 if(!button.classList.contains("selected")){
                     diffButtons.forEach(btn => btn !== button && btn.classList.remove('selected'));
                     button.classList.toggle('selected');
                     if (button.textContent == "EASY"){
-                        localStorage.setItem('boardDiff', 3);
+                        localStorage.setItem('boardDiff', 1);
                     }
                     else if (button.textContent == "MEDIUM"){
-                        localStorage.setItem('boardDiff', 6);
+                        localStorage.setItem('boardDiff', 3);
                     }
                     else if (button.textContent == "HARD"){
-                        localStorage.setItem('boardDiff', 9);
+                        localStorage.setItem('boardDiff', 5);
                     }
                     
                 } 

@@ -1,4 +1,4 @@
-import mysql from 'mysql2'
+import { mysql } from '../../node_modules/mysql2'
 
 class Database {
   constructor() {
