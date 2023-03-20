@@ -1,3 +1,4 @@
+
 import { Database } from './database_abs.js'
 
 class DBReadBoard {
@@ -50,3 +51,7 @@ class DBReadBoard {
 
 }
 export{DBReadBoard};
+// var readboard = new DBReadBoard('testplayer');
+// console.log(await readboard.read_board_from_db());
+
+// console.log(updateboard.store_board(board));
