@@ -65,6 +65,61 @@ class GameController {
         await this.db_controller.store_board(board_array);
     }
 
+    startLocalGame() {
+        this.show_board();
+        this.display_pieces();
+        this.display_moves();
+        //when a cell is clicked a piece is placed
+        window.onclick = e => {
+            if(e.target.classList.contains('piece')){
+                console.log("Already a piece there!");
+            }
+            else{
+                var x = e.target.id.charAt(7);
+                var y = e.target.id.charAt(5);
+                //update board array if move is valid
+                this.handle_move(x, y);
+                //shows piece layout on board after flip
+                this.display_pieces();
+                //shows new valid moves
+                this.display_moves();
+                //show new scores
+                this.display_scores();
+                //checks if a player has won
+                this.check_win();
+                //save board in database
+                this.update_board();
+            } 
+        } 
+    }
+
+    startAIGame() {
+        this.show_board();
+        this.display_pieces();
+        this.display_moves();
+        //when a cell is clicked a piece is placed
+        window.onclick = e => {
+            if(e.target.classList.contains('piece')){
+                console.log("Already a piece there!");
+            }
+            else{
+                var x = e.target.id.charAt(7);
+                var y = e.target.id.charAt(5);
+                //update board array if move is valid
+                this.handle_ai_move(x, y);
+                //shows piece layout on board after flip
+                this.display_pieces();
+                //shows new valid moves
+                this.display_moves();
+                //show new scores
+                this.display_scores();
+                //checks if a player has won
+                this.check_win();
+                //save board in database
+                this.update_board();
+            } 
+        } 
+        }
 
 }
 export {GameController};

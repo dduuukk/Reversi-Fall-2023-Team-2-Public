@@ -36,14 +36,29 @@ if(window.location.href.indexOf('index.html') != -1){
             var isValid = newGameController.verify_login(usernameInput, passwordInput);
             if(isValid){
                 localStorage.setItem('Name', usernameInput);
-                window.location.href = '../dist/gamemode.html';
+                console.log("correct login!");
+                //window.location.href = '../dist/gamemode.html';
             }
             else {
-                window.location.href = '../index.html';
                 console.log("incorrect login!");
+                //window.location.href = '../index.html';
             }
     });
 
+}
+
+if(window.location.href.indexOf('registerNew.html') != -1){
+    var newAccountButton = document.getElementById('newAccountBtn');
+    var usernameBox = document.getElementById('usernameBox');
+    var passwordBox = document.getElementById('passwordBox');
+    var newGameController = new GameController(8, 1);
+    newAccountButton.addEventListener('click', e => {
+        var usernameInput = usernameBox.textContent;
+        var passwordInput = passwordBox.textContent;
+        newGameController.create_new_account(usernameInput, passwordInput);
+        localStorage.setItem('Name', usernameInput);
+        window.location.href = "../dist/gamemode.html"
+    });
 }
 
 if(window.location.href.indexOf('gamemode.html') != -1){
@@ -77,20 +92,6 @@ if(window.location.href.indexOf('gamemode.html') != -1){
         modal.style.visibility = "hidden";
         //drop board from database
     }
-}
-
-if(window.location.href.indexOf('registerNew.html') != -1){
-    var newAccountButton = document.getElementById('newAccountBtn');
-    var usernameBox = document.getElementById('usernameBox');
-    var passwordBox = document.getElementById('passwordBox');
-    var newGameController = new GameController(8, 1);
-    newAccountButton.addEventListener('click', e => {
-        var usernameInput = usernameBox.textContent;
-        var passwordInput = passwordBox.textContent;
-        newGameController.create_new_account(usernameInput, passwordInput);
-        localStorage.setItem('Name', usernameInput);
-        window.location.href = "../dist/gamemode.html"
-    });
 }
 
 
