@@ -1,68 +1,68 @@
-import { Board } from "./board.js";
-import { LocalPlayer } from "./player.js";
 import { GameLogic } from "./game_logic.js";
-
+import { AI } from "./ai.js";
 
 export class Game extends GameLogic {
-    constructor(size, starting_player) {
-        super();
-        // Instantiate size
-        this.size = size;
-        // Instantiate new board
-        this.board = new Board(this.size);
-        // Instatiate new player
-        this.player = new LocalPlayer(starting_player);
+    constructor(size, player) {
+        super(size, player);
+        var chosenDiff = localStorage.getItem('boardDiff');
+        this.ai = new AI(chosenDiff, this.size, this.player.player);
     }
 
-    // Return the board array for display purposes
-    return_board_array () {
-        return Board.return_array(this.board);
+    return_board() {
+        return this.game_board.board;
     }
 
-    get return_board () {
-        return this.board;
+    get_valid_moves() {
+        return this.game_board.get_valid_moves(this.player.player);
     }
     
     // Check if selected move is valid
-    static is_valid_move (game_board, x, y, current_player) {
+    is_valid_move(x, y, player) {
         // Check if the current move is does not have a piece on it
-        if (Board.get_piece(game_board, x, y) == 0) {
-            return Board.checkAdjacent(game_board, x, y, current_player);
-            //console.log(game_board);
-            //return true; 
+        if (this.game_board.get_piece(x, y) == 0) {
+            if((this.game_board.get_endpoints(x, y, player)).length != 0) {
+                return true;
+            }
         }
         else {
-            console.log("That space already has a piece on it!")
+            console.log("Invalid Space!")
             return false;
         }
     }
 
-    
     // Takes click from view -> controller and inputs move into model
-    static make_move (current_game, x, y) {
+    make_move(x, y) {
         // Check if the selected move is valid
-        if (Game.is_valid_move(current_game.board, x, y, current_game.player.player)) { // changed this
-            
-            // Debugging log
-            // console.log("current_player: ", current_game.player);
-
+        if (this.is_valid_move(x, y, this.player.player)) {
             // Set the selected piece to current player
-            Board.set_piece(current_game.board, x, y, current_game.player.player);
-            // Flip all pieces resulting from the current move
-            console.log("current_game.player.player = ", current_game.player.player);
-            Board.flip_pieces(current_game.board, current_game.player.player, x, y);
+            this.game_board.set_piece(x, y, this.player.player);
+            this.game_board.flip_pieces(x, y, this.player.player);
+            console.log("game_board:", this.game_board.board);
             // Switch player
-            LocalPlayer.next_player(current_game.player);
+            this.player.next_player();
+        }
+        else {
+            console.log("Invalid Move.")
         }
     }
 
-    // Return player scores
-    static get_scores(current_game){
-        return GameLogic.get_scores(current_game.board.board);
+    make_player_move(x,y) {
+        // Check if the selected move is valid
+        if (this.is_valid_move(x, y, this.player.player)) {
+            // Set the selected piece to current player
+            this.game_board.set_piece(x, y, this.player.player);
+            this.game_board.flip_pieces(x, y, this.player.player);
+        }
+        else {
+            console.log("Invalid Move.")
+        }
     }
 
-    // Check forr winner
-    static get_winner(current_game){
-        return GameLogic.check_winner(current_game.board.board);
+    make_ai_move() {
+        // AI player goes
+        var bestMove = this.ai.make_ai_move(this.game_board);
+
+        this.game_board.set_piece(bestMove[0], bestMove[1], 2);
+        this.game_board.flip_pieces(bestMove[0], bestMove[1], 2);
     }
 }

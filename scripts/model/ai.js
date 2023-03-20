@@ -1,5 +1,5 @@
-import { Game } from "./game2.js";
-import { Board } from "./board2.js"
+import { Game } from "./game.js";
+import { Board } from "./board.js"
 
 
 class AI {

@@ -1,4 +1,4 @@
-import { GameController } from './controller/game_controller2.js';
+import { GameController } from './controller/game_controller.js';
 
 //Running Game Calls ---------------------------------------------------
 

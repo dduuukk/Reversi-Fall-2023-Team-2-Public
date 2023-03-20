@@ -1,43 +1,37 @@
-import {Board} from "./board2.js"
+import {Board} from "./board.js"
+import {LocalPlayer} from "./player.js"
 
 class GameLogic {
-    constructor() {
-        // Abstract class, nothing to construct
-    }   
-
-    // Build board for controller interaction
-    static build_board (size) {
-        let game_board = new Board(size);
-        return game_board;
+    constructor(size, starting_player) {
+        this.game_board = new Board(size);
+        this.size = this.game_board.return_size();
+        this.player = new LocalPlayer(starting_player);
     }
 
     // Return the current game score
-    static get_scores (game_board) {
-        let size = game_board.length;
-        let blackScore = 0;
-        let whiteScore = 0;
+    get_scores() {
+        let black_score = 0;
+        let white_score = 0;
         // Sum the number of tiles for each player
-        for(let i = 0; i < size; i++){
-            for(let j = 0; j < size; j++){
-                if(game_board[i][j] === 1) {
-                    blackScore++;
+        for(let i = 0; i < this.size; i++){
+            for(let j = 0; j < this.size; j++){
+                if(this.game_board.board[i][j] === 1) {
+                    black_score++;
                 }
-                else if (game_board[i][j] === 2) {
-                    whiteScore++;
+                else if (this.game_board.board[i][j] === 2) {
+                    white_score++;
                 }
             }
         }
-        return [blackScore, whiteScore];
+        return [black_score, white_score];
     }
 
     // Check if a player has won the game
-    static check_winner(game_board) {
-        let size = game_board.length;
-        let [blackScore, whiteScore] = GameLogic.get_scores(game_board);
-        console.log("blackScore: " + blackScore + " whiteScore: " + whiteScore);
-        // Check if the total scores are filling the board and if so return winner
-        if (blackScore + whiteScore >= Math.pow(size, 2)){
-            if (blackScore > whiteScore){
+    check_winner() {
+        var moves = this.game_board.get_valid_moves(this.player.player);
+        if(moves.length < 1){
+            var [black_score, white_score] = this.get_scores();
+            if (black_score > white_score){
                 return 1;
             }
             else {
@@ -47,5 +41,4 @@ class GameLogic {
         return 0;   
     }
 }
-
 export {GameLogic};
