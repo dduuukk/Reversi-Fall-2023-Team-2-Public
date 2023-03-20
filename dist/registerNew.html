@@ -9,7 +9,7 @@
     <meta name="description" content="New Account Registration page"/>
     <link rel="stylesheet" href="../styles/styles.css" />
     <link rel="icon" href="../assets/favicon.png" type="image/x-icon">
-    <script type="module" src="../scripts/main.mjs"></script>  
+    <!--<script src="scripts/" defer></script>-->
 </head>
 
 <body>
@@ -17,15 +17,23 @@
         <img src="../assets/reversiLogo.jpg" alt="reversi logo">
         <h1>REVERSI</h1>
     </div>
-    <div id="login" class="centered">
-        <br><input type="text" placeholder="Username"><br>
-        <input type="text" placeholder="Password">
-        <button type="button" onclick="location.href='dist/gamemode.html'">LOGIN</button>
+
+    <div class="centered">
+        <div id="greeting">
+            <h2>Enter Username and Password Below</h2>
+        </div>
+        
+        <br><input type="text" id="usernameBox" placeholder="Username"><br>
+        <input type="text" id="passwordBox" placeholder="Password">
         <hr>
     </div>
     <div id="createAccount" class="centered">
         <!--Takes us to the new user page when it is implemented-->
-        <button type="button" onclick="location.href='dist/registerNew.html'">NEW ACCOUNT</button>
+        <button id="newAccountBtn" type="button">CREATE ACCOUNT</button>
+    </div>
+    <div id="exit" class="centered">
+        <hr>
+        <button type="button" onclick="location.href='../index.html'">EXIT</button>
     </div>
 </body>
 </html>
