@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Gamemode</title>
+    <meta name="author" content="Luke Wisner, Chris Bender, Owen Zhang">
+    <meta name="description" content="Gamemode Select Page"/>
+    <link rel="stylesheet" href="/public/styles.css" />
+    <link rel="icon" href="/public/assets/favicon.png" type="image/x-icon">
+    <script src="/socket/socket.io.js"></script>
+</head>
+
+<body>
+    <div id="title" class="centered">
+        <img src="/public/assets/reversiLogo.jpg" alt="reversi logo">
+        <h1>REVERSI</h1>
+    </div>
+    <div id="greeting" class="centered">
+        <h2 id="welcomeMessage">Welcome Guest!</h2>
+        <h3>Select Gamemode:</h3>
+    </div>
+    <div id="gamemodes" class="centered">
+        <button type="button" onclick="location.href='/localSelect'">LOCAL</button>
+        <button type="button" onclick="location.href='/aiSelect'">AI</button>
+        <button type="button" onclick="location.href='/onlineSelect'" disabled>ONLINE</button>
+    </div>
+    <div id="exit" class="centered">
+        <hr>
+        <button type="button" onclick="location.href='/logout'">EXIT</button>
+    </div>
+    <!-- The Modal -->
+    <div id="gameModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+        <h2>Would you like to resume your previous game?</h2><br>
+        <div class="modalBtn">
+            <button type="button" id="resumeGame" onclick="startGame()">YES</button>
+            <button type="button" id="removeGame">NO</button>
+        </div>
+        </div>
+    </div>
+</body>
+<script>
+        var socket = io();
+        var gameType;
+        socket.emit('get_user_start', 1);
+        socket.on('get_user', function( f_str ) {
+            var username = JSON.parse(f_str);
+            console.log('username', username);
+            var welcomeMessage = document.getElementById('welcomeMessage');
+            welcomeMessage.textContent = 'Welcome ' + username + '!';
+        });
+
+        socket.emit('get_board_start', 1);
+        socket.on('get_board', function( f_str ) {
+            var username = JSON.parse(f_str);
+            console.log('username', username);
+            var welcomeMessage = document.getElementById('welcomeMessage');
+            welcomeMessage.textContent = 'Welcome ' + username + '!';
+        });
+
+        function startGame(){
+           // depending on which type of game board is passed in we will set
+           // location.href to either the localGame or AiGame page so that 
+           // we can set the gameController board to whats saved in the db
+           // and then go to the correct game type
+
+        }
+</script>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Game Settings</title>
+    <meta name="author" content="Luke Wisner, Chris Bender, Owen Zhang">
+    <meta name="description" content="Local Settings select screen"/>
+    <link rel="stylesheet" href="/public/styles.css"/>
+    <link rel="icon" href="/public/assets/favicon.png" type="image/x-icon">
+</head>
+<body>
+<div id="title" class="centered">
+    <img src="/public/assets/reversiLogo.jpg" alt="reversi logo">
+    <h1>REVERSI</h1>
+</div>
+<div id="greeting" class="centered">
+    <h2>Select Local Game Settings:</h2>
+</div>
+<div id="selection">
+    <div id="boardSize" class="centered choose">
+        <h3>Board Size:</h3>
+        <button class="sizeBtn" type="button">4x4</button>
+        <button class="sizeBtn selected" type="button">8x8</button>
+        <button class="sizeBtn" type="button">10x10</button>
+    </div>
+    <div id="startingPlayer" class="centered choose">
+        <h3>Starting Player:</h3>
+        <button class="playerBtn selected" type="button">BLACK</button>
+        <button class="playerBtn" type="button">WHITE</button>
+    </div>
+</div>
+<div id="startGame" class="centered">
+    <hr>
+    <button type="submit" onclick="getSettings();location.href='/localGame'">START GAME</button>
+</div>
+<div id="exit" class="centered">
+    <hr>
+    <button type="button" onclick="location.href='/gameMode'">EXIT</button>
+</div>
+
+</body>
+<script>
+var sizeButtons = document.querySelectorAll('button.sizeBtn');
+var playerButtons = document.querySelectorAll('button.playerBtn');
+//if the buttons are clicked then save the settings
+    sizeButtons.forEach(sizeButton => {
+        sizeButton.addEventListener('click', e => {
+            var button = e.currentTarget;
+            if(!button.classList.contains("selected")){
+                sizeButtons.forEach(btn => btn !== button && btn.classList.remove('selected'));
+                button.classList.toggle('selected');
+            } 
+        });
+    });
+    playerButtons.forEach(playerButton => {
+        playerButton.addEventListener('click', e => {
+            var button = e.currentTarget;
+            if(!button.classList.contains("selected")){
+                playerButtons.forEach(btn => btn !== button && btn.classList.remove('selected'));
+                button.classList.toggle('selected');     
+            } 
+        });
+    });
+
+    function getSettings(){
+        var sizeButtons = document.querySelectorAll('button.sizeBtn');
+        var playerButtons = document.querySelectorAll('button.playerBtn');
+        var size = '8x8';
+        var player = "BLACK";
+        var num_player;
+        sizeButtons.forEach(sizeButton => {
+            if(sizeButton.classList.contains("selected")){
+                size = sizeButton.textContent;
+            } 
+        });
+        playerButtons.forEach(playerButton => {
+            if(playerButton.classList.contains("selected")){
+                player = playerButton.textContent;
+            } 
+        });
+
+        if(player == "BLACK"){
+            num_player = 1;
+        }
+        else if(player == "WHITE"){
+            num_player = 2;
+        }
+
+        fetch('/localSettings', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                size: size,
+                player: num_player
+            })
+        })
+            .then(function(response) {
+                if(response.ok) {
+                    console.log('Size: ', size, 'Player: ', player);
+                    return response.json();
+                }
+                throw new Error('Request failed.');
+            })
+            .catch(function(error) {
+                console.log(error);
+        });
+    }
+
+
+
+</script>
+</html>

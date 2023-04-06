@@ -1,11 +1,17 @@
-import { Game } from "../model/game.js";
-import { GameView } from "../view/gameView.mjs";
+// import { Game } from "../model/game.js";
+// import { GameView } from "../view/gameView.mjs";
+const Game = require('../model/game.js');
+const GameView = require('../../public/gameView.js');
+
 
 class GameController {
-    constructor(board_size, starting_player) {
-        this.current_game = new Game(board_size, starting_player);
+    constructor(board_size, starting_player, diff, username) {
+        this.current_game = new Game(board_size, starting_player, diff);
         this.board_size = this.current_game.game_board.return_size();
-        this.game_view = new GameView(this.board_size);
+        // this.db_login = new DBCheckLogin();
+        // this.db_board = new DBBoard(username);
+        // this.game_view = new GameView(this.board_size);
+        // console.log(this.current_game.game_board.board);
     }
 
     show_board() {
@@ -18,19 +24,20 @@ class GameController {
     }
 
     display_moves() {
-        this.game_view.place_moves(this.current_game.get_valid_moves());
+        return this.current_game.get_valid_moves();
     }
 
     display_scores() {
-        var black_score;
-        var white_score;
-        [black_score, white_score] = this.current_game.get_scores();
-        this.game_view.display_scores(black_score, white_score);
+        var scores = this.current_game.get_scores();
+        return scores;
     }
 
     check_win() {
         if(this.current_game.check_winner() != 0) {
-            this.end_game(this.current_game.check_winner());
+            return this.current_game.check_winner();
+        }
+        else{
+            return false;
         }
     }
 
@@ -38,65 +45,27 @@ class GameController {
         this.current_game.make_move(x, y);
     }
 
-    handle_ai_move(x, y){
-        this.current_game.make_player_move(x,y);
-        this.current_game.make_ai_move();
-    }
-
-    end_game(winning_player) {
-        this.game_view.game_end_message(winning_player);
-    }
-
-    startLocalGame() {
-        this.show_board();
-        this.display_pieces();
-        this.display_moves();
-        //when a cell is clicked a piece is placed
-        window.onclick = e => {
-            if(e.target.classList.contains('piece')){
-                console.log("Already a piece there!");
-            }
-            else{
-                var x = e.target.id.charAt(7);
-                var y = e.target.id.charAt(5);
-                //update board array if move is valid
-                this.handle_move(x, y);
-                //shows piece layout on board after flip
-                this.display_pieces();
-                //shows new valid moves
-                this.display_moves();
-                //show new scores
-                this.display_scores();
-                //checks if a player has won
-                this.check_win();
-            } 
-        } 
-    }
-
-    startAIGame() {
-        this.show_board();
-        this.display_pieces();
-        this.display_moves();
-        //when a cell is clicked a piece is placed
-        window.onclick = e => {
-            if(e.target.classList.contains('piece')){
-                console.log("Already a piece there!");
-            }
-            else{
-                var x = e.target.id.charAt(7);
-                var y = e.target.id.charAt(5);
-                //update board array if move is valid
-                this.handle_ai_move(x, y);
-                //shows piece layout on board after flip
-                this.display_pieces();
-                //shows new valid moves
-                this.display_moves();
-                //show new scores
-                this.display_scores();
-                //checks if a player has won
-                this.check_win();
-            } 
-        } 
+    wait(s) {
+        var start = Date.now(),
+            now = start;
+        while (now - start < s) {
+          now = Date.now();
         }
+    }
+
+    handle_ai_player_move(x, y){
+        this.current_game.make_player_move(x,y);
+    }
+
+    handle_ai_move(){
+        //this.wait(2000);
+        this.current_game.make_ai_move(); 
+    }
+
+    // delay(s){
+    //     return new Promise(resolve => {
+    //         setTimeout(resolve, s);
+    //     });
+    // }
 }
-export {GameController};
+module.exports = GameController;

@@ -1,8 +1,10 @@
-// import {flipPieces} from "./flipPieces2.js"
+const Prototype = require('./prototype.js');
+const subject = require('./subject.js');
 
-class Board {
+class Board extends subject {
     // Construct board with starting pieces based on size
     constructor(size) {
+        super();
         this.size = size;
 
         // Create starting board array
@@ -18,6 +20,7 @@ class Board {
             [-1, 0],  
             [-1, -1] 
         ];
+        this.prototype = new Prototype();
     }
 
     // Check if input bopard size is valid
@@ -165,6 +168,9 @@ class Board {
                 }
             }
         }
+        (async() => {
+            await this.notify(this.board);
+        })();
     }
 
     
@@ -200,8 +206,26 @@ class Board {
         return moves;
     }
 
+    in_valid_moves(x, y, player){
+        var valid_moves = this.get_valid_moves(player);
+        var given_point = [];
+        given_point[0] = parseInt(x);
+        given_point[1] = parseInt(y);
+        for(var i = 0; i < valid_moves.length; i++){
+            var current_move = valid_moves[i];
+            if (given_point[0] == current_move[0] && given_point[1] == current_move[1]){
+                return true;
+            }
+        }
+        return false;
+    }
+
     return_size() {
         return this.size;
     }
+
+    clone() {
+        return this.prototype.deepCopyObject(this.board);
+    }
 }
-export {Board};
+module.exports = Board;

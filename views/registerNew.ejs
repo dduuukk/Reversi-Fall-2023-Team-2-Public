@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register New Account</title>
+    <meta name="author" content="Luke Wisner, Chris Bender, Owen Zhang">
+    <meta name="description" content="New Account Registration page"/>
+    <link rel="stylesheet" href="/public/styles.css" />
+    <link rel="icon" href="/public/assets/favicon.png" type="image/x-icon">
+    <!-- <script type="module" src="../scripts/main.mjs"></script>   -->
+</head>
+
+<body>
+    <div id="title" class="centered">
+        <img src="/public/assets/reversiLogo.jpg" alt="reversi logo">
+        <h1>REVERSI</h1>
+    </div>
+
+    <form action="/newAccount" method="POST" class="centered">
+        <div id="greeting">
+            <h2>Enter Username and Password Below</h2>
+        </div>
+        
+        <br><input type="username" id="usernameBox" placeholder="Username" name="username"><br>
+        <input type="password" id="passwordBox" placeholder="Password" name="password">
+        <input type="password" id="passwordBox2" placeholder="Confirm Password" name="confirmpassword">
+        <hr>
+    </div>
+    <div id="createAccount" class="centered">
+        <!--Takes us to the new user page when it is implemented-->
+        <button id="newAccountBtn" type="submit">CREATE ACCOUNT</button>
+        <% if(locals.passwordfail){ %>
+            <h3 id="errorMessage" class="centered">Passwords Don't Match!</h3>
+        <% } %>
+    </form>
+    <div id="exit" class="centered">
+        <hr>
+        <button type="button" onclick="location.href='/'">EXIT</button>
+    </div>
+</body>
+</html>

@@ -1,5 +1,5 @@
-import {Board} from "./board.js"
-import {LocalPlayer} from "./player.js"
+const Board = require('./board.js');
+const LocalPlayer = require('./player.js');
 
 class GameLogic {
     constructor(size, starting_player) {
@@ -41,4 +41,4 @@ class GameLogic {
         return 0;   
     }
 }
-export {GameLogic};
+module.exports = GameLogic;

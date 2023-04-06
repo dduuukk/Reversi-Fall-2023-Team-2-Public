@@ -1,0 +1,228 @@
+.centered > * {
+    text-align: center;
+}
+
+.centered img {
+    display: block;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 400px;
+}
+
+.ingame img {
+    margin-left: 50px;
+    max-width: 200px;
+}
+
+.centered input {
+    margin-top: 10px;
+    text-align: left;
+    display: block;
+    width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    border-radius: 12px;
+    font-size: 20px;
+    border-color: green;
+    box-shadow: -2px 2px 0 black;
+}
+
+.centered button {
+    margin-top: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    min-width: 250px;
+    max-width: 400px;
+    display: block;
+    background-color: white;
+    border: 3px solid green;
+    color: green;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 20px;
+    border-radius: 12px;
+    box-shadow: -2px 2px 0 black;
+}
+
+.centered button:hover {
+    background-color: green;
+    border: 3px solid green;
+    color: white;
+    box-shadow: none;
+}
+
+#exit button {
+    border: 3px solid red;
+    color: red;
+}
+
+#exit button:hover {
+    background-color: red;
+    border: 3px solid red;
+    color: white;
+    box-shadow: none;
+}
+
+.ingame button {
+    margin-right: 50px;
+    margin-bottom: 20px;
+    background-color: white;
+    border: 2px solid red;
+    color: red;
+    min-width: 30px;
+    padding: 10px;
+    font-size: 16px;
+}
+
+hr {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 300px;
+}
+
+.centered h1 {
+    margin: auto;
+    color: green;
+    font-family:'Segoe UI', sans-serif;
+    font-size: 100px;
+    margin-bottom: 20px;
+    text-shadow: -5px 5px 0 black;
+}
+
+.ingame h1 {
+    text-align: left;
+    margin-left: 55px;
+    font-size: 50px;
+    margin-bottom: 20px;
+    text-shadow: -2px 2px 0 black;
+}
+
+#greeting h2 {
+    margin: auto;
+    color: green;
+    font-family:'Segoe UI', sans-serif;
+    font-size: 40px;
+    text-shadow: -1px 1px 0 black;
+}
+
+#greeting h3 {
+    margin: auto;
+    color: green;
+    font-family:'Segoe UI', sans-serif;
+    font-size: 30px;
+    text-shadow: -1px 1px 0 black;
+}
+
+#selection {
+    display: flex;
+    width: 500px;
+    margin: auto;
+    text-align: left;
+    align-items: flex-start;
+}
+
+#selection h3 {
+    display: block;
+    margin: auto;
+    color: green;
+    font-family:'Segoe UI', sans-serif;
+    font-size: 30px;
+    text-align: top;
+}
+
+#errorMessage {
+    display: block;
+    margin: auto;
+    color: red;
+    font-family:'Segoe UI', sans-serif;
+    font-size: 20px;
+    text-align: top;
+    margin-top: 10px;;
+}
+
+#boardSize {
+    display: block;
+    width: 1000px;
+    margin: auto;
+    text-align: left;
+    margin-right: 30px;
+}
+
+#startingPlayer {
+    display: block;
+    width: 1000px;
+    margin: auto;
+    text-align: left;
+}
+
+.choose button {
+    display: inline-block;
+}
+
+#selection .selected {
+    background-color: green;
+    border: 3px solid green;
+    color: white;
+    box-shadow: none;
+}
+
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+  }
+
+  .modal h2 {
+    display: block;
+    margin: auto;
+    color: green;
+    font-family:'Segoe UI', sans-serif;
+    font-size: 25px;
+    text-align: center;
+  }
+
+  .modal .modalBtn{
+    text-align:center;
+  }
+
+  .modal button {
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    min-width: 200px;
+    max-width: 200px;
+    background-color: white;
+    border: 3px solid green;
+    color: green;
+    padding: 10px;
+    margin-left: 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 20px;
+    border-radius: 12px;
+  }
+
+  .modal #removeGame {
+    border: 3px solid red;
+    color: red;
+  }

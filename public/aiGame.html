@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reversi AI</title>
+    <meta name="author" content="Luke Wisner, Chris Bender, Owen Zhang">
+    <meta name="description" content="AI Game of Reversi"/>
+    <link rel="stylesheet" href="/public/styles.css" />
+    <link rel="stylesheet" href="/public/boardStyles.css" />
+    <link rel="icon" href="/public/assets/favicon.png" type="image/x-icon">
+    <script src="/socket/socket.io.js"></script>
+    <script src="/public/gameView.js"></script>
+</head>
+<body>
+    <div id="title" class="centered ingame">
+        <img src="/public/assets/reversiLogo.jpg" alt="reversi logo">
+        <h1>REVERSI</h1>
+    </div>
+    <div id="exit" class="centered ingame">
+        <button type="button" onclick="location.href='/aiSelect'">EXIT</button>
+    </div>
+    <div id="game">
+        <div id="boardContainer"></div>
+        <div id="scoresContainer">
+            <div id="blackScore">
+                <div class="specialPiece blackPiece"></div>
+                <h3>2</h3>
+            </div>
+            <div id="whiteScore">
+                <div class="specialPiece whitePiece"></div>
+                <h3>2</h3>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    //on window load emit to the socket so we can recieve size to display board
+        //passed size -> call make_board(size) function
+        var gameView;
+        var socket = io();
+        var size;
+        socket.emit('update_start', 1);
+        socket.on('update_size', function( f_str ) {
+            var givenSize = JSON.parse(f_str);
+            if(givenSize == "4x4"){
+                size = 8;
+            }
+            else if(givenSize == "8x8"){
+                size = 12;
+            }
+            else if(givenSize == "10x10"){
+                size = 14;
+            }   
+            gameView = new GameView(size);
+            gameView.make_board(size);
+        });
+
+        //passed board -> call place_pieces(board) function
+        socket.emit('pieces_start', 1);
+        socket.on('pieces_display', function(board) {
+            var givenBoard = JSON.parse(board);
+            console.log(givenBoard);
+            gameView.place_pieces(givenBoard);
+        });
+
+        //passed moves -> call display_moves(moves) function
+        socket.emit('moves_start', 1);
+        socket.on('moves_display', function(moves) {
+            var givenBoard = JSON.parse(moves);
+            console.log(moves);
+            gameView.place_moves(givenBoard);
+        });
+        socket.emit('scores_start', 1);
+        socket.on('scores_display', function(scores) {
+            var givenScores = JSON.parse(scores);
+            console.log(givenScores);
+            gameView.display_scores(givenScores[0], givenScores[1]);
+        });
+    
+    //event listener for click on space -> send to router.js
+    window.onclick = e => {
+            if(e.target.classList.contains('piece')){
+                console.log("Already a piece there!");
+            }
+            else if(!e.target.classList.contains('cell')){
+                console.log("Invalid Click!");
+            }
+            else{
+                var x = e.target.id.charAt(7);
+                var y = e.target.id.charAt(5);
+                console.log("x: ", x, "y: ", y);
+                //update board array if move is valid
+                var point = JSON.stringify([x,y]);
+                socket.emit('ai_move_click', point);
+                socket.on('pieces_display', function(board) {
+                    var givenBoard = JSON.parse(board);
+                    gameView.place_pieces(givenBoard);
+                });
+                socket.on('moves_display', function(moves) {
+                    var givenBoard = JSON.parse(moves);
+                    console.log(moves);
+                    gameView.place_moves(givenBoard);
+                });
+                //passed blackscore + whitescore -> call display_scores(blackscore whitescore) function
+                socket.on('scores_display', function(scores) {
+                    var givenScores = JSON.parse(scores);
+                    console.log(givenScores);
+                    gameView.display_scores(givenScores[0], givenScores[1]);
+                });
+                socket.on('winner_display', function(winner) {
+                    var givenWinner = JSON.parse(winner);
+                    console.log(givenWinner);
+                    gameView.game_end_message(givenWinner);
+                });
+                //passed winner -> call game_end_message(winner)
+            } 
+    } 
+</script>
+</html>

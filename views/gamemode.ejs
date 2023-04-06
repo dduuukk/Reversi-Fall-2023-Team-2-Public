@@ -1,0 +1,19 @@
+<%- include('header') -%>
+<div id="title" class="centered">
+    <img src="assets/reversiLogo.jpg" alt="reversi logo">
+    <h1>REVERSI</h1>
+</div>
+<div id="greeting" class="centered">
+    <h2 id="welcomeMessage">Welcome Guest!</h2>
+    <h3>Select Gamemode:</h3>
+</div>
+<div id="gamemodes" class="centered">
+    <button type="button" name="local">LOCAL</button>
+    <button type="button" name="ai">AI</button>
+    <button type="button" name="online" disabled>ONLINE</button>
+</div>
+<div id="exit" class="centered">
+    <hr>
+    <button type="button" onclick="location.href='../index.html'">EXIT</button>
+</div>
+<%- include('footer') -%>

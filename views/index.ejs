@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reversi Homepage</title>
+    <meta name="author" content="Luke Wisner, Chris Bender, Owen Zhang">
+    <meta name="description" content="Login Page for reversi game"/>
+    <link rel="stylesheet" href="/public/styles.css" />
+    <link rel="icon" href="/public/assets/favicon.png" type="image/x-icon">
+    <script src="/socket/socket.io.js"></script>
+</head>
+
+<body>
+    <div id="title" class="centered">
+        <img src="public/assets/reversiLogo.jpg" alt="reversi logo">
+        <h1>REVERSI</h1>
+    </div>
+    <form id="login" action="/login" method="POST" class="centered">
+        <br><input type="username" class="form-control" id="usernameBox" placeholder="Username" name="username"><br>
+        <input type="password" class="form-control" id="passwordBox" placeholder="Password" name="password">
+        <% if(locals.passwordfail){ %>
+            <h3 id="errorMessage" class="centered">Incorrect Username or Password!</h3>
+        <% } %>
+        <button type="submit" id="loginButton">LOGIN</button>
+        <hr>
+    </form>
+    <div id="createAccount" class="centered">
+        <!--Takes us to the new user page when it is implemented-->
+        <button type="button" onclick="location.href='/registerNew'">NEW ACCOUNT</button>
+    </div>
+    <div id="guestLogin" class="centered">
+        <button type="button" onclick="location.href='/gameMode'">LOGIN AS GUEST</button>
+    </div>
+</body>
+</html>

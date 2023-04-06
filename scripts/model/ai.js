@@ -1,9 +1,9 @@
-import { Game } from "./game.js";
-import { Board } from "./board.js"
-
+const Game = require('./game.js')
+const Board = require('./board.js')
+//const Prototype = require('./prototype.js');
 
 class AI {
-    constructor(difficulty, size, player) {
+    constructor(difficulty, size) {
         this.difficulty = difficulty;
         this.turn = 2;
         //initialize default best move
@@ -34,27 +34,6 @@ class AI {
         //console.log("new funky board ", this.temp_board.board);
     }
 
-    deepCopy(row){
-        var copy = [];
-        row.forEach(elem => {
-            if (Array.isArray(elem)){
-                copy.push(deepCopy(elem));
-            }
-            else {
-                copy.push(elem);
-            }  
-        })
-        return copy;
-    }
-
-    deepCopyObject(board){
-        var copy = [];
-        for(let [key, value] of Object.entries(board)){
-            copy[key] = this.deepCopy(value);
-        }
-        return copy;
-    }
-
     //find our min or max value through recursion
     min_or_max_value(board, max, depth) {
         //Set v max or min value
@@ -67,7 +46,7 @@ class AI {
         }
         //check all valid moves
         for(var i = 0; i < this.moves.length; i++){
-            this.temp_board.board = this.deepCopyObject(board.board);
+            this.temp_board.board = board.clone();
 
             var point = this.moves[i];
             //console.log("Moves inside of min/max", this.moves);
@@ -105,7 +84,7 @@ class AI {
     //minimax alogorithm to find best point
     minimax(board, max, depth) {
         //console.log(max);
-        console.log(depth);
+        //console.log(depth);
         var v;
         //return state's utility if at terminal state
         if (depth < 1 || this.return_ai_valid_moves(this.temp_board) == []) {
@@ -150,7 +129,7 @@ class AI {
     }
 
     get_ai_scores(board) {
-        console.log(board.board);
+        //console.log(board.board);
         var black_score = 0;
         var white_score = 0;
         // Sum the number of tiles for each player
@@ -174,8 +153,8 @@ class AI {
         //find all possible moves
         var original_moves = this.return_ai_valid_moves(board);
         
-        this.original_board.board = this.deepCopyObject(board.board);
-        this.temp_board.board = this.deepCopyObject(board.board);
+        this.original_board.board = board.clone();
+        this.temp_board.board = board.clone();
         this.get_ai_valid_moves(this.temp_board);
         //console.log("original moves", this.moves);
         //gets us our saved best move
@@ -184,11 +163,11 @@ class AI {
         var bestx = this.best_move[0];
         var besty = this.best_move[1];
         //evaluate placed move
-        console.log('best x, y: ', bestx, besty);
+        //console.log('best x, y: ', bestx, besty);
         // board.set_piece(bestx, besty, this.turn);
         // board.flip_pieces(bestx, besty, this.turn);
         return [bestx, besty];
     }
 }
 
-export {AI};
+module.exports = AI;
