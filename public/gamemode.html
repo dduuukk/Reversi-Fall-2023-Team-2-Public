@@ -22,13 +22,13 @@
         <h3>Select Gamemode:</h3>
     </div>
     <div id="gamemodes" class="centered">
-        <button type="button" onclick="location.href='/localSelect'">LOCAL</button>
-        <button type="button" onclick="location.href='/aiSelect'">AI</button>
-        <button type="button" onclick="location.href='/onlineSelect'" disabled>ONLINE</button>
+        <button type="button" onclick="location.href='/public/localSelect.html'">LOCAL</button>
+        <button type="button" onclick="location.href='/public/aiSelect.html'">AI</button>
+        <button id="onlineButton" type="button" onclick="location.href='/public/onlineSelect.html'">ONLINE</button>
     </div>
     <div id="exit" class="centered">
         <hr>
-        <button type="button" onclick="location.href='/logout'">EXIT</button>
+        <button type="button" onclick="location.href='/public/index.html'">EXIT</button>
     </div>
     <!-- The Modal -->
     <div id="gameModal" class="modal">
@@ -43,30 +43,13 @@
     </div>
 </body>
 <script>
-        var socket = io();
-        var gameType;
-        socket.emit('get_user_start', 1);
-        socket.on('get_user', function( f_str ) {
-            var username = JSON.parse(f_str);
-            console.log('username', username);
-            var welcomeMessage = document.getElementById('welcomeMessage');
-            welcomeMessage.textContent = 'Welcome ' + username + '!';
-        });
-
-        socket.emit('get_board_start', 1);
-        socket.on('get_board', function( f_str ) {
-            var username = JSON.parse(f_str);
-            console.log('username', username);
-            var welcomeMessage = document.getElementById('welcomeMessage');
-            welcomeMessage.textContent = 'Welcome ' + username + '!';
-        });
-
-        function startGame(){
-           // depending on which type of game board is passed in we will set
-           // location.href to either the localGame or AiGame page so that 
-           // we can set the gameController board to whats saved in the db
-           // and then go to the correct game type
-
+        var username = localStorage.getItem('username');
+        console.log('username', username);
+        var welcomeMessage = document.getElementById('welcomeMessage');
+        welcomeMessage.textContent = 'Welcome ' + username + '!';
+        if(username == 'Guest'){
+            document.getElementById('onlineButton').disabled = true;
         }
+
 </script>
 </html>

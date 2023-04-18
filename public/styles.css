@@ -163,6 +163,24 @@ hr {
     display: inline-block;
 }
 
+button[disabled=disabled], button:disabled {
+    background-color: gray;
+    border: 3px solid black;
+    color: black;
+}
+
+button[disabled=disabled], button:disabled {
+    background-color: gray;
+    border: 3px solid black;
+    color: black;
+}
+
+button[disabled]:hover {
+    background-color: gray;
+    border: 3px solid red;
+    color: red;
+}
+
 #selection .selected {
     background-color: green;
     border: 3px solid green;
@@ -225,4 +243,18 @@ hr {
   .modal #removeGame {
     border: 3px solid red;
     color: red;
+  }
+
+  #onlineBoardSize {
+    text-align: center;
+  }
+
+  #messageBox h3 {
+    text-align: center;
+    margin: auto;
+    color: green;
+    font-family:'Segoe UI', sans-serif;
+    font-size: 40px;
+    margin-bottom: 10px;
+    text-shadow: -2px 2px 0 black;
   }

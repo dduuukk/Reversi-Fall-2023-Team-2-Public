@@ -23,7 +23,7 @@
         <% if(locals.passwordfail){ %>
             <h3 id="errorMessage" class="centered">Incorrect Username or Password!</h3>
         <% } %>
-        <button type="submit" id="loginButton">LOGIN</button>
+        <button type="submit" id="loginButton" onclick="getUsername();location.href='/gameMode'">LOGIN</button>
         <hr>
     </form>
     <div id="createAccount" class="centered">
@@ -34,4 +34,16 @@
         <button type="button" onclick="location.href='/gameMode'">LOGIN AS GUEST</button>
     </div>
 </body>
+<script>
+    function getUsername(){
+        var socket = io();
+        var input = document.getElementById('usernameBox');
+        console.log(input);
+        var username = input.textContent;
+        console.log('username', username);
+        socket.emit('send_username', username);
+    }
+        
+
+</script>
 </html>

@@ -19,7 +19,7 @@
         <h1>REVERSI</h1>
     </div>
     <div id="exit" class="centered ingame">
-        <button type="button" onclick="location.href='/localSelect'">EXIT</button>
+        <button type="button" onclick="location.href='/public/localSelect.html'">EXIT</button>
     </div>
     <div id="game">
         <div id="boardContainer"></div>
@@ -40,39 +40,45 @@
         //passed size -> call make_board(size) function
         var gameView;
         var socket = io();
-        var size;
-        socket.emit('update_start', 1);
+        var size = localStorage.getItem('size');
+        var player = localStorage.getItem('player');
+
+        var object = {
+            size: size, 
+            player: player
+        };
+
+        socket.emit('send_settings', object);
+
+        socket.on('settings_process', message => {
+            socket.emit('update_start', 1);
+        });
+        //socket.emit('update_start', 1);
         socket.on('update_size', function( f_str ) {
-            var givenSize = JSON.parse(f_str);
-            if(givenSize == "4x4"){
-                size = 8;
-            }
-            else if(givenSize == "8x8"){
-                size = 12;
-            }
-            else if(givenSize == "10x10"){
-                size = 14;
-            }   
-            gameView = new GameView(size);
-            gameView.make_board(size);
+            var givenSize = JSON.parse(f_str); 
+            gameView = new GameView(givenSize);
+            gameView.make_board(givenSize);
+            socket.emit('pieces_start', 1);
         });
 
         //passed board -> call place_pieces(board) function
-        socket.emit('pieces_start', 1);
+        //socket.emit('pieces_start', 1);
         socket.on('pieces_display', function(board) {
             var givenBoard = JSON.parse(board);
             console.log(givenBoard);
             gameView.place_pieces(givenBoard);
+            socket.emit('moves_start', 1);
         });
 
         //passed moves -> call display_moves(moves) function
-        socket.emit('moves_start', 1);
+        //socket.emit('moves_start', 1);
         socket.on('moves_display', function(moves) {
             var givenBoard = JSON.parse(moves);
             console.log(moves);
             gameView.place_moves(givenBoard);
+            socket.emit('scores_start', 1);
         });
-        socket.emit('scores_start', 1);
+        //socket.emit('scores_start', 1);
         socket.on('scores_display', function(scores) {
             var givenScores = JSON.parse(scores);
             console.log(givenScores);

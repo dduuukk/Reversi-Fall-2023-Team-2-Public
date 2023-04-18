@@ -5,13 +5,14 @@ const GameView = require('../../public/gameView.js');
 
 
 class GameController {
-    constructor(board_size, starting_player, diff, username) {
+    constructor() {
+        this.current_game;
+        this.board_size;
+    }
+
+    setup(board_size, starting_player, diff) {
         this.current_game = new Game(board_size, starting_player, diff);
         this.board_size = this.current_game.game_board.return_size();
-        // this.db_login = new DBCheckLogin();
-        // this.db_board = new DBBoard(username);
-        // this.game_view = new GameView(this.board_size);
-        // console.log(this.current_game.game_board.board);
     }
 
     show_board() {

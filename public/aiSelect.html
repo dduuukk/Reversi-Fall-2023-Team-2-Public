@@ -38,11 +38,11 @@
     </script>
     <div id="startGame" class="centered">
         <hr>
-        <button type="button" onclick="getAISettings();location.href='/aiGame'">START GAME</button>
+        <button type="button" onclick="getAISettings();">START GAME</button>
     </div>
     <div id="exit" class="centered">
         <hr>
-        <button type="button" onclick="location.href='/gameMode'">EXIT</button>
+        <button type="button" onclick="location.href='/public/gamemode.html'">EXIT</button>
     </div>
 </body>
 <script>
@@ -84,7 +84,17 @@ var diffButtons = document.querySelectorAll('button.diffBtn');
                 difficulty = diffButton.textContent;
             } 
         });
-        console.log(size);
+
+        if(size == "4x4"){
+            num_size = 4;
+        }
+        else if(size == "8x8"){
+            num_size = 8;
+        }
+        else if(size == "10x10"){
+            num_size = 10;
+        }
+
         if(difficulty == "EASY"){
             num_diff = 1;
         }
@@ -95,27 +105,10 @@ var diffButtons = document.querySelectorAll('button.diffBtn');
             num_diff = 4;
         }
 
-        fetch('/aiSettings', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                size: size,
-                difficulty: num_diff
-            })
-        })
-            .then(function(response) {
-                if(response.ok) {
-                    console.log('Size: ', size, 'Difficulty: ', difficulty);
-                    return response.json();
-                }
-                throw new Error('Request failed.');
-            })
-            .catch(function(error) {
-                console.log(error);
-        });
+        console.log('size', num_size, 'diff', num_diff);
+        localStorage.setItem('size', num_size);
+        localStorage.setItem('diff', num_diff);
+        location.href = '/public/aiGame.html';
     }
 
 

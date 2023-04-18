@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reversi Online</title>
+    <meta name="author" content="Luke Wisner, Chris Bender, Owen Zhang">
+    <meta name="description" content="Online Game of Reversi"/>
+    <link rel="stylesheet" href="/public/styles.css" />
+    <link rel="stylesheet" href="/public/boardStyles.css" />
+    <link rel="icon" href="/public/assets/favicon.png" type="image/x-icon">
+    <script src="/socket/socket.io.js"></script>
+    <script src="/public/gameView.js"></script>
+</head>
+<body>
+    <div id="title" class="centered ingame">
+        <img src="/public/assets/reversiLogo.jpg" alt="reversi logo">
+        <h1>REVERSI</h1>
+    </div>
+    <div id="exit" class="centered ingame">
+        <button type="button" onclick="location.href='/public/onlineSelect.html'">EXIT</button>
+    </div>
+    <div id="messageBox" class="centered">
+        <h3 id="waitingMessage">Waiting For Another Player To Join ...</h3>
+        <h3 id="turnMessage"></h3>
+    </div> 
+    <div id="game">
+        <div id="boardContainer"></div>
+        <div id="scoresContainer">
+            <div id="blackScore">
+                <div class="specialPiece blackPiece"></div>
+                <h3>2</h3>
+            </div>
+            <div id="whiteScore">
+                <div class="specialPiece whitePiece"></div>
+                <h3>2</h3>
+            </div>
+        </div>
+    </div> 
+</body>
+<script>
+    //on window load emit to the socket so we can recieve size to display board
+        //passed size -> call make_board(size) function
+        var gameView;
+        var socket = io();
+        var size = localStorage.getItem('size');
+        var playerFound = true;
+        var username = localStorage.getItem('username');
+
+        var object = {
+            size: size,
+            username: username
+        };
+
+        socket.emit('send_online_settings', object);
+
+        socket.on('settings_process', message => {
+            socket.emit('update_start', 1);
+        });
+
+        socket.on('join_log', function( f_str ) {
+            console.log(f_str);
+        });
+
+        //socket.emit('update_start', 1);
+        socket.on('update_size', function( f_str ) {
+            var givenSize = JSON.parse(f_str); 
+            gameView = new GameView(givenSize);
+            gameView.make_board(givenSize);
+            socket.emit('pieces_start', 1);
+        });
+
+        //passed board -> call place_pieces(board) function
+        //socket.emit('pieces_start', 1);
+        socket.on('pieces_display', function(board) {
+            var givenBoard = JSON.parse(board);
+            console.log(givenBoard);
+            gameView.place_pieces(givenBoard);
+            socket.emit('moves_start', 1);
+        });
+
+        //passed moves -> call display_moves(moves) function
+        //socket.emit('moves_start', 1);
+        socket.on('moves_display', function(moves) {
+            var givenBoard = JSON.parse(moves);
+            console.log(moves);
+            gameView.place_moves(givenBoard);
+            socket.emit('scores_start', 1);
+        });
+        //socket.emit('scores_start', 1);
+        socket.on('scores_display', function(scores) {
+            var givenScores = JSON.parse(scores);
+            console.log(givenScores);
+            gameView.display_scores(givenScores[0], givenScores[1]);
+            //socket.emit('waiting', 1);
+        });
+
+        socket.on('found_player', function(foundUsername) {
+            console.log('input username', foundUsername);
+            console.log('existing username', username);
+            // var foundUsername = JSON.parse(foundUsername);
+            if(foundUsername != username){
+                console.log(foundUsername);
+                var waitingMessage = document.getElementById('waitingMessage');
+                waitingMessage.textContent = "Playing Against " + foundUsername;
+                var turnMessage = document.getElementById('turnMessage');
+                turnMessage.textContent = "Your Move";
+                playerFound = true;
+            }
+        });
+
+        socket.on('your_move', function(f_str) {
+            var turnMessage = document.getElementById('turnMessage');
+            turnMessage.textContent = "Your Move";
+        });
+
+        socket.on('opponent_move', function(f_str) {
+            var turnMessage = document.getElementById('turnMessage');
+            turnMessage.textContent = "Opponent's Move";
+        });
+    console.log('pending status', playerFound);
+    //event listener for click on space -> send to router.js
+    if(playerFound){
+        window.onclick = e => {
+                if(!e.target.classList.contains('cell')){
+                    console.log("Invalid Click!");
+                }
+                else{
+                    var x = e.target.id.charAt(7);
+                    var y = e.target.id.charAt(5);
+                    console.log("x: ", x, "y: ", y);
+                    //update board array if move is valid
+                    var point = JSON.stringify([x,y]);
+                    socket.emit('online_move_click', point);
+                    socket.on('pieces_display', function(board) {
+                        var givenBoard = JSON.parse(board);
+                        gameView.place_pieces(givenBoard);
+                    });
+                    socket.on('moves_display', function(moves) {
+                        var givenBoard = JSON.parse(moves);
+                        console.log(moves);
+                        gameView.place_moves(givenBoard);
+                    });
+                    //passed blackscore + whitescore -> call display_scores(blackscore whitescore) function
+                    socket.on('scores_display', function(scores) {
+                        var givenScores = JSON.parse(scores);
+                        console.log(givenScores);
+                        gameView.display_scores(givenScores[0], givenScores[1]);
+                    });
+                    socket.on('winner_display', function(winner) {
+                        var givenWinner = JSON.parse(winner);
+                        console.log(givenWinner);
+                        gameView.game_end_message(givenWinner);
+                    });
+
+                    socket.on('your_move', function(f_str) {
+                        var turnMessage = document.getElementById('turnMessage');
+                        turnMessage.textContent = "Your Move";
+                    });
+
+                    socket.on('opponent_move', function(f_str) {
+                        var turnMessage = document.getElementById('turnMessage');
+                        turnMessage.textContent = "Opponent's Move";
+                    });
+                    //passed winner -> call game_end_message(winner)
+                } 
+        } 
+}
+</script>
+</html>

@@ -14,21 +14,58 @@
 
 <body>
     <div id="title" class="centered">
-        <img src="public/assets/reversiLogo.jpg" alt="reversi logo">
+        <img src="/public/assets/reversiLogo.jpg" alt="reversi logo">
         <h1>REVERSI</h1>
     </div>
     <div id="login" class="centered">
-        <br><input type="text" id="usernameBox" placeholder="Username"><br>
-        <input type="text" id="passwordBox" placeholder="Password">
-        <button type="button" id="loginButton">LOGIN</button>
+        <br><input type="username" placeholder="Username" id="usernameBox"><br>
+        <input type="password" placeholder="Password" id="passwordBox">
+        <h3 id="errorMessage" class="centered">Incorrect Username or Password!</h3>
+        <button type="button" id="loginButton" onclick="handleLogin();">LOGIN</button>
         <hr>
     </div>
     <div id="createAccount" class="centered">
         <!--Takes us to the new user page when it is implemented-->
-        <button type="button" onclick="location.href='dist/registerNew.html'">NEW ACCOUNT</button>
+        <button type="button" onclick="location.href='/public/registerNew.ejs'">NEW ACCOUNT</button>
     </div>
     <div id="guestLogin" class="centered">
-        <button type="button">LOGIN AS GUEST</button>
+        <button type="button" onclick="handleGuest();">LOGIN AS GUEST</button>
     </div>
 </body>
+<script>
+    var errorMessage = document.getElementById('errorMessage');
+    errorMessage.style.display = 'none';
+    var socket = io();
+
+    function handleLogin(){
+        var userInput = document.getElementById('usernameBox');
+        var passInput = document.getElementById('passwordBox');
+        var username = userInput.value;
+        var password = passInput.value;
+        console.log('username', username, 'password', password);
+        var object = {username: username, password: password};
+        socket.emit('send_login', object);
+        socket.on('return_login', function( f_str ) {
+            var success = JSON.parse(f_str);
+            if(success){
+                localStorage.setItem('username', username);
+                location.href='/public/gamemode.html';
+            }
+            else{
+                passwordFail();
+            }
+        });
+    }
+
+    function passwordFail(){
+        errorMessage.style.display = '';
+    }
+
+    function handleGuest(){
+        localStorage.setItem('username', 'Guest');
+        location.href='/public/gamemode.html'
+    }
+        
+
+</script>
 </html>
