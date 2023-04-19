@@ -41,7 +41,7 @@ class GameLogic {
                 return 3;
             }
         }
-        return 0;   
+        return 0;
     }
 }
 module.exports = GameLogic;

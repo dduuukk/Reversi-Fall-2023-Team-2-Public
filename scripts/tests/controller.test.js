@@ -53,7 +53,7 @@ describe('GameController class testing', () => {
     test("check_win", () => {
         //check winner without filled board
         var result = controller.check_win();
-        expect(result).toBe(false);
+        expect(result).toBe(0);
         //replace board with a filled board that player 1 won
         controller.current_game.game_board.board = endedBoard;
         result = controller.check_win();
