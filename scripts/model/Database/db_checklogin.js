@@ -56,6 +56,23 @@ class DBCheckLogin {
             return false;
         }
     }
+
+    async update_elo (username, win) {
+        if(win) {
+            var sql = [[`SELECT elo FROM player WHERE username = ?`], [username]];
+            var current_elo = await this.db.query(sql);
+            var new_elo = parseInt(current_elo.elo) + 100;
+            sql = [[`UPDATE player SET elo = ? WHERE username = ?`], [new_elo, username]];
+            await this.db.query(sql);
+        }
+        else {
+            var sql = [[`SELECT elo FROM player WHERE username = ?`], [username]];
+            var current_elo = await this.db.query(sql);
+            var new_elo = parseInt(current_elo.elo) - 100;
+            sql = [[`UPDATE player SET elo = ? WHERE username = ?`], [new_elo, username]];
+            await this.db.query(sql);
+        }
+    }
 }
 module.exports = DBCheckLogin;
 // var checklogin = new DBCheckLogin();

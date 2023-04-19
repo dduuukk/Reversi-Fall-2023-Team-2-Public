@@ -81,22 +81,22 @@ io.on('connection', socket => {
         })();
     });
 
-        // Check login creds with DB
-        socket.on('send_credentials', message => {
-            var username = message.username;
-            var password = message.password;
-            socket.player_username = username;
-            console.log(`Socket username redefined to ${socket.player_username}`);
-            (async () => {
-                if (await db_login.insert_new_player(username, password) == false) {
-                    socket.emit('return_credentials', false);
-                }
-                else {
-                    
-                    socket.emit('return_credentials', true);
-                }
-            })();
-        });
+    // Check login creds with DB
+    socket.on('send_credentials', message => {
+        var username = message.username;
+        var password = message.password;
+        socket.player_username = username;
+        console.log(`Socket username redefined to ${socket.player_username}`);
+        (async () => {
+            if (await db_login.insert_new_player(username, password) == false) {
+                socket.emit('return_credentials', false);
+            }
+            else {
+                
+                socket.emit('return_credentials', true);
+            }
+        })();
+    });
 
     // Initial either of the 3 gamemodes
     socket.on('send_settings', message => {
@@ -264,9 +264,11 @@ io.on('connection', socket => {
                 console.log(checkWinner);
                 if(checkWinner == 1){
                     winningUser = players_in_fourbyfour[0];
+                    losingUser = players_in_fourbyfour[1];
                 }
                 else if (checkWinner == 2){
                     winningUser = players_in_fourbyfour[1];
+                    losingUser = players_in_fourbyfour[0];
                 }
                 else if (checkWinner == 3){
                     winningUser = 3;
@@ -274,6 +276,11 @@ io.on('connection', socket => {
                 
                 console.log('Win screen reached!')
                 io.to(socket.online_room_name).emit('winner_online_display', winningUser);
+                (async () => {
+                    await db_login.update_elo(winningUser, true);
+                    await db_login.update_elo(losingUser, false);
+                })();
+
                 players_in_fourbyfour.length = 0;
             }
         }
