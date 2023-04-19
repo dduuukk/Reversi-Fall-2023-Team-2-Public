@@ -36,19 +36,41 @@
         <div class="modal-content">
         <h2>Would you like to resume your previous game?</h2><br>
         <div class="modalBtn">
-            <button type="button" id="resumeGame" onclick="startGame()">YES</button>
-            <button type="button" id="removeGame">NO</button>
+            <button type="button" id="resumeGame" onclick="enterBoard()">YES</button>
+            <button type="button" id="removeGame" onclick="exitBoard()">NO</button>
         </div>
         </div>
     </div>
 </body>
 <script>
+
+        var modal = document.getElementById('gameModal');
+
         var username = localStorage.getItem('username');
         console.log('username', username);
         var welcomeMessage = document.getElementById('welcomeMessage');
         welcomeMessage.textContent = 'Welcome ' + username + '!';
         if(username == 'Guest'){
             document.getElementById('onlineButton').disabled = true;
+        }
+
+        var socket = io();
+        socket.emit('get_user_gamemode', username);
+
+        socket.on('existing_board', board => {
+            localStorage.setItem('existingBoard', board);
+            modal = document.getElementById('gameModal');
+            modal.style.display = 'block';
+        });
+
+        function enterBoard(){
+            location.href = './localGame.html';
+        }
+
+        function exitBoard(){
+            modal.style.display = 'none';
+            localStorage.setItem('existingBoard', 'false');
+            socket.emit('delete_db_board', 1);
         }
 
 </script>

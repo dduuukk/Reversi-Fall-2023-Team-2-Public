@@ -48,6 +48,8 @@
         var playerFound = true;
         var username = localStorage.getItem('username');
 
+        var player_move = ["Your Move", "Opponent's Move"]
+
         var object = {
             size: size,
             username: username
@@ -110,6 +112,17 @@
             }
         });
 
+        socket.on('switch_move', f_str => {
+            var turnMessage = document.getElementById('turnMessage').textContent;
+            console.log('current turn: ', turnMessage);
+            if(turnMessage == "Your Move") {
+                socket.emit('message_opponent', 1);
+            }
+            else {
+                socket.emit('message_yours', 1);
+            }
+        })
+
         socket.on('your_move', function(f_str) {
             var turnMessage = document.getElementById('turnMessage');
             turnMessage.textContent = "Your Move";
@@ -119,9 +132,21 @@
             var turnMessage = document.getElementById('turnMessage');
             turnMessage.textContent = "Opponent's Move";
         });
+
+        socket.on('linked' , function(point, username) {
+            console.log(point);
+            socket.emit('online_move_click', point);
+        });
+
+        socket.on('winner_online_display', function(winner) {
+            socket.emit('destory_game_arr', 1);
+            console.log('winner', winner);
+            gameView.game_end_message(winner);
+            
+        });
+
     console.log('pending status', playerFound);
     //event listener for click on space -> send to router.js
-    if(playerFound){
         window.onclick = e => {
                 if(!e.target.classList.contains('cell')){
                     console.log("Invalid Click!");
@@ -131,41 +156,45 @@
                     var y = e.target.id.charAt(5);
                     console.log("x: ", x, "y: ", y);
                     //update board array if move is valid
-                    var point = JSON.stringify([x,y]);
-                    socket.emit('online_move_click', point);
-                    socket.on('pieces_display', function(board) {
-                        var givenBoard = JSON.parse(board);
-                        gameView.place_pieces(givenBoard);
-                    });
-                    socket.on('moves_display', function(moves) {
-                        var givenBoard = JSON.parse(moves);
-                        console.log(moves);
-                        gameView.place_moves(givenBoard);
-                    });
-                    //passed blackscore + whitescore -> call display_scores(blackscore whitescore) function
-                    socket.on('scores_display', function(scores) {
-                        var givenScores = JSON.parse(scores);
-                        console.log(givenScores);
-                        gameView.display_scores(givenScores[0], givenScores[1]);
-                    });
-                    socket.on('winner_display', function(winner) {
-                        var givenWinner = JSON.parse(winner);
-                        console.log(givenWinner);
-                        gameView.game_end_message(givenWinner);
-                    });
+                    //var point = JSON.stringify([x,y]);
+                    var object = {x: x, y: y, username: username};
+                    socket.emit('link_click', object);
+                    // socket.on('linked' , function(point) {
+                    //     console.log(point);
+                    //     socket.emit('online_move_click', point);
+                    // });
+                    // socket.on('pieces_display', function(board) {
+                    //     var givenBoard = JSON.parse(board);
+                    //     gameView.place_pieces(givenBoard);
+                    // });
+                    // socket.on('moves_display', function(moves) {
+                    //     var givenBoard = JSON.parse(moves);
+                    //     console.log(moves);
+                    //     gameView.place_moves(givenBoard);
+                    // });
+                    // //passed blackscore + whitescore -> call display_scores(blackscore whitescore) function
+                    // socket.on('scores_display', function(scores) {
+                    //     var givenScores = JSON.parse(scores);
+                    //     console.log(givenScores);
+                    //     gameView.display_scores(givenScores[0], givenScores[1]);
+                    // });
+                    // socket.on('winner_display', function(winner) {
+                    //     var givenWinner = JSON.parse(winner);
+                    //     console.log(givenWinner);
+                    //     gameView.game_end_message(givenWinner);
+                    // });
 
-                    socket.on('your_move', function(f_str) {
-                        var turnMessage = document.getElementById('turnMessage');
-                        turnMessage.textContent = "Your Move";
-                    });
+                    // socket.on('your_move', function(f_str) {
+                    //     var turnMessage = document.getElementById('turnMessage');
+                    //     turnMessage.textContent = "Your Move";
+                    // });
 
-                    socket.on('opponent_move', function(f_str) {
-                        var turnMessage = document.getElementById('turnMessage');
-                        turnMessage.textContent = "Opponent's Move";
-                    });
+                    // socket.on('opponent_move', function(f_str) {
+                    //     var turnMessage = document.getElementById('turnMessage');
+                    //     turnMessage.textContent = "Opponent's Move";
+                    // });
                     //passed winner -> call game_end_message(winner)
                 } 
-        } 
-}
+            } 
 </script>
 </html>

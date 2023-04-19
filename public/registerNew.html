@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register New Account</title>
+    <meta name="author" content="Luke Wisner, Chris Bender, Owen Zhang">
+    <meta name="description" content="New Account Registration page"/>
+    <link rel="stylesheet" href="/public/styles.css" />
+    <link rel="icon" href="/public/assets/favicon.png" type="image/x-icon">
+    <script src="/socket/socket.io.js"></script>
+</head>
+
+<body>
+    <div id="title" class="centered">
+        <img src="/public/assets/reversiLogo.jpg" alt="reversi logo">
+        <h1>REVERSI</h1>
+    </div>
+    <div id="login" class="centered"> 
+        <div id="greeting">
+            <h2>Enter Username and Password Below</h2>
+        </div>
+        <br><input type="username" id="usernameBox" placeholder="Username"><br>
+        <input type="password" id="passwordBox" placeholder="Password">
+        <input type="password" id="passwordBox2" placeholder="Confirm Password">
+        <hr>
+        </div>
+    </div>
+    <div id="createAccount" class="centered">
+        <!--Takes us to the new user page when it is implemented-->
+        <button id="newAccountBtn" type="button" onclick="handleAccount()">CREATE ACCOUNT</button>
+        <h3 id="errorMessage" class="centered">Passwords Don't Match!</h3>
+    </form>
+    <div id="exit" class="centered">
+        <hr>
+        <button type="button" onclick="location.href='/public/index.html'">EXIT</button>
+    </div>
+</body>
+
+<script>
+    var errorMessage = document.getElementById('errorMessage');
+    errorMessage.style.display = 'none';
+    var socket = io()
+    
+    function handleAccount() {
+        var username = document.getElementById('usernameBox').value;
+        var passbox1 = document.getElementById('passwordBox').value;
+        var passbox2 = document.getElementById('passwordBox2').value;
+        console.log(username, passbox1, passbox2);
+        if(passbox1 == passbox2){
+            var object = {username: username, password: passbox1};
+            console.log(username);
+            localStorage.setItem('username', username);
+            socket.emit('send_credentials', object);
+            // location.href='/public/gamemode.html'
+        }
+        else {
+            errorMessage.style.display = '';
+        }
+        socket.on('return_credentials', message => {
+            if(!message) {
+                errorMessage.style.display = '';
+            }
+            else {
+                location.href='/public/gamemode.html'
+            }
+        })
+    }
+</script>
+</html>

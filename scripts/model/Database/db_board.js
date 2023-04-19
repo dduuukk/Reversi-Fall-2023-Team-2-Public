@@ -12,7 +12,7 @@ class DBBoard extends observer {
 
     async read_board_from_db() {
         var sql = [[`SELECT boardstate FROM board WHERE currentplayer = ?`], [this.username]]; 
-        if(sql == -1) {
+        if(await this.db.query(sql) == -1) {
             return false;
         } 
         else{
@@ -129,10 +129,9 @@ class DBBoard extends observer {
         if(Number.isInteger(args)) {
             console.log('Observer received next player')
             await this.#update_board_player(args);
-
         }
         else {
-            console.log('Observer received board array', args);
+            console.log('Observer received board array');
             await this.store_board(args);
         }
     }

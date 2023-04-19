@@ -34,8 +34,11 @@ class GameLogic {
             if (black_score > white_score){
                 return 1;
             }
-            else {
+            else if (black_score < white_score){
                 return 2;
+            }
+            else if (black_score == white_score){
+                return 3;
             }
         }
         return 0;   

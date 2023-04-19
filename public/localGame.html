@@ -42,10 +42,15 @@
         var socket = io();
         var size = localStorage.getItem('size');
         var player = localStorage.getItem('player');
+        var username = localStorage.getItem('username')
+
+        var existingBoard = localStorage.getItem('existingBoard');
 
         var object = {
             size: size, 
-            player: player
+            player: player,
+            username: username,
+            existingBoard: existingBoard
         };
 
         socket.emit('send_settings', object);
@@ -116,6 +121,8 @@
                     var givenWinner = JSON.parse(winner);
                     console.log(givenWinner);
                     gameView.game_end_message(givenWinner);
+                    socket.emit('delete_db_board', 1);
+                    localStorage.setItem('existingBoard', 'false');
                 });
                 //passed winner -> call game_end_message(winner)
             } 

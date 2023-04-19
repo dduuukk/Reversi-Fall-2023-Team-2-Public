@@ -38,7 +38,7 @@ class GameController {
             return this.current_game.check_winner();
         }
         else{
-            return false;
+            return 0;
         }
     }
 

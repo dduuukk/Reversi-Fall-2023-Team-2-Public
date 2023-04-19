@@ -26,7 +26,7 @@
     </div>
     <div id="createAccount" class="centered">
         <!--Takes us to the new user page when it is implemented-->
-        <button type="button" onclick="location.href='/public/registerNew.ejs'">NEW ACCOUNT</button>
+        <button type="button" onclick="location.href='/public/registerNew.html'">NEW ACCOUNT</button>
     </div>
     <div id="guestLogin" class="centered">
         <button type="button" onclick="handleGuest();">LOGIN AS GUEST</button>
@@ -38,6 +38,7 @@
     var socket = io();
 
     function handleLogin(){
+        localStorage.setItem('existingBoard', 'false');
         var userInput = document.getElementById('usernameBox');
         var passInput = document.getElementById('passwordBox');
         var username = userInput.value;

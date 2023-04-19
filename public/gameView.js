@@ -98,7 +98,10 @@ class GameView {
         else if (winning_player == 2){
             message.textContent = "White Wins!";
         }
-        else {
+        else if (typeof winning_player == 'string'){
+            message.textContent = winning_player + " Wins!";
+        }
+        else if (winning_player == 3){
             message.textContent = "Tie!";
         }
         document.body.appendChild(message);
