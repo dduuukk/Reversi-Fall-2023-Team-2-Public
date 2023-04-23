@@ -16,6 +16,7 @@ class Prototype {
         return copy;
     }
 
+    //deep copies passed object
     deepCopyObject(board){
         var copy = [];
         for(let [key, value] of Object.entries(board)){

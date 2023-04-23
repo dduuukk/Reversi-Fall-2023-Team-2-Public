@@ -92,6 +92,7 @@ class Board extends subject {
         this.board[y][x] = parseInt(player);
     }
 
+    //get array of endpoints from current point
     get_endpoints(x, y, player) {
         var endpoint_array = [];
         for(var i = 0; i < this.directions.length; i++) {

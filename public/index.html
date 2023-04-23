@@ -37,6 +37,7 @@
     errorMessage.style.display = 'none';
     var socket = io();
 
+    //get results from input boxes and send to server
     function handleLogin(){
         localStorage.setItem('existingBoard', 'false');
         var userInput = document.getElementById('usernameBox');
@@ -58,6 +59,7 @@
         });
     }
 
+    //display error message
     function passwordFail(){
         errorMessage.style.display = '';
     }

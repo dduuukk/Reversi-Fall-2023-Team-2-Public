@@ -10,6 +10,7 @@ class Database {
     }).promise()
   }
 
+  //query database
   async query(sql) {
     var sql_str = sql[0].toString();
     var sql_arr = sql[1];

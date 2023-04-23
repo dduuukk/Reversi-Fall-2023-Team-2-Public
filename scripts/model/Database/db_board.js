@@ -10,6 +10,7 @@ class DBBoard extends observer {
         console.log(this.username);
     }
 
+    //receive the board from the user's db
     async read_board_from_db() {
         var sql = [[`SELECT boardstate FROM board WHERE currentplayer = ?`], [this.username]]; 
         if(await this.db.query(sql) == -1) {
@@ -57,6 +58,7 @@ class DBBoard extends observer {
         return board_array;
     }
 
+    //store board in database for player
     async store_board(board_array) {
         var board_formatted = await this.#format_board(board_array);
         var board_format_str = board_formatted.join('');

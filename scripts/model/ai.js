@@ -46,15 +46,13 @@ class AI {
         }
         //check all valid moves
         for(var i = 0; i < this.moves.length; i++){
+            //get a new temp board
             this.temp_board.board = board.clone();
 
             var point = this.moves[i];
             //console.log("Moves inside of min/max", this.moves);
             var x = point[0];
             var y = point[1];
-            //get a new temp board
-            //console.log("MOVE x,y", x, y);
-            //console.log("first  board", this.original_board.board);
             if(max){
                 this.make_temp_move(x, y, this.turn);
             }
@@ -83,8 +81,6 @@ class AI {
 
     //minimax alogorithm to find best point
     minimax(board, max, depth) {
-        //console.log(max);
-        //console.log(depth);
         var v;
         //return state's utility if at terminal state
         if (depth < 1 || this.return_ai_valid_moves(this.temp_board) == []) {
@@ -151,8 +147,6 @@ class AI {
     //high-level make ai move function
     make_ai_move(board) {
         //find all possible moves
-        var original_moves = this.return_ai_valid_moves(board);
-        
         this.original_board.board = board.clone();
         this.temp_board.board = board.clone();
         this.get_ai_valid_moves(this.temp_board);
@@ -163,9 +157,6 @@ class AI {
         var bestx = this.best_move[0];
         var besty = this.best_move[1];
         //evaluate placed move
-        //console.log('best x, y: ', bestx, besty);
-        // board.set_piece(bestx, besty, this.turn);
-        // board.flip_pieces(bestx, besty, this.turn);
         return [bestx, besty];
     }
 }

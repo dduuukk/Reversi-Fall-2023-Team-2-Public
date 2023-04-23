@@ -43,6 +43,7 @@
     errorMessage.style.display = 'none';
     var socket = io()
     
+    //get entered account and verify with database
     function handleAccount() {
         var username = document.getElementById('usernameBox').value;
         var passbox1 = document.getElementById('passwordBox').value;

@@ -18,6 +18,7 @@ class DBCheckLogin {
         
     }
 
+    //check if password matches username
     async match_password(username, password) {
         var sql = [[`SELECT password FROM player WHERE username = ?`], [username]];
         var db_pass = await this.db.query(sql);
@@ -46,6 +47,7 @@ class DBCheckLogin {
         
     }
 
+    //add new user into database
     async insert_new_player(username, password) {
         if (await this.#check_username(username) == -1) {
             var sql = [[`INSERT INTO player (username, password) VALUES (?, ?)`], [username, password]];
@@ -57,6 +59,7 @@ class DBCheckLogin {
         }
     }
 
+    //adjust elo for online players
     async update_elo (username, win) {
         if(win) {
             var sql = [[`SELECT elo FROM player WHERE username = ?`], [username]];
