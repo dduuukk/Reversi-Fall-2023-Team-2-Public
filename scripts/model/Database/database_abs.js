@@ -2,6 +2,7 @@ const mysql = require('mysql2');
 
 class Database {
   constructor() {
+    // Create pool connection to database
     this.pool = mysql.createPool({
       host: 'localhost',
       user: 'root',
@@ -10,8 +11,9 @@ class Database {
     }).promise()
   }
 
-  //query database
+  // General Database quesry
   async query(sql) {
+    // Split the input into two parts and send to database
     var sql_str = sql[0].toString();
     var sql_arr = sql[1];
     console.log(sql_str, sql_arr);
@@ -22,9 +24,9 @@ class Database {
     else {
       return rows[0];
     }
-    
   }
 
+  // End the pool conneciton manually
   async terminate() {
     this.pool.end();
   }

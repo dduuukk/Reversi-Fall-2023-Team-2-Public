@@ -10,7 +10,7 @@ class DBBoard extends observer {
         console.log(this.username);
     }
 
-    //receive the board from the user's db
+    // Read flattened DB board from the database
     async read_board_from_db() {
         var sql = [[`SELECT boardstate FROM board WHERE currentplayer = ?`], [this.username]]; 
         if(await this.db.query(sql) == -1) {
@@ -23,9 +23,23 @@ class DBBoard extends observer {
         }
     }
 
+    // Convert the flattened DB board to a 2D array
     async #convert_to_array(board_str) {
         var flat_array = Array.from(String(board_str), Number);
-        var row_length = flat_array.length / 4;
+        var row_length;
+
+        // Check the size of the flat array
+        if(flat_array.length == 16) {
+            row_length = flat_array.length / 4;
+        }
+        else if(flat_array.length == 64) {
+            row_length = flat_array.length / 8;
+        }
+        else {
+            row_length = flat_array.length / 10;
+        }
+
+        // Create an empty 2D array and fill with the data from the database
         var arr = [...Array(row_length + 4)].map(e => Array(row_length + 4).fill(0));
         var y = 1;
         var x = 1;
@@ -41,9 +55,9 @@ class DBBoard extends observer {
         return board_array;
     }
 
-
+    // Place the model board buffer of -1's
     async #place_buffer(board_array) {
-        // Fill outside buffer columns with -1
+        // Fill outside 2 buffer columns and rows with -1
         for(var col = 0; col < board_array.length; col++) {
             for(var row = 0; row < board_array.length; row++) {
                 if(col == 0 || row == 0 || col == 1 || row == 1) {
@@ -58,10 +72,12 @@ class DBBoard extends observer {
         return board_array;
     }
 
-    //store board in database for player
+    // Store board in database for player
     async store_board(board_array) {
         var board_formatted = await this.#format_board(board_array);
         var board_format_str = board_formatted.join('');
+        // Check if a board already exists under the username
+        // If so, update the board values, otherwise create a new board
         if(await this.#match_currentplayer(this.username)) {
             var sql = [[`UPDATE board SET boardstate = ? WHERE currentplayer = ?`], [board_format_str, this.username]]; 
             await this.db.query(sql);
@@ -80,6 +96,7 @@ class DBBoard extends observer {
         return true;
     }
 
+    // Turn the 2D board into a flattened board for DB storage
     async #format_board(board_array) {
         var flat_arr = []
         console.log(`length:`,board_array.length);
@@ -91,6 +108,7 @@ class DBBoard extends observer {
         return flat_arr;
     }
 
+    // Find if there is a player that matches the current username in the DB
     async #match_currentplayer(username) {
         var sql = [[`SELECT currentplayer FROM board WHERE currentplayer = ?`], [username]];
         var db_user = await this.db.query(sql);
@@ -119,6 +137,7 @@ class DBBoard extends observer {
         return ret_col;
     }
 
+    // Update the player attached to the DB board
     async #update_board_player(current_player_int) {
         if(await this.#match_currentplayer(this.username)) {
             var sql = [[`UPDATE board SET nextplayer = ? WHERE currentplayer = ?`], [current_player_int, this.username]]; 
@@ -127,6 +146,7 @@ class DBBoard extends observer {
         }
     }
 
+    // Observer to receive either board or player objects
     async notify(args) {
         if(Number.isInteger(args)) {
             console.log('Observer received next player')
@@ -139,7 +159,3 @@ class DBBoard extends observer {
     }
 }
 module.exports = DBBoard;
-// var readboard = new DBReadBoard('testplayer');
-// console.log(await readboard.read_board_from_db());
-
-// console.log(updateboard.store_board(board));

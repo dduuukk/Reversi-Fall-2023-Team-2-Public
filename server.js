@@ -17,10 +17,9 @@ const board_observer = require('./scripts/model/Database/db_board');
 
 // Client dependencies
 const favicon = require('serve-favicon');
-
-
 app.set('view engine', 'ejs');
 const port = 3000 || process.env.PORT;
+
 // Load static assets
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/socket', express.static(path.join(__dirname, 'node_modules/socket.io/client-dist')));
@@ -39,12 +38,12 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/public/index.html');
 });
 
-//
 function database_board_player_subscribe(game_controller, observer) {
     game_controller.current_game.game_board.subscribe(observer);
     game_controller.current_game.player.subscribe(observer);
 }
 
+// Check if there are already 2 people in an online game
 function check_game_join_valid(username) {
     if(players_in_fourbyfour.length < 2 || typeof(players_in_fourbyfour.length) == 'undefined') {
         return true;
@@ -59,6 +58,7 @@ function check_game_join_valid(username) {
 io.on('connection', socket => {
     console.log(`Connected to socket ${socket.id}`);
 
+    // Socket variables
     socket.game_controller = new GameController();
     socket.player_username;
     socket.online_room_name;
@@ -104,6 +104,8 @@ io.on('connection', socket => {
         (async () => {
             console.log('socket obs:', await socket.obs.read_board_from_db());
 
+            // Check if there is already a game, if so send the user to that game
+            // Otherwise create a new local game
             if(await socket.obs.read_board_from_db() != false) {
                 console.log(`The input size is ${message.size} and player is ${message.player}`);
                 socket.game_controller.setup(parseInt(message.size), parseInt(message.player));
@@ -117,7 +119,6 @@ io.on('connection', socket => {
                     socket.emit('settings_process', 1);
             }
             else {
-                console.log('PLEASE TELL ME YOU MADE IT HERE');
                 console.log(`The input size is ${message.size} and player is ${message.player}`);
                 socket.game_controller.setup(parseInt(message.size), parseInt(message.player));
                 socket.obs = new board_observer(message.username);
@@ -134,6 +135,7 @@ io.on('connection', socket => {
         socket.emit('settings_process', 1);
     });
     socket.on('send_online_settings', message => {
+        // Connect to one of 3 different rooms depending on selected board size
         if(check_game_join_valid(message.username)) {
             if(message.size == 4) {
                 console.log(`Connected to room 4x4`);
@@ -169,29 +171,37 @@ io.on('connection', socket => {
         console.log('room player array', players_in_fourbyfour);
         socket.emit('settings_process', 1);
     });
+    // Send board size
     socket.on('update_start', message => {
         // console.log('socket.game_controller is', socket.game_controller);
         socket.emit('update_size', JSON.stringify(socket.game_controller.board_size));
     });
+    // Send board to place starting pieces
     socket.on('pieces_start', message => {
         socket.emit('pieces_display', JSON.stringify(socket.game_controller.current_game.game_board.board));
     });
+    // Send starting move locations
     socket.on('moves_start', message => {
         socket.emit('moves_display', JSON.stringify(socket.game_controller.display_moves()));
     });
+    // Send starting scores
     socket.on('scores_start', message => {
         socket.emit('scores_display', JSON.stringify(socket.game_controller.display_scores()));
         socket.emit('scores_start_done', 1);
     });
+    // Send model starting user
     socket.on('get_user_start', message => {
         socket.emit('get_user', JSON.stringify(socket.player_username));
     });
+    // Send opponent username
     socket.on('message_opponent', message => {
         socket.emit('opponent_move', JSON.stringify(socket.player_username));
     });
+    // Send current socket username
     socket.on('message_yours', message => {
         socket.emit('your_move', JSON.stringify(socket.player_username));
     });
+    // Handle local game move from GUI on server
     socket.on('move_click', message => {
         var array = JSON.parse(message);
         var x = parseInt(array[0]);
@@ -207,6 +217,7 @@ io.on('connection', socket => {
             socket.emit('winner_display', JSON.stringify(socket.game_controller.check_win()));
         }
     });
+    // Handle AI game move from GUI on server and send back chosen move
     socket.on('ai_move_click', message => {
         var array = JSON.parse(message);
         var x = parseInt(array[0]);
@@ -221,10 +232,11 @@ io.on('connection', socket => {
         socket.emit('moves_display', JSON.stringify(socket.game_controller.display_moves()));
         socket.emit('scores_display', JSON.stringify(socket.game_controller.display_scores()));
         if(socket.game_controller.check_win()) {
-            //database
             socket.emit('winner_display', JSON.stringify(socket.game_controller.check_win()));
         }
     });
+
+    // Link the clicks of two online players together and emit to both
     socket.on('link_click', message => {
         var object = {
             x: message.x,
@@ -236,6 +248,7 @@ io.on('connection', socket => {
         }
         
     });
+    // Handle online move from GUI
     socket.on('online_move_click', (message) => {
         if(players_in_fourbyfour.length <= 1){
             socket.emit('invalid_move', 'Another player has not yet joined the game');
@@ -262,6 +275,7 @@ io.on('connection', socket => {
                 var winningUser;
                 var checkWinner = socket.game_controller.check_win();
                 console.log(checkWinner);
+                // Give the name of the winner and loser to the GUI
                 if(checkWinner == 1){
                     winningUser = players_in_fourbyfour[0];
                     losingUser = players_in_fourbyfour[1];
@@ -277,18 +291,23 @@ io.on('connection', socket => {
                 console.log('Win screen reached!')
                 io.to(socket.online_room_name).emit('winner_online_display', winningUser);
                 (async () => {
+                    // Update player ELO based on who won or lost
                     await db_login.update_elo(winningUser, true);
                     await db_login.update_elo(losingUser, false);
                 })();
 
+                // Remove players from global array tracking room
                 players_in_fourbyfour.length = 0;
             }
         }
     });
+
     socket.on('destroy_game_arr', message => {
         console.log('game array destroyed');
         players_in_fourbyfour.length = 0;
-    })
+    });
+
+    // Check if user has a game stored in DB on choose game screen
     socket.on('get_user_gamemode', message => {
         (async () => {
             console.log('finding board for', message);
@@ -300,6 +319,7 @@ io.on('connection', socket => {
         }
         })();
     });
+
     socket.on('delete_db_board', message => {
         (async () => {
             await socket.obs.delete_board();
